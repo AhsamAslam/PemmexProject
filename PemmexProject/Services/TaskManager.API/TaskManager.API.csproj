@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Commands\ChangeGrade\**" />
+    <Compile Remove="Commands\ChangeHoliday\**" />
+    <Compile Remove="Commands\ChangeManager\**" />
+    <Compile Remove="Commands\ChangeTitle\**" />
+    <Content Remove="Commands\ChangeGrade\**" />
+    <Content Remove="Commands\ChangeHoliday\**" />
+    <Content Remove="Commands\ChangeManager\**" />
+    <Content Remove="Commands\ChangeTitle\**" />
+    <EmbeddedResource Remove="Commands\ChangeGrade\**" />
+    <EmbeddedResource Remove="Commands\ChangeHoliday\**" />
+    <EmbeddedResource Remove="Commands\ChangeManager\**" />
+    <EmbeddedResource Remove="Commands\ChangeTitle\**" />
+    <None Remove="Commands\ChangeGrade\**" />
+    <None Remove="Commands\ChangeHoliday\**" />
+    <None Remove="Commands\ChangeManager\**" />
+    <None Remove="Commands\ChangeTitle\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="MediatR" Version="9.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNet.SignalR.Core" Version="2.4.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="5.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Polly" Version="7.2.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\EventBus.Messages\EventBus.Messages.csproj" />
+    <ProjectReference Include="..\..\Common\PemmexCommonLibs\PemmexCommonLibs.csproj" />
+  </ItemGroup>
+
+</Project>

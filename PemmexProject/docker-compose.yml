@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+  organization.api:
+    image: ${DOCKER_REGISTRY-}organizationapi
+    build:
+      context: .
+      dockerfile: Organization.API/Dockerfile
+  organizationdb:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+  pemmex-rabbit:
+    image: rabbitmq:management
+  ocelotapigateway:
+    image: ${DOCKER_REGISTRY-}ocelotapigateway
+    build:
+      context: .
+      dockerfile: ApiGateWays/OcelotApiGateWay/Dockerfile
+

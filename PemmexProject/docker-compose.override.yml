@@ -1,0 +1,30 @@
+version: '3.4'
+
+services:
+  organizationdb:
+    container_name: organizationdb
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Int123456789"
+    restart: always
+    ports:
+      - "1433:1433"
+  organization.api:
+    container_name: organization.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:OrganizationConnection=Server=organizationdb;Initial Catalog=OrganizationDB;User ID=sa;Password=Int123456789;"
+    depends_on: 
+      - organizationdb
+    ports:
+      - "8001:80"
+
+  ocelotapigateway:
+    container_name: ocelotapigateway
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on: 
+      - organization.api
+    ports:
+      - "8010:80"
+

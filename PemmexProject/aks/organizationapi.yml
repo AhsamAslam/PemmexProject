@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: organizationapi-deployment
+  labels:
+    app: organizationapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: organizationapi
+  template:
+    metadata:
+      labels:
+        app: organizationapi
+    spec:
+      containers:
+        - name: organizationapi
+          image: organizationacr.azurecr.io/organizationapi:v2
+          imagePullPolicy: IfNotPresent          
+          ports:
+            - containerPort: 80
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Development
+            - name: OrganizationConnection
+              value: "Server=pemmexserver.database.windows.net,1433;Initial Catalog=OrganizationDB;Persist Security Info=False;User ID=PemmexUser;Password=Int123456789;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "0.1"
+            limits:
+              memory: "128Mi"
+              cpu: "0.3"
+      imagePullSecrets:
+        - name: acr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: organizationapi-service
+spec:
+  type: LoadBalancer  
+  selector:
+    app: organizationapi
+  ports:
+    - targetPort: 80
+      port: 80
