@@ -25,6 +25,8 @@
 
   <ItemGroup>
     <Folder Include="Migration_Backup\" />
+    <Folder Include="Repositories\Interface\" />
+    <Folder Include="Repositories\Repository\" />
   </ItemGroup>
 
 </Project>

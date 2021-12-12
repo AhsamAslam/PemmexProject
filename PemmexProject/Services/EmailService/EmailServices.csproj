@@ -14,4 +14,9 @@
     <ProjectReference Include="..\..\Common\PemmexCommonLibs\PemmexCommonLibs.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\Interface\" />
+    <Folder Include="Repositories\Repository\" />
+  </ItemGroup>
+
 </Project>
