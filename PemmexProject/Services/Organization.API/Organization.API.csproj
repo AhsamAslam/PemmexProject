@@ -29,8 +29,6 @@
 
   <ItemGroup>
     <Folder Include="Commands\UploadOrganization\" />
-    <Folder Include="Repositories\Interface\" />
-    <Folder Include="Repositories\Repository\" />
   </ItemGroup>
 
   <ItemGroup>
