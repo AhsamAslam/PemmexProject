@@ -588,11 +588,11 @@
         "Period": "5s",
         "PeriodTimespan": 1,
         "Limit": 1
-      },
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
-        "AllowedScopes": []
       }
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "IdentityApiKey",
+      //  "AllowedScopes": []
+      //}
     },
     {
       "DownstreamPathTemplate": "/api/holiday/HolidayCounter",

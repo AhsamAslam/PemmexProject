@@ -1,6 +1,8 @@
 using Authentication.API.Services;
 using Holidays.API.Common;
 using Holidays.API.Database.context;
+using Holidays.API.Repositories.Interface;
+using Holidays.API.Repositories.Repository;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -44,6 +46,9 @@ namespace Holidays.API
 
             services.AddTransient<IDateTime, DateTimeService>();
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<HolidaysContext>());
+            services.AddScoped<IEmployeeHolidays, EmployeeHolidaysRepository>();
+            services.AddScoped<IHolidaySettings, HolidaySettingsRepository>();
+            services.AddScoped<IHolidayCalendar, HolidayCalendarRepository>();
             services.AddControllers();
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddAutoMapper(Assembly.GetExecutingAssembly());

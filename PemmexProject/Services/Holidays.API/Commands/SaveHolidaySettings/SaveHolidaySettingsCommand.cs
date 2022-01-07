@@ -2,6 +2,7 @@
 using Holidays.API.Database.context;
 using Holidays.API.Database.Entities;
 using Holidays.API.Dtos;
+using Holidays.API.Repositories.Interface;
 using MediatR;
 using PemmexCommonLibs.Application.Helpers;
 using PemmexCommonLibs.Domain.Enums;
@@ -21,10 +22,12 @@ namespace Holidays.API.Commands.SaveHolidaySettings
     public class SaveHolidaySettingsCommandHandeler : IRequestHandler<SaveHolidaySettingsCommand, ResponseMessage>
     {
         private readonly IApplicationDbContext _context;
+        private readonly IHolidaySettings _holidaySetting;
         private readonly IMapper _mapper;
-        public SaveHolidaySettingsCommandHandeler(IApplicationDbContext context, IMapper mapper)
+        public SaveHolidaySettingsCommandHandeler(IApplicationDbContext context, IHolidaySettings holidaySetting, IMapper mapper)
         {
             _context = context;
+            _holidaySetting = holidaySetting;
             _mapper = mapper;
         }
         public async Task<ResponseMessage> Handle(SaveHolidaySettingsCommand request, CancellationToken cancellationToken)
@@ -43,11 +46,11 @@ namespace Holidays.API.Commands.SaveHolidaySettings
                 }
                 else
                 {
-                    _context.HolidaySettings.AddRange(con_settings);
+                    await _holidaySetting.AddHolidaySettings(con_settings);
                     return_message = "Settings Saved";
                 }
 
-                await _context.SaveChangesAsync(cancellationToken);
+                //await _context.SaveChangesAsync(cancellationToken);
                 return new ResponseMessage(true, EResponse.OK, return_message, null);
             }
             else

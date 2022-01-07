@@ -14,6 +14,7 @@ using Holidays.API.Queries.GetLeftHolidaysByEmployeeId;
 using Holidays.API.Queries.GetPlannedHolidaysByEmployeeId;
 using Holidays.API.Queries.GetTakenHolidaysByTeamId;
 using Holidays.API.Queries.TeamHolidays;
+using Holidays.API.Repositories.Interface;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,9 +30,14 @@ namespace Holidays.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class Holiday : ApiControllerBase
     {
+        private IEmployeeHolidays _employeeHolidays;
+        public Holiday(IEmployeeHolidays employeeHolidays)
+        {
+            _employeeHolidays = employeeHolidays;
+        }
         [HttpGet]
         [Route("Types")]
         public async Task<ActionResult<ResponseMessage>> HolidayTypes()
@@ -96,6 +102,7 @@ namespace Holidays.API.Controllers
             {
                 var data = await Mediator.Send(command);
                 return new ResponseMessage(true, EResponse.OK, null, data);
+
             }
             catch (Exception e)
             {

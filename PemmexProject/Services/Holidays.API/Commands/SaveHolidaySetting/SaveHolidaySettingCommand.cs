@@ -2,6 +2,7 @@
 using Holidays.API.Database.context;
 using Holidays.API.Database.Entities;
 using Holidays.API.Dtos;
+using Holidays.API.Repositories.Interface;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PemmexCommonLibs.Application.Helpers;
@@ -22,10 +23,12 @@ namespace Holidays.API.Commands.SaveHolidaySetting
     public class SaveHolidaySettingCommandHandeler : IRequestHandler<SaveHolidaySettingCommand, ResponseMessage>
     {
         private readonly IApplicationDbContext _context;
+        private readonly IHolidaySettings _holidaySetting;
         private readonly IMapper _mapper;
-        public SaveHolidaySettingCommandHandeler(IApplicationDbContext context, IMapper mapper)
+        public SaveHolidaySettingCommandHandeler(IApplicationDbContext context, IHolidaySettings holidaySetting, IMapper mapper)
         {
             _context = context;
+            _holidaySetting = holidaySetting;
             _mapper = mapper;
         }
         public async Task<ResponseMessage> Handle(SaveHolidaySettingCommand request, CancellationToken cancellationToken)
@@ -43,11 +46,11 @@ namespace Holidays.API.Commands.SaveHolidaySetting
             }
             else
             {
-                _context.HolidaySettings.AddRange(con_settings);
+                await _holidaySetting.AddHolidaySetting(con_settings);
                 return_message = "Settings Saved";
             }
 
-            await _context.SaveChangesAsync(cancellationToken);
+            //await _context.SaveChangesAsync(cancellationToken);
             return new ResponseMessage(true, EResponse.OK, return_message, null);
 
         }

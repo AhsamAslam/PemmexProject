@@ -2,6 +2,7 @@
 using Holidays.API.Database.context;
 using Holidays.API.Database.Entities;
 using Holidays.API.Enumerations;
+using Holidays.API.Repositories.Interface;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -27,11 +28,11 @@ namespace Holidays.API.Commands.SaveHolidays
 
     public class SaveHolidayCommandHandeler : IRequestHandler<SaveHolidayCommand>
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IEmployeeHolidays _employeeHolidays;
         private readonly IMapper _mapper;
-        public SaveHolidayCommandHandeler(IApplicationDbContext context, IMapper mapper)
+        public SaveHolidayCommandHandeler(IEmployeeHolidays employeeHolidays, IMapper mapper)
         {
-            _context = context;
+            _employeeHolidays = employeeHolidays;
             _mapper = mapper;
         }
         public async Task<Unit> Handle(SaveHolidayCommand request, CancellationToken cancellationToken)
@@ -39,8 +40,7 @@ namespace Holidays.API.Commands.SaveHolidays
             try
             {
                 var holiday = _mapper.Map<EmployeeHolidays>(request);
-                _context.EmployeeHolidays.Add(holiday);
-                await _context.SaveChangesAsync(cancellationToken);
+                await _employeeHolidays.AddEmployeeHolidays(holiday);
                 return Unit.Value;
             }
             catch(Exception)
