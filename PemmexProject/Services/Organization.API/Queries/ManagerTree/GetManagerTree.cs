@@ -15,12 +15,12 @@ namespace Organization.API.Queries.GetOrganization
     {
         public string Id { get; set; }
     }
-    public class GetFullOrganizationQueryHandler : IRequestHandler<GetManagerTree, List<EmployeeResponse>>
+    public class GetManagerTreeQueryHandler : IRequestHandler<GetManagerTree, List<EmployeeResponse>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
 
-        public GetFullOrganizationQueryHandler(IApplicationDbContext context, IMapper mapper)
+        public GetManagerTreeQueryHandler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

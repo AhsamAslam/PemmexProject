@@ -146,7 +146,7 @@ namespace Holidays.API.Controllers
         [AllowAnonymous]
         [HttpGet]
         [Route("UserRemainingHolidays")]
-        public async Task<ActionResult<int>> UserRemainingHolidays(s8tring BusinessIdentifier, Guid EmployeeId,string country)
+        public async Task<ActionResult<int>> UserRemainingHolidays(string BusinessIdentifier, Guid EmployeeId,string country)
         {
             try
             {
