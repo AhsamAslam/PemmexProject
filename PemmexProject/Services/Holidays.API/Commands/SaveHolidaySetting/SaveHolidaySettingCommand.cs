@@ -41,7 +41,7 @@ namespace Holidays.API.Commands.SaveHolidaySetting
             {
                 settings.HolidayCalendarYear = con_settings.HolidayCalendarYear;
                 settings.MaximumLimitHolidayToNextYear = con_settings.MaximumLimitHolidayToNextYear;
-                _context.HolidaySettings.Update(con_settings);
+                await _holidaySetting.UpdateHolidaySetting(con_settings);
                 return_message = "Settings Updated";
             }
             else

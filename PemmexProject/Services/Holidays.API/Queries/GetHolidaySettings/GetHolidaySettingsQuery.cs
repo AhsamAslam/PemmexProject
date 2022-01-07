@@ -2,6 +2,7 @@
 using Holidays.API.Database.context;
 using Holidays.API.Database.Entities;
 using Holidays.API.Dtos;
+using Holidays.API.Repositories.Interface;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,21 +19,19 @@ namespace Holidays.API.Queries.GetHolidaySettings
     }
     public class GetHolidaySettingsQueryHandeler : IRequestHandler<GetHolidaySettingsQuery, List<HolidaySettingsDto>>
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IHolidaySettings _holidaySetting;
         private readonly IMapper _mapper;
 
-        public GetHolidaySettingsQueryHandeler(IApplicationDbContext context, IMapper mapper)
+        public GetHolidaySettingsQueryHandeler(IHolidaySettings holidaySetting, IMapper mapper)
         {
-            _context = context;
+            _holidaySetting = holidaySetting;
             _mapper = mapper;
         }
         public async Task<List<HolidaySettingsDto>> Handle(GetHolidaySettingsQuery request, CancellationToken cancellationToken)
         {
-            var holidaySettings = await _context.HolidaySettings
-                .Where(e => e.OrganizationIdentifier == request.Id)
-                .ToListAsync();
+            var holidaySettings = await _holidaySetting.GetHolidaySettingsById(request.Id);
 
-            return _mapper.Map<List<HolidaySettings>, List<HolidaySettingsDto>>(holidaySettings);
+            return _mapper.Map<List<HolidaySettings>, List<HolidaySettingsDto>>(holidaySettings.ToList());
         }
     }
 }

@@ -1,7 +1,11 @@
-﻿using Holidays.API.Database.Entities;
+﻿using Dapper;
+using Holidays.API.Database.Entities;
 using Holidays.API.Repositories.Interface;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,9 +13,33 @@ namespace Holidays.API.Repositories.Repository
 {
     public class HolidayCalendarRepository : IHolidayCalendar
     {
-        public Task<HolidayCalendar> AddHolidayCalendar(HolidayCalendar HolidayCalendar)
+        #region
+        private IDbConnection db;
+        #endregion
+        public HolidayCalendarRepository(IConfiguration configuration)
         {
-            throw new NotImplementedException();
+            this.db = new SqlConnection(configuration.GetConnectionString("HolidaysConnection"));
+        }
+        public async Task<IEnumerable<HolidayCalendar>> AddHolidayCalendar(List<HolidayCalendar> HolidayCalendar)
+        {
+            try
+            {
+                foreach (var item in HolidayCalendar)
+                {
+                    var Sql = "INSERT INTO HolidayCalendars (Date,CountryCode,LocalName," +
+                        "Name,Global,Fixed,Type) VALUES " +
+                        "(@Date,@CountryCode,@LocalName,@Name,@Global,@Fixed,@Type)" +
+                         "Select CAST(SCOPE_IDENTITY() as int); ";
+                    await db.ExecuteAsync(Sql, item).ConfigureAwait(false);
+                }
+
+                return HolidayCalendar;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public Task<int> DeleteHolidayCalendar(int Id)
@@ -19,9 +47,18 @@ namespace Holidays.API.Repositories.Repository
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<HolidayCalendar>> GetHolidayCalendar()
+        public async Task<IEnumerable<HolidayCalendar>> GetHolidayCalendar(string CountrCode, int year)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var sql = "Select * from HolidayCalendars where CountryCode = @CountryCode and YEAR(Date) = @Year";
+                return await db.QueryAsync<HolidayCalendar>(sql, new { @CountryCode = CountrCode, @Year = year  }).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public Task<IEnumerable<HolidayCalendar>> GetHolidayCalendarById(int Id)

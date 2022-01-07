@@ -63,11 +63,6 @@ namespace Holidays.API.Common
             return englishRegion.TwoLetterISORegionName;
         }
 
-        public async Task<List<HolidayCalendar>> GetHolidayCalendar(string CountryCode,int year)
-        {
-            return  await _context.HolidayCalendars
-                .Where(h => h.CountryCode == CountryCode)
-                .Where(h => h.Date.Year == year).ToListAsync();
-        }
+        
     }
 }

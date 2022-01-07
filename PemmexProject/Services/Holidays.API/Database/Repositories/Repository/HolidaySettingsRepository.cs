@@ -78,14 +78,66 @@ namespace Holidays.API.Repositories.Repository
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<HolidaySettings>> GetHolidaySettingsById(int Id)
+        public async Task<IEnumerable<HolidaySettings>> GetHolidaySettingsById(string Id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var sql = "Select * from HolidaySettings where OrganizationIdentifier = @Id";
+                return await db.QueryAsync<HolidaySettings>(sql, new { @Id = Id }).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
-        public Task<HolidaySettings> UpdateHolidaySettings(HolidaySettings HolidaySettings)
+        public async Task<HolidaySettings> UpdateHolidaySetting(HolidaySettings HolidaySettings)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var Sql = "UPDATE HolidaySettings SET " +
+                    "HolidaySettingsIdentitfier = @HolidaySettingsIdentitfier," +
+                    "OrganizationIdentifier = @OrganizationIdentifier," +
+                    "BusinessIdentifier = @BusinessIdentifier," +
+                    "HolidayCalendarYear = @HolidayCalendarYear," +
+                    "MaximumLimitHolidayToNextYear = @MaximumLimitHolidayToNextYear," +
+                    "LastModified = GetDate(),LastModifiedBy = 'test1' " +
+                    "WHERE HolidaySettingsId = @HolidaySettingsId ";
+                await db.ExecuteAsync(Sql, HolidaySettings).ConfigureAwait(false);
+                return HolidaySettings;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<HolidaySettings>> UpdateHolidaySettings(List<HolidaySettings> HolidaySettings)
+        {
+            try
+            {
+                foreach (var item in HolidaySettings)
+                {
+                    var Sql = "UPDATE HolidaySettings SET " +
+                     "HolidaySettingsIdentitfier = @HolidaySettingsIdentitfier," +
+                     "OrganizationIdentifier = @OrganizationIdentifier," +
+                     "BusinessIdentifier = @BusinessIdentifier," +
+                     "HolidayCalendarYear = @HolidayCalendarYear," +
+                     "MaximumLimitHolidayToNextYear = @MaximumLimitHolidayToNextYear," +
+                     "LastModified = GetDate(),LastModifiedBy = 'test1' " +
+                     "WHERE HolidaySettingsId = @HolidaySettingsId ";
+                    await db.ExecuteAsync(Sql, HolidaySettings).ConfigureAwait(false);
+                }
+
+                return HolidaySettings;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

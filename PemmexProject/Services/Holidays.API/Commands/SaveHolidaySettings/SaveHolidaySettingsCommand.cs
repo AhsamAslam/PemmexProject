@@ -40,8 +40,9 @@ namespace Holidays.API.Commands.SaveHolidaySettings
                 Where(h => h.OrganizationIdentifier == request.settings.FirstOrDefault().OrganizationIdentifier).ToList();
                 if (settings.Count > 0)
                 {
-                    _context.HolidaySettings.RemoveRange(settings);
-                    _context.HolidaySettings.AddRange(con_settings);
+                    //_context.HolidaySettings.RemoveRange(settings);
+                    //_context.HolidaySettings.AddRange(con_settings);
+                    await _holidaySetting.AddHolidaySettings(con_settings);
                     return_message = "Settings Updated";
                 }
                 else

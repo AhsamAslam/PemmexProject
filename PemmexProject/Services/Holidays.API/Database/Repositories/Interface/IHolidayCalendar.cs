@@ -8,9 +8,9 @@ namespace Holidays.API.Repositories.Interface
 {
     public interface IHolidayCalendar
     {
-        Task<IEnumerable<HolidayCalendar>> GetHolidayCalendar();
+        Task<IEnumerable<HolidayCalendar>> GetHolidayCalendar(string CountrCode, int year);
         Task<IEnumerable<HolidayCalendar>> GetHolidayCalendarById(int Id);
-        Task<HolidayCalendar> AddHolidayCalendar(HolidayCalendar HolidayCalendar);
+        Task<IEnumerable<HolidayCalendar>> AddHolidayCalendar(List<HolidayCalendar> HolidayCalendar);
         Task<HolidayCalendar> UpdateHolidayCalendar(HolidayCalendar HolidayCalendar);
         Task<int> DeleteHolidayCalendar(int Id);
     }
