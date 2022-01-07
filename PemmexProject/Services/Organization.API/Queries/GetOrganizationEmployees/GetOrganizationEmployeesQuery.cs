@@ -39,6 +39,8 @@ namespace Organization.API.Queries.GetOrganizationEmployees
                     LastName = x.LastName,
                     ManagerIdentifier = x.ManagerIdentifier,
                     OrganizationIdentifier = x.Businesses.BusinessIdentifier,
+                    JobFunction = x.JobFunction,
+                    Grade = x.Grade,
                     CostCenter = new CostCenter
                     {
                         CostCenterIdentifier = x.CostCenter.CostCenterIdentifier,

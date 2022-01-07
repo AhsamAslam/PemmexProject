@@ -22,7 +22,10 @@ namespace PemmexCommonLibs.Domain.Common.Dtos
         public double PhoneBenefit { get; set; }
         public double EmissionBenefit { get; set; }
         public double HomeInternetBenefit { get; set; }
+        public double one_time_bonus { get; set; }
         public DateTime EffectiveDate { get; set; }
         public TaskType TaskType { get; set; }
+        public string organizationIdentifier { get; set; }
+        public string businessIdentifier { get; set; }
     }
 }

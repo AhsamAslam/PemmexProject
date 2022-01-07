@@ -9,6 +9,7 @@ namespace PemmexAPIAggregator.Services
     public interface IOrganizationService
     {
         Task<IEnumerable<Employee>> GetSuboridnates(string EmployeeIdentifier);
+        Task<IEnumerable<CostCenter>> GetBusinessCostCenters(string businessIdentifier);
         Task<IEnumerable<Employee>> GetTeamMembers(string costcenterIdentifier);
         Task<IEnumerable<Employee>> GetBusinessEmployees(string businessIdentifier);
         Task<IEnumerable<Employee>> GetOrganizationEmployees(string organizationId);

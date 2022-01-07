@@ -1,5 +1,7 @@
 using Compensation.API.Database.context;
 using Compensation.API.Database.Context;
+using Compensation.API.Database.Interfaces;
+using Compensation.API.Database.Repositories;
 using Compensation.API.Services;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -43,6 +45,7 @@ namespace Compensation.API
 
             services.AddTransient<IDateTime, DateTimeService>();
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<CompensationContext>());
+            services.AddScoped<ICompensationSalaryRepository, CompensationSalaryRepository>();
             services.AddControllers();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());

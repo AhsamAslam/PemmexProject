@@ -4,6 +4,7 @@ using PemmexCommonLibs.Application.Helpers;
 using PemmexCommonLibs.Domain.Common.Dtos;
 using PemmexCommonLibs.Domain.Enums;
 using TaskManager.API.Commands.ApplyHoliday;
+using TaskManager.API.Commands.SaveBonusSetting;
 using TaskManager.API.Database.Entities;
 using TaskManager.API.Dtos;
 
@@ -20,6 +21,7 @@ namespace TaskManager.API
              .ForMember(d => d.managerTask, opt => opt.MapFrom(s => s.ChangeManager))
              .ForMember(d => d.titleTask, opt => opt.MapFrom(s => s.ChangeTitle))
              .ForMember(d => d.TeamTask, opt => opt.MapFrom(s => s.ChangeTeam))
+             .ForMember(d => d.BonusTask, opt => opt.MapFrom(s => s.ChangeBonus))
              .ReverseMap();
 
             CreateMap<ChangeHoliday, ApplyHolidayCommand>()
@@ -32,23 +34,17 @@ namespace TaskManager.API
             CreateMap<ManagerTask, ChangeManager>().ReverseMap();
             CreateMap<TitleTask, ChangeTitle>().ReverseMap();
             CreateMap<TeamTask, ChangeTeam>().ReverseMap();
+            CreateMap<Dtos.BonusTask, Database.Entities.BonusTask>().ReverseMap();
 
             CreateMap<ApprovalSettingDto, OrganizationApprovalSettings>()
                 .ForMember(d => d.organizationApprovalSettingDetails , opt => opt.MapFrom(s => s.approvalSettingDetails))
                 .ReverseMap();
 
             CreateMap<ApprovalSettingDetailsDto, OrganizationApprovalSettingDetail>().ReverseMap();
-            CreateMap<NotificationDto, Notifications>().ReverseMap();
+
+            CreateMap<BonusSettings, BonusSettingsDto>();
+            CreateMap<SaveBonusSettingCommand, BonusSettings>();
             
-
-            //CreateMap<TaskDto,TaskEntity>()
-            //    .ForMember(d => d.compensation, opt => opt.MapFrom(s => s.compensationTask))
-            //    .ForMember(d => d.Grade, opt => opt.MapFrom(s => s.GradeTask))
-            //    .ForMember(d => d.holiday, opt => opt.MapFrom(s => s.holidayTask))
-            //    .ForMember(d => d.manager, opt => opt.MapFrom(s => s.managerTask))
-            //    .ForMember(d => d.title, opt => opt.MapFrom(s => s.titleTask))
-            //    .ReverseMap();
-
         }
 
     }

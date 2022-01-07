@@ -73,6 +73,58 @@ namespace TaskManager.API.Migrations
                     b.ToTable("BaseTasks");
                 });
 
+            modelBuilder.Entity("TaskManager.API.Database.Entities.BonusSettings", b =>
+                {
+                    b.Property<int>("BonusSettingsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("businessIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("limit_percentage")
+                        .HasColumnType("float");
+
+                    b.Property<string>("organizationIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("BonusSettingsId");
+
+                    b.ToTable("BonusSettings");
+                });
+
+            modelBuilder.Entity("TaskManager.API.Database.Entities.BonusTask", b =>
+                {
+                    b.Property<int>("BonusTaskId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EmployeeIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("one_time_bonus")
+                        .HasColumnType("float");
+
+                    b.Property<double>("salary")
+                        .HasColumnType("float");
+
+                    b.HasKey("BonusTaskId");
+
+                    b.ToTable("BonusTask");
+                });
+
             modelBuilder.Entity("TaskManager.API.Database.Entities.ChangeCompensation", b =>
                 {
                     b.Property<int>("CompensationTaskId")
@@ -327,6 +379,17 @@ namespace TaskManager.API.Migrations
                     b.ToTable("organizationApprovalSettings");
                 });
 
+            modelBuilder.Entity("TaskManager.API.Database.Entities.BonusTask", b =>
+                {
+                    b.HasOne("TaskManager.API.Database.Entities.BaseTask", "BaseTask")
+                        .WithOne("ChangeBonus")
+                        .HasForeignKey("TaskManager.API.Database.Entities.BonusTask", "BonusTaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BaseTask");
+                });
+
             modelBuilder.Entity("TaskManager.API.Database.Entities.ChangeCompensation", b =>
                 {
                     b.HasOne("TaskManager.API.Database.Entities.BaseTask", "BaseTask")
@@ -404,6 +467,8 @@ namespace TaskManager.API.Migrations
 
             modelBuilder.Entity("TaskManager.API.Database.Entities.BaseTask", b =>
                 {
+                    b.Navigation("ChangeBonus");
+
                     b.Navigation("ChangeCompensation");
 
                     b.Navigation("ChangeGrade");

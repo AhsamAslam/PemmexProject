@@ -96,7 +96,7 @@ namespace Organization.API.Dtos
         public LanguageSkills? ThirdLanguageSkills { get; set; }
         public string CountryCellNumber { get; set; }
         public string Role { get; set; }
-        public string JobFunction { get; set; }
+        public JobFunction? JobFunction { get; set; }
         public int Shift { get; set; }
         public string ContractualOrganization { get; set; }
         public string OrganizationIdentifier { get; set; }

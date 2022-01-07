@@ -24,10 +24,9 @@ namespace Compensation.API.Database.Context
         }
 
         public DbSet<Entities.Compensation> Compensation { get; set; }
-        public DbSet<CompensationBonuses> CompensationBonuses { get; set; }
         public DbSet<CompensationSalaries> CompensationSalaries { get; set; }
         public DbSet<JobCatalogue> JobCatalogues { get; set; }
-
+        public DbSet<Entities.OrganizationBudget> OrganizationBudgets { get; set; }
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             try

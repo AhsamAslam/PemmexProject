@@ -32,9 +32,4 @@
     <ProjectReference Include="..\EmailService\EmailServices.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\Interface\" />
-    <Folder Include="Repositories\Repository\" />
-  </ItemGroup>
-
 </Project>

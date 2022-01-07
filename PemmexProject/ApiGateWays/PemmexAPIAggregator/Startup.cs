@@ -32,6 +32,9 @@ namespace PemmexAPIAggregator
             services.AddHttpClient<IOrganizationService, OrganizationService>(c =>
                 c.BaseAddress = new Uri(Configuration["ApiSettings:OrganizationUrl"])
             );
+            services.AddHttpClient<IAnnualSalaryPlanning, AnnualSalaryPlanning>(c =>
+               c.BaseAddress = new Uri(Configuration["ApiSettings:CompensationsUrl"])
+           );
             services.AddControllers();
             services.AddAuthentication("Bearer")
                .AddJwtBearer("Bearer", option =>

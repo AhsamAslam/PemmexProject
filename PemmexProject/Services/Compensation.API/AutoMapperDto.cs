@@ -1,5 +1,9 @@
 ﻿using System;
 using AutoMapper;
+using Compensation.API.Commands.CreateBudgetCommand;
+using Compensation.API.Commands.SaveSalary;
+using Compensation.API.Commands.SaveSalaryBonus;
+using Compensation.API.Commands.UpdateCompensationAndBonus;
 using Compensation.API.Database.Entities;
 using Compensation.API.Dtos;
 using PemmexCommonLibs.Application.Helpers;
@@ -15,7 +19,12 @@ namespace Compensation.API
             CreateMap<JobCatalogue, JobCatalogueDto>().ReverseMap();
             CreateMap<Database.Entities.Compensation, CompensationDto>().ReverseMap();
             CreateMap<CompensationSalaries, CompensationSalariesDto>().ReverseMap();
-            CreateMap<CompensationBonuses, CompensationBonusesDto>().ReverseMap();
+            CreateMap<SaveSalaryCommand,CompensationSalaries>();
+            CreateMap<SaveSalaryBonusCommand, CompensationSalaries>();
+            CreateMap<UpdateCompensationAndBonusCommand,Database.Entities.Compensation>();
+            CreateMap<UpdateCompensationAndBonusCommand,CompensationSalaries>();
+            CreateMap<CreateBudgetCommand, OrganizationBudget>();
+
 
         }
 

@@ -117,8 +117,8 @@ namespace Authentication.API.Migrations
                     b.Property<bool>("IsTwoStepAuthEnabled")
                         .HasColumnType("bit");
 
-                    b.Property<string>("JobFunction")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("JobFunction")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");

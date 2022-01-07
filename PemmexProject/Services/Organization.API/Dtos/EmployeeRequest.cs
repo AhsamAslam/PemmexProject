@@ -39,7 +39,7 @@ namespace Organization.API.Dtos
         public int Shift { get; set; }
         public string OrganizationIdentifier { get; set; }
         public string BusinessIdentifier { get; set; }
-        public string JobFunction { get; set; }
+        public JobFunction JobFunction { get; set; }
         //public CompensationRequest Compensation { get; set; }
         //public CostCenterRequest CostCenter { get; set; }
         public EmployeeHolidaysRequest EmployeeHolidays { get; set; }

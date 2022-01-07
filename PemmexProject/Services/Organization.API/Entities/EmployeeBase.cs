@@ -37,7 +37,7 @@ namespace Organization.API.Entities
         public string SecondLanguageSkills { get; set; }
         public string ThirdLanguage { get; set; }
         public string ThirdLanguageSkills { get; set; }
-        public string JobFunction { get; set; }
+        public JobFunction JobFunction { get; set; }
 
         public int Shift { get; set; }
         public bool IsActive { get; set; }

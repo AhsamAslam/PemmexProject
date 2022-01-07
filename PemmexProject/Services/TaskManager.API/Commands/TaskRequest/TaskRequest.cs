@@ -13,7 +13,6 @@ using TaskManager.API.Database.context;
 using TaskManager.API.Database.Entities;
 using TaskManager.API.Dtos;
 using TaskManager.API.Enumerations;
-using TaskManager.API.NotificationHub;
 
 namespace TaskManager.API.Commands.TaskRequest
 {
@@ -27,12 +26,15 @@ namespace TaskManager.API.Commands.TaskRequest
         public Guid UserId { get; set; }
         [JsonIgnore]
         public string organizationIdentifier { get; set; }
+        [JsonIgnore]
+        public string businessIdentifier { get; set; }
         public TaskType taskType { get; set; }
         public string taskDescription { get; set; }
         public bool isActive { get; set; }
         public TaskReasons reasons { get; set; }
         public DateTime EffectiveDate { get; set; }
         public CompensationTask compensationTask { get; set; }
+        public Dtos.BonusTask bonusTask { get; set; }
         public TitleTask titleTask { get; set; }
         public ManagerTask managerTask { get; set; }
         public GradeTask GradeTask { get; set; }
@@ -44,21 +46,14 @@ namespace TaskManager.API.Commands.TaskRequest
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly IDateTime _dateTime;
-        private readonly IHubContext<NotificationUserHub> _notificationUserHubContext;
-        private readonly IUserConnectionManager _userConnectionManager;
-        private readonly INotificationRepository _notificationRepository;
         public TaskRequestCommandHandeler(IApplicationDbContext context,
-            IMapper mapper, IHubContext<NotificationUserHub> notificationUserHubContext,
-            IUserConnectionManager userConnectionManager,
-            INotificationRepository notificationRepository,
+            IMapper mapper,
             IDateTime dateTime)
         {
             _context = context;
             _mapper = mapper;
             _dateTime = dateTime;
-            _notificationUserHubContext = notificationUserHubContext;
-            _userConnectionManager = userConnectionManager;
-            _notificationRepository = notificationRepository;
+           
         }
 
         public async Task<Unit> Handle(TaskRequest request, CancellationToken cancellationToken)
@@ -95,7 +90,6 @@ namespace TaskManager.API.Commands.TaskRequest
 
             _context.BaseTasks.Add(managerTask);
             await _context.SaveChangesAsync(cancellationToken);
-            await SendNotification(managerTask, cancellationToken);
             return Unit.Value;
         }
         private async Task<OrganizationApprovalSettingDetail> GetApprovalSettingStructure(string organizationIdentifer, TaskType taskType)
@@ -106,27 +100,6 @@ namespace TaskManager.API.Commands.TaskRequest
                    && s.taskType == taskType);
 
             return setting.organizationApprovalSettingDetails?.FirstOrDefault();
-        }
-        private async Task SendNotification(BaseTask task,CancellationToken cancellationToken)
-        {
-            Notifications n = new Notifications()
-            {
-                isRead = false,
-                tasks = task.taskType,
-                description = "There is a Request to approve Please see the details",
-                title = "Workflow Created",
-                EmployeeId = task.RequestedByIdentifier
-            };
-            await _notificationRepository.AddNotifications(n);
-            await _context.SaveChangesAsync(cancellationToken);
-            var connections = _userConnectionManager.GetUserConnections(n.EmployeeId.ToString());
-            if (connections != null && connections.Count > 0)
-            {
-                foreach (var connectionId in connections)
-                {
-                    await _notificationUserHubContext.Clients.Client(connectionId).SendAsync("ReceiveMessage", "Workflow Created", "There is a Request to approve Please see the details", await _notificationRepository.CountUnReadNotifications(n.EmployeeId));
-                }
-            }
         }
         private BaseTask PopulateManagerTask(BaseTask dto)
         {
@@ -180,6 +153,17 @@ namespace TaskManager.API.Commands.TaskRequest
             else if (dto.taskType == TaskType.Team && dto.TeamTask != null)
             {
                 task.ChangeTeam = _mapper.Map<TeamTask, ChangeTeam>(dto.TeamTask);
+            }
+            else if (dto.taskType == TaskType.Bonus && dto.bonusTask != null)
+            {
+                var b = _context.BonusSettings.FirstOrDefault(b => b.businessIdentifier == dto.businessIdentifier);
+                var bonus_amount = (dto.bonusTask.one_time_bonus / dto.bonusTask.salary) * 100;
+                if (bonus_amount > 0
+                    && b.limit_percentage < bonus_amount)
+                {
+                    throw new Exception("One time bonus amount cannot be more than limit");
+                }
+                task.ChangeBonus = _mapper.Map<Dtos.BonusTask, Database.Entities.BonusTask>(dto.bonusTask);
             }
             return task;
         }

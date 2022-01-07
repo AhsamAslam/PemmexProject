@@ -1,4 +1,5 @@
 ﻿using Compensation.API.Commands.SaveCompensation;
+using Compensation.API.Commands.UpdateCompensationAndBonus;
 using Compensation.API.Dtos;
 using MediatR;
 using Microsoft.Azure.ServiceBus;
@@ -30,10 +31,15 @@ namespace Compensation.API.Services
             {
                 string response = Encoding.UTF8.GetString(message.Body);
                 var a = message.UserProperties.FirstOrDefault();
-                if (a.Value != null && (a.Value.ToString() == nameof(CompensationEntity) || a.Value.ToString() == nameof(OrganizationUpdateEntity)))
+                if (a.Value != null && (a.Value.ToString() == nameof(CompensationEntity)))
                 {
                     var compensation = JsonConvert.DeserializeObject<CompensationDto>(response);
                     var data = await _mediator.Send(new SaveCompensationCommand { compensationDto = compensation });
+                }
+                else if(a.Value.ToString() == nameof(OrganizationUpdateEntity))
+                {
+                    var compensation = JsonConvert.DeserializeObject<UpdateCompensationAndBonusCommand>(response);
+                    var data = await _mediator.Send(compensation);
                 }
                 _ = _subscriptionClient.CompleteAsync(message.SystemProperties.LockToken);
 

@@ -15,16 +15,13 @@ namespace Authentication.API.Dtos
         public string Email { get; set; }
         public string EmployeeIdentifier { get; set; }
         public string ManagerIdentifier { get; set; }
+        public string ManagerName { get; set; }
         public string CostCenterIdentifier { get; set; }
         public string BusinessIdentifier { get; set; }
         public string OrganizationIdentifier { get; set; }
         public string UserName { get; set; }
-        public string Password { get; set; }
         public int Role { get; set; }
-        public bool IsPasswordReset { get; set; }
         public bool IsTwoStepAuthEnabled { get; set; }
-        public string PasswordResetCode { get; set; }
-        public DateTime PasswordResetCodeTime { get; set; }
         public bool isActive { get; set; }
         public string JobFunction { get; set; }
         public string Grade { get; set; }

@@ -36,6 +36,7 @@ namespace TaskManager.API.Controllers
                 task.organizationIdentifier = CurrentUser.OrganizationIdentifier;
                 task.RequestedByIdentifier = CurrentUser.EmployeeIdentifier;
                 task.ManagerIdentifier = CurrentUser.ManagerIdentifier;
+                task.businessIdentifier = CurrentUser.BusinessIdentifier;
                 var data = await Mediator.Send(task);
                 return await Task.FromResult(new ResponseMessage(true, EResponse.OK, null, data));
             }
@@ -55,6 +56,7 @@ namespace TaskManager.API.Controllers
                 task.managerIdentifier = CurrentUser.ManagerIdentifier;
                 task.requestIdentifier = CurrentUser.EmployeeIdentifier;
                 task.costcenterIdentifier = CurrentUser.CostCenterIdentifier;
+                task.businessIdentifier = CurrentUser.BusinessIdentifier;
                 var token = Request.Headers[HeaderNames.Authorization].ToString2().Split(new string[] { "Bearer" }, StringSplitOptions.None);
                 if (token.Length > 1)
                 {

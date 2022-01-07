@@ -30,7 +30,7 @@ namespace Organization.API.Queries.GetAllOrganizationEmployees
         public async Task<List<BusinessVM>> Handle(GetAllBusinessesQuery request, CancellationToken cancellationToken)
         {
             var businesses = await _context.Businesses
-                .Where(e => e.BusinessIdentifier == request.Id && e.IsActive == true)
+                .Where(e => e.ParentBusinessId == request.Id && e.IsActive == true)
                 .ToListAsync(cancellationToken);
 
             return _mapper.Map<List<Business>, List<BusinessVM>>(businesses);

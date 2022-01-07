@@ -22,7 +22,6 @@ using TaskManager.API.Database.context;
 using TaskManager.API.Database.Entities;
 using TaskManager.API.Dtos;
 using TaskManager.API.Enumerations;
-using TaskManager.API.NotificationHub;
 
 namespace TaskManager.API.Commands.UpdateTask
 {
@@ -42,6 +41,8 @@ namespace TaskManager.API.Commands.UpdateTask
         public string token { get; set; }
         [System.Text.Json.Serialization.JsonIgnore]
         public string costcenterIdentifier { get; set; }
+        [System.Text.Json.Serialization.JsonIgnore]
+        public string businessIdentifier { get; set; }
         public TaskReasons reasons { get; set; }
         public DateTime EffectiveDate { get; set; }
         public string taskDescription { get; set; }
@@ -51,6 +52,7 @@ namespace TaskManager.API.Commands.UpdateTask
         public ManagerTask managerTask { get; set; }
         public GradeTask GradeTask { get; set; }
         public TeamTask TeamTask { get; set; }
+        public Dtos.BonusTask bonusTask { get; set; }
     }
 
     public class UpdateTaskCommandHandeler : IRequestHandler<UpdateTask>
@@ -60,24 +62,16 @@ namespace TaskManager.API.Commands.UpdateTask
         private readonly IDateTime _dateTime;
         private readonly IConfiguration _configuration;
         private readonly ITopicPublisher _messagePublisher;
-        private readonly IUserConnectionManager _userConnectionManager;
-        private readonly INotificationRepository _notificationRepository;
-        private readonly IHubContext<NotificationUserHub> _notificationUserHubContext;
+       
         public UpdateTaskCommandHandeler(IApplicationDbContext context, IMapper mapper,
             IDateTime dateTime, IConfiguration configuration, 
-            ITopicPublisher messagePublisher,
-             IUserConnectionManager userConnectionManager,
-            INotificationRepository notificationRepository,
-            IHubContext<NotificationUserHub> notificationUserHubContext)
+            ITopicPublisher messagePublisher)
         {
             _context = context;
             _mapper = mapper;
             _dateTime = dateTime;
             _configuration = configuration;
             _messagePublisher = messagePublisher;
-            _notificationRepository = notificationRepository;
-            _userConnectionManager = userConnectionManager;
-            _notificationUserHubContext = notificationUserHubContext;
 
         }
 
@@ -123,17 +117,9 @@ namespace TaskManager.API.Commands.UpdateTask
                         }
                         else
                         {
-                            await PublishOrganizationData(t);
+                            await PublishOrganizationData(t,request);
                         }
-                        Notifications n = new Notifications()
-                        {
-                            isRead = false,
-                            tasks = t.taskType,
-                            description = "The workflows are all completed and updated",
-                            title = "Workflow Updated",
-                            EmployeeId = request.requestIdentifier.ToString()
-                        };
-                        await SendNotification(cancellationToken, n);
+                        
 
                     }
                     else
@@ -148,16 +134,7 @@ namespace TaskManager.API.Commands.UpdateTask
                         _context.BaseTasks.Add(managerTask);
                         _context.BaseTasks.Update(t);
                         await _context.SaveChangesAsync(cancellationToken);
-                        Notifications n = new Notifications()
-                        {
-                            isRead = false,
-                            tasks = t.taskType,
-                            description = "There is a Request to approve Please see the details",
-                            title = "Workflow Updated",
-                            EmployeeId = t.RequestedByIdentifier
-                        };
-                        await SendNotification(cancellationToken, n);
-
+                        
                     }
                 }
                 else
@@ -170,37 +147,12 @@ namespace TaskManager.API.Commands.UpdateTask
                     t.currentTaskStatus = TaskStatuses.Declined);
                     _context.BaseTasks.UpdateRange(tasks);
                     await _context.SaveChangesAsync(cancellationToken);
-
-                    Notifications n = new Notifications()
-                    {
-                        isRead = false,
-                        tasks = t.taskType,
-                        description = "There is a Request to approve Please see the details",
-                        title = "Workflow Updated",
-                        EmployeeId = t.RequestedByIdentifier
-                    };
-                    await SendNotification(cancellationToken, n);
-
                 }
                 return Unit.Value;
             }
             catch(Exception)
             {
                 throw;
-            }
-        }
-        private async Task SendNotification(CancellationToken cancellationToken, Notifications notification)
-        {
-            
-            await _notificationRepository.AddNotifications(notification);
-            await _context.SaveChangesAsync(cancellationToken);
-            var connections = _userConnectionManager.GetUserConnections(notification.EmployeeId.ToString());
-            if (connections != null && connections.Count > 0)
-            {
-                foreach (var connectionId in connections)
-                {
-                    await _notificationUserHubContext.Clients.Client(connectionId).SendAsync("ReceiveMessage", notification.title, notification.description, await _notificationRepository.CountUnReadNotifications(notification.EmployeeId));
-                }
             }
         }
         private BaseTask PopulateManagerTask(BaseTask dto)
@@ -264,7 +216,7 @@ namespace TaskManager.API.Commands.UpdateTask
             }
             
         }
-        private async Task PublishOrganizationData(BaseTask task)
+        private async Task PublishOrganizationData(BaseTask task,UpdateTask request)
         {
             dynamic json = new ExpandoObject();
             OrganizationUpdateEntity entity = new OrganizationUpdateEntity();
@@ -274,6 +226,7 @@ namespace TaskManager.API.Commands.UpdateTask
                     .Include(h => h.ChangeManager)
                     .Include(h => h.ChangeTitle)
                     .Include(h => h.ChangeTeam)
+                    .Include(h => h.ChangeBonus)
                     .Where(b => b.TaskIdentifier == task.TaskIdentifier).FirstOrDefaultAsync();
             if (taskData != null)
             {
@@ -288,6 +241,9 @@ namespace TaskManager.API.Commands.UpdateTask
                     entity.PhoneBenefit = taskData.ChangeCompensation.PhoneBenefit;
                     entity.EmissionBenefit = taskData.ChangeCompensation.EmissionBenefit;
                     entity.HomeInternetBenefit = taskData.ChangeCompensation.HomeInternetBenefit;
+                    entity.EffectiveDate = taskData.EffectiveDate;
+                    entity.businessIdentifier = request.businessIdentifier;
+                    entity.organizationIdentifier = request.organizationIdentifier;
                 }
                 else if (task.taskType == TaskType.Organization)
                 {
@@ -313,6 +269,15 @@ namespace TaskManager.API.Commands.UpdateTask
                 {
                     entity.ManagerIdentifier = task.ChangeTeam.managerIdentifier;
                     entity.CostCenterIdentifier = taskData.ChangeTeam.newCostCenterIdentifier;
+                }
+                else if (task.taskType == TaskType.Bonus && task.ChangeBonus != null)
+                {
+                    entity.EmployeeIdentifier = task.ChangeBonus.EmployeeIdentifier;
+                    entity.one_time_bonus = taskData.ChangeBonus.one_time_bonus;
+                    entity.EffectiveDate = taskData.EffectiveDate;
+                    entity.businessIdentifier = request.businessIdentifier;
+                    entity.organizationIdentifier = request.organizationIdentifier;
+
                 }
                 entity.TaskType = taskData.taskType;
             }
@@ -348,46 +313,49 @@ namespace TaskManager.API.Commands.UpdateTask
         {
             if (task.taskType == TaskType.Holiday && request.holidayTask != null)
             {
-                //request.holidayTask.EmployeeIdentifier = request.requestIdentifier;
                 task.ChangeHoliday = _mapper.Map<HolidayTask, ChangeHoliday>(request.holidayTask);
             }
             else if (task.taskType == TaskType.Compensation && request.compensationTask != null)
             {
-                //request.compensationTask.EmployeeIdentifier = request.requestIdentifier;
                 task.ChangeCompensation = _mapper.Map<CompensationTask, ChangeCompensation>(request.compensationTask);
             }
             else if (task.taskType == TaskType.Organization)
             {
                 if(request.GradeTask != null)
                 {
-                    //request.GradeTask.EmployeeIdentifier = request.requestIdentifier;
                     task.ChangeGrade = _mapper.Map<GradeTask, ChangeGrade>(request.GradeTask);
                 }
                 if(request.managerTask != null)
                 {
-                    //request.managerTask.EmployeeIdentifier = request.requestIdentifier;
                     task.ChangeManager = _mapper.Map<ManagerTask, ChangeManager>(request.managerTask);
                 }
                 if (request.compensationTask != null)
                 {
-                    //request.compensationTask.EmployeeIdentifier = request.requestIdentifier;
                     task.ChangeCompensation = _mapper.Map<CompensationTask, ChangeCompensation>(request.compensationTask);
                 }
                 if (request.titleTask != null)
                 {
-                    //request.titleTask.EmployeeIdentifier = request.requestIdentifier;
                     task.ChangeTitle = _mapper.Map<TitleTask, ChangeTitle>(request.titleTask);
                 }
             }
             else if (task.taskType == TaskType.Title && request.titleTask != null)
             {
-                //request.titleTask.EmployeeIdentifier = request.requestIdentifier;
                 task.ChangeTitle = _mapper.Map<TitleTask, ChangeTitle>(request.titleTask);
             }
             else if (task.taskType == TaskType.Team && request.TeamTask != null)
             {
-                //request.titleTask.EmployeeIdentifier = request.requestIdentifier;
                 task.ChangeTeam = _mapper.Map<TeamTask, ChangeTeam>(request.TeamTask);
+            }
+            else if (task.taskType == TaskType.Bonus && request.bonusTask != null)
+            {
+                var b = _context.BonusSettings.FirstOrDefault(b => b.businessIdentifier == request.businessIdentifier);
+                var bonus_amount = (request.bonusTask.one_time_bonus / request.bonusTask.salary) * 100;
+                if (bonus_amount > 0
+                    && b.limit_percentage < bonus_amount)
+                {
+                    throw new Exception("One time bonus amount cannot be more than limit");
+                }
+                task.ChangeBonus = _mapper.Map<Dtos.BonusTask, Database.Entities.BonusTask>(request.bonusTask);
             }
             else
             {

@@ -43,6 +43,7 @@ namespace TaskManager.API.Queries.GetHistoryTasksByManagerId
                 .Include(c => c.ChangeCompensation)
                 .Include(g => g.ChangeGrade)
                 .Include(g => g.ChangeTeam)
+                .Include(g => g.ChangeBonus)
                 .Where(t => Identifiers.Contains(t.TaskIdentifier) && (t.currentTaskStatus == TaskStatuses.Declined || t.currentTaskStatus == TaskStatuses.Cancelled)).ToListAsync();
             return _mapper.Map<List<BaseTask>, List<TaskDto>>(tasks);
         }

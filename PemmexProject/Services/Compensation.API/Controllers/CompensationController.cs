@@ -1,6 +1,7 @@
 ﻿using Compensation.API.Commands.SaveCompensation;
 using Compensation.API.Dtos;
 using Compensation.API.Queries.GetCompensation;
+using Compensation.API.Queries.GetOrganizationTotalSalaryCount;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,18 +32,19 @@ namespace Compensation.API.Controllers
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
-        [HttpPost]
-        public async Task<ActionResult<ResponseMessage>> Post(CompensationDto compensation)
-        {
-            try
-            {
-                var data = await Mediator.Send(new SaveCompensationCommand { compensationDto = compensation });
-                return new ResponseMessage(true, EResponse.OK, null, data);
-            }
-            catch (Exception e)
-            {
-                return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
-            }
-        }
+
+        //[HttpPost]
+        //public async Task<ActionResult<ResponseMessage>> Post(CompensationDto compensation)
+        //{
+        //    try
+        //    {
+        //        var data = await Mediator.Send(new SaveCompensationCommand { compensationDto = compensation });
+        //        return new ResponseMessage(true, EResponse.OK, null, data);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
+        //    }
+        //}
     }
 }

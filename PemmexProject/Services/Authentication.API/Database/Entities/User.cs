@@ -1,4 +1,5 @@
 ﻿using PemmexCommonLibs.Domain.Common;
+using PemmexCommonLibs.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -30,7 +31,7 @@ namespace Authentication.API.Database.Entities
         public string PasswordResetCode { get; set; }
         public DateTime PasswordResetCodeTime { get; set; }
         public bool isActive { get; set; }
-        public string JobFunction { get; set; }
+        public JobFunction JobFunction { get; set; }
         public string Grade { get; set; }
         public string OrganizationCountry { get; set; }
     }

@@ -19,5 +19,6 @@ namespace PemmexAPIAggregator.Models
         public string CostCenterIdentifier { get; set; }
         public string CostCenterName { get; set; }
         public string OrganizationCountry { get; set; }
+        public string JobFunction { get; set; }
     }
 }

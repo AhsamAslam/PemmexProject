@@ -11,12 +11,12 @@ using PemmexCommonLibs.Application.Exceptions;
 
 namespace Organization.API.Commands.DeleteEmployee
 {
-    public class DeleteEmployeeCommand : IRequest
+    public class DeleteEmployeeCommand : IRequest<int>
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
     }
 
-    public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand>
+    public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand,int>
     {
         private readonly IApplicationDbContext _context;
 
@@ -25,12 +25,11 @@ namespace Organization.API.Commands.DeleteEmployee
             _context = context;
         }
 
-        public async Task<Unit> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                var guid = Guid.Parse(request.Id);
-                var entity = await _context.Employees.Where(x=>x.Emp_Guid == guid).FirstOrDefaultAsync(cancellationToken);
+                var entity = await _context.Employees.Where(x=>x.Emp_Guid == request.Id).FirstOrDefaultAsync(cancellationToken);
 
                 if (entity == null)
                 {
@@ -39,13 +38,12 @@ namespace Organization.API.Commands.DeleteEmployee
 
                 entity.IsActive = false;
 
-                await _context.SaveChangesAsync(cancellationToken);
+                return await _context.SaveChangesAsync(cancellationToken);
             }
             catch (Exception)
             {
                 throw;
             }
-            return Unit.Value;
         }
     }
 }

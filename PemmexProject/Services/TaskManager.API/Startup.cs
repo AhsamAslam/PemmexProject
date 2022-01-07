@@ -23,7 +23,6 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using TaskManager.API.Database.context;
-using TaskManager.API.NotificationHub;
 
 namespace TaskManager.API
 {
@@ -53,8 +52,6 @@ namespace TaskManager.API
             services.AddSingleton<ITopicClient>(x => new TopicClient(Configuration.GetValue<string>("ServiceBus:PemmexConnectionString"),
               Configuration.GetValue<string>("ServiceBus:TopicName")));
             services.AddSingleton<ITopicPublisher, TopicPublisher>();
-            services.AddScoped<INotificationRepository, NotificationRepository>();
-            services.AddSingleton<IUserConnectionManager, UserConnectionManager>();
 
             services.AddAuthentication("Bearer")
                .AddJwtBearer("Bearer", option =>
@@ -125,7 +122,6 @@ namespace TaskManager.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<NotificationUserHub>("/NotificationUserHub");
             });
         }
     }

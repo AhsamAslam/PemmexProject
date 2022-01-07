@@ -7,7 +7,7 @@ namespace Compensation.API.Dtos
 {
     public class CompensationSalariesDto
     {
-        public int CompensationId { get; set; }
+        public int CompensationSalaryId { get; set; }
         public string EmployeeIdentifier { get; set; }
         public double BaseSalary { get; set; }
         public double AdditionalAgreedPart { get; set; }
@@ -17,6 +17,10 @@ namespace Compensation.API.Dtos
         public double EmissionBenefit { get; set; }
         public double HomeInternetBenefit { get; set; }
         public double TotalMonthlyPay { get; set; }
+        public double one_time_bonus { get; set; }
+        public double annual_bonus { get; set; }
         public DateTime IssuedDate { get; set; }
+        public string organizationIdentifier { get; set; }
+        public string businessIdentifier { get; set; }
     }
 }

@@ -34,6 +34,8 @@ namespace Organization.API
 
             CreateMap<EmployeeUploadRequest,UserEntity>()
                 .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Emp_Guid))
+                .ForMember(d => d.JobFunction, opt => opt.MapFrom((s, d) => (s.JobFunction == null)
+                ? JobFunction.General : s.JobFunction))
                 .ForMember(x => x.Role,
                 opt => opt.MapFrom((s, d) => (!string.IsNullOrEmpty(s.Role.ToLower()))
                 ? Convert.ToInt32(s.Role.GetEnumValueFromDescription(Roles.user)) : 0));
@@ -51,6 +53,8 @@ namespace Organization.API
                     opt => opt.MapFrom(s => Enum.GetName(typeof(LanguageSkills), s.FirstLanguageSkills)))
                 .ForMember(d => d.SecondLanguageSkills,
                     opt => opt.MapFrom(s => Enum.GetName(typeof(LanguageSkills), s.SecondLanguageSkills)))
+                .ForMember(d => d.JobFunction,
+                    opt => opt.MapFrom(s => Enum.GetName(typeof(JobFunction), s.JobFunction)))
                 .ForMember(d => d.ThirdLanguageSkills,
                     opt => opt.MapFrom(s => Enum.GetName(typeof(LanguageSkills), s.ThirdLanguageSkills)));
             
@@ -60,6 +64,8 @@ namespace Organization.API
             CreateMap<Employee, EmployeeResponse>()
                .ForMember(d => d.CostCenter, opt => opt.MapFrom(s => s.CostCenter))
                .ForMember(d => d.Contacts, opt => opt.MapFrom(s => s.employeeContacts))
+               .ForMember(d => d.JobFunction,
+                    opt => opt.MapFrom(s => Enum.GetName(typeof(JobFunction), s.JobFunction)))
                .ForMember(d => d.BusinessIdentifier, opt => opt.MapFrom(s => s.Businesses.BusinessIdentifier));
 
 

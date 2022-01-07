@@ -16,21 +16,27 @@ namespace PemmexAPIAggregator.Services
             _client = client;
         }
 
+        public async Task<IEnumerable<CostCenter>> GetBusinessCostCenters(string businessIdentifier)
+        {
+            var response = await _client.GetAsync($"/api/CostCenters?businessIdentifier={businessIdentifier}");
+            return await response.ReadContentAs<List<CostCenter>>();
+        }
+
         public async Task<IEnumerable<Employee>> GetBusinessEmployees(string businessIdentifier)
         {
-            var response = await _client.GetAsync($"/api/Organization/AllBusinessEmployees/{businessIdentifier}");
+            var response = await _client.GetAsync($"/api/Organization/BusinessEmployees?businessIdentifier={businessIdentifier}");
             return await response.ReadContentAs<List<Employee>>();
         }
 
         public async Task<IEnumerable<Business>> GetBusinesses(string organizationId)
         {
-            var response = await _client.GetAsync($"/api/Organization/Businesses/{organizationId}");
+            var response = await _client.GetAsync($"/api/Organization/Businesses?organizationIdentifier={organizationId}");
             return await response.ReadContentAs<List<Business>>();
         }
 
         public async Task<IEnumerable<Employee>> GetOrganizationEmployees(string organizationId)
         {
-            var response = await _client.GetAsync($"/api/Organization/AllOrganizationEmployees/{organizationId}");
+            var response = await _client.GetAsync($"/api/Organization/OrganizationEmployees?organizationIdentifier={organizationId}");
             return await response.ReadContentAs<List<Employee>>();
         }
 

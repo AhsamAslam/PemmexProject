@@ -19,5 +19,7 @@ namespace PemmexCommonLibs.Domain.Common.Dtos
         public double HomeInternetBenefit { get; set; }
         public double TotalMonthlyPay { get; set; }
         public DateTime EffectiveDate { get; set; }
+        public string organizationIdentifier { get; set; }
+        public string businessIdentifier { get; set; }
     }
 }

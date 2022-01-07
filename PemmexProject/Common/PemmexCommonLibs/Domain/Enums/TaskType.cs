@@ -12,6 +12,7 @@ namespace PemmexCommonLibs.Domain.Enums
         Holiday,
         Title,
         Organization,
-        Team
+        Team,
+        Bonus
     }
 }

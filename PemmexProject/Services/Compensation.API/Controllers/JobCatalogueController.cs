@@ -1,6 +1,5 @@
 ﻿using Compensation.API.Commands.UploadJobCatalogue;
 using Compensation.API.Dtos;
-using Compensation.API.Enumerations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -97,7 +96,7 @@ namespace Compensation.API.Controllers
 
         [HttpGet]
         public async Task<ActionResult<ResponseMessage>> Get(string businessIdentifier,
-            JobFunctions jobFunction, string grade)
+            JobFunction jobFunction, string grade)
         {
             try
             {

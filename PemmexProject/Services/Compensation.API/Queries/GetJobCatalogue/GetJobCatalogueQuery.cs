@@ -2,9 +2,9 @@
 using Compensation.API.Database.context;
 using Compensation.API.Database.Entities;
 using Compensation.API.Dtos;
-using Compensation.API.Enumerations;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using PemmexCommonLibs.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ namespace Organization.API.Queries.GetJobCatalogue
     public class GetJobCatalogueQuery : IRequest<JobCatalogueDto>
     {
         public string organizationIdentifier { get; set; }
-        public JobFunctions jobFunction { get; set; }
+        public JobFunction jobFunction { get; set; }
         public string grade { get; set; }
     }
 

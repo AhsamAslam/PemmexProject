@@ -28,14 +28,27 @@ namespace Organization.API.Queries.GetEmployee
         }
         public async Task<EmployeeResponse> Handle(GetEmployeeQuery request, CancellationToken cancellationToken)
         {
-            var guid = Guid.Parse(request.Id);
-            var employee = await _context.Employees
-                .Where(e => e.Emp_Guid == guid && e.IsActive == true)
+            Guid guidOutput;
+            bool isValid = Guid.TryParse(request.Id, out guidOutput);
+            if(isValid)
+            {
+                var employee = await _context.Employees
+                .Where(e => e.Emp_Guid == guidOutput && e.IsActive == true)
                 .Include(x => x.CostCenter)
                 .Include(x => x.employeeContacts)
                 .FirstOrDefaultAsync(cancellationToken);
+                return _mapper.Map<Employee, EmployeeResponse>(employee);
 
-            return _mapper.Map<Employee,EmployeeResponse>(employee);
+            }
+            else
+            {
+                var employee = await _context.Employees
+                .Where(e => e.EmployeeIdentifier == request.Id && e.IsActive == true)
+                .Include(x => x.CostCenter)
+                .Include(x => x.employeeContacts)
+                .FirstOrDefaultAsync(cancellationToken);
+                return _mapper.Map<Employee, EmployeeResponse>(employee);
+            }            
         }
     }
 }

@@ -28,5 +28,6 @@ namespace TaskManager.API.Dtos
         public ManagerTask managerTask { get; set; }
         public GradeTask GradeTask { get; set; }
         public TeamTask TeamTask { get; set; }
+        public BonusTask BonusTask { get; set; }
     }
 }

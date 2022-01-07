@@ -19,7 +19,5 @@ namespace TaskManager.API.Dtos
         public double EmissionBenefit { get; set; }
         public double HomeInternetBenefit { get; set; }
         public string EmployeeIdentifier { get; set; }
-
-
     }
 }

@@ -68,41 +68,20 @@ namespace Compensation.API.Migrations
                     b.Property<double>("TotalMonthlyPay")
                         .HasColumnType("float");
 
-                    b.HasKey("CompensationId");
-
-                    b.ToTable("Compensation");
-                });
-
-            modelBuilder.Entity("Compensation.API.Database.Entities.CompensationBonuses", b =>
-                {
-                    b.Property<int>("compensationBonusId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<double>("bonusValue")
-                        .HasColumnType("float");
-
                     b.Property<string>("businessIdentifier")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("effectiveDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("employeeIdentifier")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("organizationIdentifier")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("compensationBonusId");
+                    b.HasKey("CompensationId");
 
-                    b.ToTable("CompensationBonuses");
+                    b.ToTable("Compensation");
                 });
 
             modelBuilder.Entity("Compensation.API.Database.Entities.CompensationSalaries", b =>
                 {
-                    b.Property<int>("CompensationId")
+                    b.Property<int>("CompensationSalaryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -149,7 +128,19 @@ namespace Compensation.API.Migrations
                     b.Property<double>("TotalMonthlyPay")
                         .HasColumnType("float");
 
-                    b.HasKey("CompensationId");
+                    b.Property<double>("annual_bonus")
+                        .HasColumnType("float");
+
+                    b.Property<string>("businessIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("one_time_bonus")
+                        .HasColumnType("float");
+
+                    b.Property<string>("organizationIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CompensationSalaryId");
 
                     b.ToTable("CompensationSalaries");
                 });
@@ -206,6 +197,57 @@ namespace Compensation.API.Migrations
                     b.HasKey("jobCatalogId");
 
                     b.ToTable("JobCatalogues");
+                });
+
+            modelBuilder.Entity("Compensation.API.Database.Entities.OrganizationBudget", b =>
+                {
+                    b.Property<int>("OrganizationBudgetId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TotalbudgetPercentage")
+                        .HasColumnType("int");
+
+                    b.Property<double>("TotalbudgetValue")
+                        .HasColumnType("float");
+
+                    b.Property<int>("budgetPercentage")
+                        .HasColumnType("int");
+
+                    b.Property<double>("budgetValue")
+                        .HasColumnType("float");
+
+                    b.Property<string>("businessIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("endDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("jobFunction")
+                        .HasColumnType("int");
+
+                    b.Property<string>("organizationIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("startDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("OrganizationBudgetId");
+
+                    b.ToTable("OrganizationBudgets");
                 });
 #pragma warning restore 612, 618
         }

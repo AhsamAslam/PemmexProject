@@ -25,6 +25,7 @@ namespace TaskManager.API.Database.Entities
         public TaskReasons reasons { get; set; }
         public DateTime EffectiveDate { get; set; }
         public virtual ChangeCompensation ChangeCompensation { get; set; }
+        public virtual BonusTask ChangeBonus { get; set; }
         public virtual ChangeGrade ChangeGrade { get; set; }
         public virtual ChangeHoliday ChangeHoliday { get; set; }
         public virtual ChangeTitle ChangeTitle { get; set; }

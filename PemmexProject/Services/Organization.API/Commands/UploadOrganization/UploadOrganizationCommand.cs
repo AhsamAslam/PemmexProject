@@ -76,6 +76,15 @@ namespace Organization.API.Commands.UploadOrganization
                             u.IsPasswordReset = false;
 
 
+
+                            var compensation = compensations.FirstOrDefault(c => c.EmployeeIdentifier == e.EmployeeIdentifier);
+                            if(compensation != null)
+                            {
+                                compensation.organizationIdentifier = org.ParentBusinessId;
+                                compensation.businessIdentifier = org.BusinessIdentifier;
+                            }
+
+
                             //u.Role = (!Enum.IsDefined(typeof(Roles), e.Role.ToLower()) || string.IsNullOrEmpty(e.Role.ToLower())) ? (int)Roles.user : (int)e.Role.ToLower().ToEnum<Roles>();
                             users.Add(u);
                             var holiday = _mapper.Map<HolidayUploadRequest, HolidayEntity>(e.holidayUploadRequest);

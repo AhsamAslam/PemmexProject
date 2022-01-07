@@ -18,7 +18,7 @@ namespace TaskManager.API.Database.context
         public DbSet<ChangeTitle> ChangeTitles { get; set; }
         public DbSet<ChangeGrade> ChangeGrades { get; set; }
         public DbSet<BaseTask> BaseTasks { get; set; }
-        public DbSet<Notifications> Notifications { get; set; }
+        public DbSet<BonusSettings> BonusSettings { get; set; }
         public DbSet<OrganizationApprovalSettings> organizationApprovalSettings { get; set; }
         public DbSet<OrganizationApprovalSettingDetail> organizationApprovalSettingDetails { get; set; }
 
