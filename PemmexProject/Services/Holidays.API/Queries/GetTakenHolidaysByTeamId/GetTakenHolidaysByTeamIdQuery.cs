@@ -3,6 +3,7 @@ using Holidays.API.Database.context;
 using Holidays.API.Database.Entities;
 using Holidays.API.Dtos;
 using Holidays.API.Enumerations;
+using Holidays.API.Repositories.Interface;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -23,31 +24,32 @@ namespace Holidays.API.Queries.GetTakenHolidaysByTeamId
     }
     public class GetTakenHolidaysByEmployeeIdQueryHandeler : IRequestHandler<GetTakenHolidaysByTeamIdQuery, List<TakenHolidayDto>>
     {
-        private readonly IApplicationDbContext _context;
         private readonly IDateTime _dateTime;
         private readonly IMapper _mapper;
         private readonly DbContextOptionsBuilder<HolidaysContext> optionsBuilder = null;
+        private readonly IHolidaySettings _holidaySetting;
+        private readonly ICompanyToEmployeeHolidays _companyToEmployeeHolidays;
+        private readonly IEmployeeHolidays _employeeHolidays;
 
-        public GetTakenHolidaysByEmployeeIdQueryHandeler(IApplicationDbContext context, IDateTime dateTime,IMapper mapper,IConfiguration configuration)
+        public GetTakenHolidaysByEmployeeIdQueryHandeler(IHolidaySettings holidaySetting, ICompanyToEmployeeHolidays companyToEmployeeHolidays, IEmployeeHolidays employeeHolidays, IDateTime dateTime,IMapper mapper,IConfiguration configuration)
         {
-            _context = context;
             _dateTime = dateTime;
             _mapper = mapper;
             this.optionsBuilder = new DbContextOptionsBuilder<HolidaysContext>()
             .UseSqlServer(configuration.GetConnectionString("HolidaysConnection"));
+            _holidaySetting = holidaySetting;
+            _companyToEmployeeHolidays = companyToEmployeeHolidays;
+            _employeeHolidays = employeeHolidays;
         }
         public async Task<List<TakenHolidayDto>> Handle(GetTakenHolidaysByTeamIdQuery request, CancellationToken cancellationToken)
         {
             try
             {
 
-                var setting = await _context.HolidaySettings
-                    .Where(s => s.BusinessIdentifier == request.businessIdentifier)
-                    .OrderByDescending(d => d.HolidayCalendarYear).FirstOrDefaultAsync();
+                var setting = await _holidaySetting.GetHolidaySettingsByBusinessIdentifier(request.businessIdentifier);
 
-                var holidays = await _context.CompanyToEmployeeHolidays
-                    .Where(e => e.costcenterIdentifier == request.TeamId && e.HolidaySettingsIdentitfier == setting.HolidaySettingsIdentitfier)
-                    .ToListAsync(cancellationToken);
+                var holidays = await _companyToEmployeeHolidays.GetCompanyToEmployeeHolidaysByCostcenterIdentifierAndHolidaySettingsIdentitfier(request.TeamId, setting.HolidaySettingsIdentitfier);
+
 
 
                 if (holidays == null)
@@ -77,14 +79,15 @@ namespace Holidays.API.Queries.GetTakenHolidaysByTeamId
                 {
                     DateTime start_calendar = startedDate > setting.HolidayCalendarYear ? startedDate : setting.HolidayCalendarYear;
                     DateTime end_calendar = setting.HolidayCalendarYear.AddYears(1);
-                    var holidays = await db.EmployeeHolidays
-                    .Where(h => h.HolidayStartDate >= start_calendar && h.HolidayStartDate <= end_calendar)
-                    .Where(h => h.HolidayEndDate >= start_calendar && h.HolidayEndDate <= end_calendar)
-                    .Where(h => (h.HolidayStatus == HolidayStatus.Planned 
-                    || h.HolidayStatus == HolidayStatus.Approved 
-                    || h.HolidayStatus == HolidayStatus.Availed))
-                    .Where(h => h.EmployeeId == EmployeeId)
-                    .ToListAsync();
+                    //var holidays = await db.EmployeeHolidays
+                    //.Where(h => h.HolidayStartDate >= start_calendar && h.HolidayStartDate <= end_calendar)
+                    //.Where(h => h.HolidayEndDate >= start_calendar && h.HolidayEndDate <= end_calendar)
+                    //.Where(h => (h.HolidayStatus == HolidayStatus.Planned 
+                    //|| h.HolidayStatus == HolidayStatus.Approved 
+                    //|| h.HolidayStatus == HolidayStatus.Availed))
+                    //.Where(h => h.EmployeeId == EmployeeId)
+                    //.ToListAsync();
+                    var holidays = await _employeeHolidays.GetEmployeeHolidaysByEmployeeIdHolidayStatusStartAndEndDate(start_calendar, end_calendar, EmployeeId, (int)HolidayStatus.Planned,(int)HolidayStatus.Approved,(int)HolidayStatus.Availed);
                     var h = _mapper.Map<List<TakenHolidayDto>>(holidays);
                     h.ForEach(p =>
                     {

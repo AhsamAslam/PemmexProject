@@ -1,6 +1,7 @@
 ﻿using Holidays.API.Database.context;
 using Holidays.API.Database.Entities;
 using Holidays.API.Enumerations;
+using Holidays.API.Repositories.Interface;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -24,29 +25,34 @@ namespace Holidays.API.Queries.GetLeftHolidaysByBusinessId
         private readonly IApplicationDbContext _context;
         private readonly IDateTime _dateTime;
         private readonly DbContextOptionsBuilder<HolidaysContext> optionsBuilder = null;
+        private readonly IHolidaySettings _holidaySetting;
+        private readonly ICompanyToEmployeeHolidays _companyToEmployeeHolidays;
+        private readonly IEmployeeHolidays _employeeHolidays;
 
-        public GetHolidaysByBusinessIdQueryHandeler(IApplicationDbContext context, IDateTime dateTime, IConfiguration configuration)
+        public GetHolidaysByBusinessIdQueryHandeler(IApplicationDbContext context, IHolidaySettings holidaySetting, ICompanyToEmployeeHolidays companyToEmployeeHolidays, IEmployeeHolidays employeeHolidays, IDateTime dateTime, IConfiguration configuration)
         {
             _context = context;
             _dateTime = dateTime;
             this.optionsBuilder = new DbContextOptionsBuilder<HolidaysContext>()
             .UseSqlServer(configuration.GetConnectionString("HolidaysConnection"));
+            _holidaySetting = holidaySetting;
+            _companyToEmployeeHolidays = companyToEmployeeHolidays;
+            _employeeHolidays = employeeHolidays;
+
         }
         public async Task<List<EmployeeHolidaysCounter>> Handle(GetHolidaysByBusinessIdQuery request, CancellationToken cancellationToken)
         {
             try
             {
 
-                var setting = await _context.HolidaySettings
-                    .Where(s => s.BusinessIdentifier == request.businessIdentifier)
-                    .OrderByDescending(d => d.HolidayCalendarYear).FirstOrDefaultAsync();
-
-                var holidays = await _context.CompanyToEmployeeHolidays
-                    .Where(e => e.HolidaySettingsIdentitfier == setting.HolidaySettingsIdentitfier)
-                    .ToListAsync(cancellationToken);
+                var setting = await _holidaySetting.GetHolidaySettingsByBusinessIdentifier(request.businessIdentifier);
 
 
-                if (holidays.Count <= 0)
+                var holidays = await _companyToEmployeeHolidays.GetCompanyToEmployeeHolidaysByHolidaySettingsIdentitfier(setting.HolidaySettingsIdentitfier);
+
+
+
+                if (holidays.ToList().Count <= 0)
                     throw new Exception("No Holidays Found");
 
                 List<EmployeeHolidaysCounter> employeeHolidaysCounters = new List<EmployeeHolidaysCounter>();
@@ -81,11 +87,13 @@ namespace Holidays.API.Queries.GetLeftHolidaysByBusinessId
                 {
                     DateTime start_calendar = startedDate > setting.HolidayCalendarYear ? startedDate : setting.HolidayCalendarYear;
                     DateTime end_calendar = setting.HolidayCalendarYear.AddYears(1);
-                    var holidays = await db.EmployeeHolidays
-                    .Where(h => h.HolidayStartDate >= start_calendar && h.HolidayStartDate <= end_calendar)
-                    .Where(h => h.HolidayEndDate >= start_calendar && h.HolidayEndDate <= end_calendar)
-                    .Where(h => h.EmployeeId == EmployeeId)
-                    .ToListAsync();
+                    //var holidays = await db.EmployeeHolidays
+                    //.Where(h => h.HolidayStartDate >= start_calendar && h.HolidayStartDate <= end_calendar)
+                    //.Where(h => h.HolidayEndDate >= start_calendar && h.HolidayEndDate <= end_calendar)
+                    //.Where(h => h.EmployeeId == EmployeeId)
+                    //.ToListAsync();
+                    var holidays = await _employeeHolidays.GetEmployeeHolidaysByEmployeeIdStartAndEndDate(start_calendar, end_calendar, EmployeeId);
+
 
                     var Holidays = holidays.Where(h => (h.holidayType == HolidayTypes.Parental || h.holidayType == HolidayTypes.Sick || h.holidayType == HolidayTypes.TimeOffWithoutSalary))
                             .Where(h => EF.Functions.DateDiffDay(h.HolidayStartDate, h.HolidayEndDate) > 30).ToList();
@@ -119,18 +127,18 @@ namespace Holidays.API.Queries.GetLeftHolidaysByBusinessId
                 {
                     DateTime start_calendar = startedDate > setting.HolidayCalendarYear ? startedDate : setting.HolidayCalendarYear;
                     DateTime end_calendar = setting.HolidayCalendarYear.AddYears(1);
-                    var holidays = await db.EmployeeHolidays
-                    .Where(h => h.HolidayStartDate >= start_calendar && h.HolidayStartDate <= end_calendar)
-                    .Where(h => h.HolidayEndDate >= start_calendar && h.HolidayEndDate <= end_calendar)
-                    .Where(h => h.holidayType == HolidayTypes.AnnualHoliday)
-                    .Where(h => h.EmployeeId == EmployeeId)
-                    .ToListAsync();
-
+                    //var holidays = await db.EmployeeHolidays
+                    //.Where(h => h.HolidayStartDate >= start_calendar && h.HolidayStartDate <= end_calendar)
+                    //.Where(h => h.HolidayEndDate >= start_calendar && h.HolidayEndDate <= end_calendar)
+                    //.Where(h => h.holidayType == HolidayTypes.AnnualHoliday)
+                    //.Where(h => h.EmployeeId == EmployeeId)
+                    //.ToListAsync();
+                    var holidays = await _employeeHolidays.GetEmployeeHolidaysByEmployeeIdHolidayTypeStartAndEndDate(start_calendar, end_calendar, EmployeeId, (int)HolidayTypes.AnnualHoliday);
 
 
                     int leaves = 0;
 
-                    holidays.ForEach(p =>
+                    holidays.ToList().ForEach(p =>
                     {
                         var start = (p.HolidayStartDate < start_calendar) ? start_calendar : p.HolidayStartDate;
                         var end = (p.HolidayEndDate > end_calendar ? end_calendar : p.HolidayEndDate);
@@ -156,17 +164,19 @@ namespace Holidays.API.Queries.GetLeftHolidaysByBusinessId
                 {
                     DateTime start_calendar = startedDate > setting.HolidayCalendarYear ? startedDate : setting.HolidayCalendarYear;
                     DateTime end_calendar = setting.HolidayCalendarYear.AddYears(1);
-                    var holidays = await db.EmployeeHolidays
-                    .Where(h => h.HolidayStartDate >= start_calendar && h.HolidayStartDate <= end_calendar)
-                    .Where(h => h.HolidayEndDate >= start_calendar && h.HolidayEndDate <= end_calendar)
-                    .Where(h => h.holidayType == HolidayTypes.AnnualHoliday)
-                    .Where(h => h.HolidayStatus == HolidayStatus.Planned)
-                    .Where(h => h.EmployeeId == EmployeeId)
-                    .ToListAsync();
+                    //var holidays = await db.EmployeeHolidays
+                    //.Where(h => h.HolidayStartDate >= start_calendar && h.HolidayStartDate <= end_calendar)
+                    //.Where(h => h.HolidayEndDate >= start_calendar && h.HolidayEndDate <= end_calendar)
+                    //.Where(h => h.holidayType == HolidayTypes.AnnualHoliday)
+                    //.Where(h => h.HolidayStatus == HolidayStatus.Planned)
+                    //.Where(h => h.EmployeeId == EmployeeId)
+                    //.ToListAsync();
+                    var holidays = await _employeeHolidays.GetEmployeeHolidaysByEmployeeIdHolidayTypeHolidayStatusStartAndEndDate(start_calendar, end_calendar, EmployeeId, (int)HolidayTypes.AnnualHoliday, (int)HolidayStatus.Planned);
+
 
                     int leaves = 0;
 
-                    holidays.ForEach(p =>
+                    holidays.ToList().ForEach(p =>
                     {
                         var start = (p.HolidayStartDate < start_calendar) ? start_calendar : p.HolidayStartDate;
                         var end = (p.HolidayEndDate > end_calendar ? end_calendar : p.HolidayEndDate);
@@ -193,17 +203,19 @@ namespace Holidays.API.Queries.GetLeftHolidaysByBusinessId
                 {
                     DateTime start_calendar = startedDate > setting.HolidayCalendarYear ? startedDate : setting.HolidayCalendarYear;
                     DateTime end_calendar = setting.HolidayCalendarYear.AddYears(1);
-                    var holidays = await db.EmployeeHolidays
-                    .Where(h => h.HolidayStartDate >= start_calendar && h.HolidayStartDate <= end_calendar)
-                    .Where(h => h.HolidayEndDate >= start_calendar && h.HolidayEndDate <= end_calendar)
-                    .Where(h => h.holidayType == HolidayTypes.AnnualHoliday)
-                    .Where(h => h.HolidayStatus == HolidayStatus.Availed)
-                    .Where(h => h.EmployeeId == EmployeeId)
-                    .ToListAsync();
+                    //var holidays = await db.EmployeeHolidays
+                    //.Where(h => h.HolidayStartDate >= start_calendar && h.HolidayStartDate <= end_calendar)
+                    //.Where(h => h.HolidayEndDate >= start_calendar && h.HolidayEndDate <= end_calendar)
+                    //.Where(h => h.holidayType == HolidayTypes.AnnualHoliday)
+                    //.Where(h => h.HolidayStatus == HolidayStatus.Availed)
+                    //.Where(h => h.EmployeeId == EmployeeId)
+                    //.ToListAsync();
+                    var holidays = await _employeeHolidays.GetEmployeeHolidaysByEmployeeIdHolidayTypeHolidayStatusStartAndEndDate(start_calendar, end_calendar, EmployeeId, (int)HolidayTypes.AnnualHoliday, (int)HolidayStatus.Availed);
+
 
                     int leaves = 0;
 
-                    holidays.ForEach(p =>
+                    holidays.ToList().ForEach(p =>
                     {
                         var start = (p.HolidayStartDate < start_calendar) ? start_calendar : p.HolidayStartDate;
                         var end = (p.HolidayEndDate > end_calendar ? end_calendar : p.HolidayEndDate);

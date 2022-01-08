@@ -78,6 +78,20 @@ namespace Holidays.API.Repositories.Repository
             throw new NotImplementedException();
         }
 
+        public async Task<HolidaySettings> GetHolidaySettingsByBusinessIdentifier(string BusinessIdentifier)
+        {
+            try
+            {
+                var sql = "Select top(1) * from HolidaySettings where BusinessIdentifier = @BusinessIdentifier order by HolidayCalendarYear desc";
+                return await db.QueryFirstOrDefaultAsync<HolidaySettings>(sql, new { @BusinessIdentifier = BusinessIdentifier }).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<IEnumerable<HolidaySettings>> GetHolidaySettingsById(string Id)
         {
             try
