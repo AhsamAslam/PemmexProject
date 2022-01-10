@@ -1,4 +1,5 @@
 ﻿using Authentication.API.Database.context;
+using Authentication.API.Database.Repositories.Interface;
 using Authentication.API.Dtos;
 using AutoMapper;
 using MediatR;
@@ -20,23 +21,27 @@ namespace Authentication.API.Commands.SaveRole
 
     public class SaveRoleCommandHandeler : IRequestHandler<SaveRoleCommand>
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IUser _user;
+        private readonly IRole _role;
         private readonly IMapper _mapper;
-        public SaveRoleCommandHandeler(IApplicationDbContext context, IMapper mapper)
+        public SaveRoleCommandHandeler(IUser user, IRole role, IMapper mapper)
         {
-            _context = context;
+            _user = user;
+            _role = role;
             _mapper = mapper;
         }
         public async Task<Unit> Handle(SaveRoleCommand request, CancellationToken cancellationToken)
         {
 
-            var user = await _context.Users.Where(x => x.Id == request.role.UserId && x.isActive == true).FirstOrDefaultAsync(cancellationToken);
+            //var user = await _context.Users.Where(x => x.Id == request.role.UserId && x.isActive == true).FirstOrDefaultAsync(cancellationToken);
+            var user = await _user.GetUserById(request.role.UserId);
             if(user != null)
             {
                 if(Enum.IsDefined(typeof(Roles), request.role.role))
                 {
                     user.Role = (int) request.role.role;
-                    await _context.SaveChangesAsync(cancellationToken);
+                    //await _context.SaveChangesAsync(cancellationToken);
+                    var SaveRole = await _role.SaveRole(request.role);
                 }
             }
             return Unit.Value;

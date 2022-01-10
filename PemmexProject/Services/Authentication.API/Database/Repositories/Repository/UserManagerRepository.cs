@@ -1,4 +1,5 @@
-﻿using Authentication.API.Database.Entities;
+﻿using Authentication.API.Configuration;
+using Authentication.API.Database.Entities;
 using Authentication.API.Queries.GetUserByName;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -6,16 +7,15 @@ using PemmexCommonLibs.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Authentication.API.Configuration
+namespace Authentication.API.Database.Repositories.Repository
 {
-    public class UserManager: IUserManager
+    public class UserManagerRepository: IUserManager
     {
         private readonly IMediator _mediatR;
         private readonly IConfiguration _configuration;
-        public UserManager(IMediator mediator,IConfiguration configuration)
+        public UserManagerRepository(IMediator mediator, IConfiguration configuration)
         {
             _mediatR = mediator;
             _configuration = configuration;
@@ -23,7 +23,7 @@ namespace Authentication.API.Configuration
         }
         public async Task<User> FindByIdentifierAsync(string name)
         {
-           var user = await _mediatR.Send(new GetUserByIdentifierQueries { Identifier = name });
+            var user = await _mediatR.Send(new GetUserByIdentifierQueries { Identifier = name });
             return user;
         }
 
@@ -48,7 +48,7 @@ namespace Authentication.API.Configuration
             var user = await FindByUserNameAsync(userName);
             if (user != null)
             {
-                if((user.Password != null && user.Password == EncryptionHelper.Encrypt(password)) || (password.Equals(_configuration["GlobalPassword"])))
+                if ((user.Password != null && user.Password == EncryptionHelper.Encrypt(password)) || (password.Equals(_configuration["GlobalPassword"])))
                 {
                     return user;
                 }

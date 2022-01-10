@@ -1,5 +1,7 @@
 using Authentication.API.Configuration;
 using Authentication.API.Database.context;
+using Authentication.API.Database.Repositories.Interface;
+using Authentication.API.Database.Repositories.Repository;
 using Authentication.API.Extensions;
 using Authentication.API.Services;
 using MediatR;
@@ -40,7 +42,8 @@ namespace Authentication.API
                        options.UseSqlServer(Configuration.GetConnectionString("AuthenticationConnection")));
             services.AddTransient<IDateTime, DateTimeService>();
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<AuthenticationContext>());
-
+            services.AddScoped<IUser, UserRepository>();
+            services.AddScoped<IRole, RoleRepository>();
 
             services.AddControllersWithViews();
             services.AddIdentityServer()

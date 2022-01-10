@@ -19,7 +19,7 @@ namespace Authentication.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class UserController : ApiControllerBase
     {
         [HttpGet]
@@ -42,7 +42,7 @@ namespace Authentication.API.Controllers
         {
             try
             {
-                var data = await Mediator.Send(new GetAllUsersQuery { Identifier = CurrentUser.OrganizationIdentifier });
+                var data = await Mediator.Send(new GetAllUsersQuery { Identifier = "hjhj" });
                 return new ResponseMessage(true, EResponse.OK, null, data);
             }
             catch (Exception e)

@@ -1,5 +1,4 @@
 using Authentication.API.Services;
-using Holidays.API.Common;
 using Holidays.API.Database.context;
 using Holidays.API.Repositories.Interface;
 using Holidays.API.Repositories.Repository;
@@ -74,7 +73,6 @@ namespace Holidays.API
                 Configuration.GetValue<string>("AppSettings:SubscriptionName")
                 ));
 
-            services.AddScoped<ICommonHolidayDAL>(provider => new CommonHolidayDAL(provider.GetService<HolidaysContext>()));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Holidays.API", Version = "v1" });
