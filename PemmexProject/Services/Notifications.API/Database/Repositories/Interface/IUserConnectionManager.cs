@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Notifications.API.NotificationHub
+namespace Notifications.API.Database.Repositories.Interface
 {
     public interface IUserConnectionManager
     {

@@ -1,7 +1,12 @@
-﻿using System.Collections.Generic;
-namespace Notifications.API.NotificationHub
+﻿using Notifications.API.Database.Repositories.Interface;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Notifications.API.Database.Repositories.Repository
 {
-    public class UserConnectionManager : IUserConnectionManager
+    public class UserConnectionManagerRepository: IUserConnectionManager
     {
         private static Dictionary<string, List<string>> userConnectionMap = new Dictionary<string, List<string>>();
         private static string userConnectionMapLocker = string.Empty;

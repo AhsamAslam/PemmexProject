@@ -1,13 +1,16 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Notifications.API.Database.Repositories.Interface;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace Notifications.API.NotificationHub
+namespace Notifications.API.Database.Repositories.Repository
 {
-    public class NotificationUserHub:Hub
+    public class NotificationUserHubRepository : Hub
     {
         private readonly IUserConnectionManager _userConnectionManager;
-        public NotificationUserHub(IUserConnectionManager userConnectionManager)
+        public NotificationUserHubRepository(IUserConnectionManager userConnectionManager)
         {
             _userConnectionManager = userConnectionManager;
         }

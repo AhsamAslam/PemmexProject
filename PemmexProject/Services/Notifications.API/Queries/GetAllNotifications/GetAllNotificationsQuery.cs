@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
+using Notifications.API.Database.Repositories.Interface;
 using Notifications.API.Dtos;
-using Notifications.API.NotificationHub;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +16,10 @@ namespace Notifications.API.Queries.GetAllNotifications
     }
     public class GetAllNotificationsQueryHandeler : IRequestHandler<GetAllNotificationsQuery, List<NotificationDto>>
     {
-        private readonly INotificationRepository _context;
+        private readonly Database.Repositories.Interface.INotification _context;
         private readonly IMapper _mapper;
 
-        public GetAllNotificationsQueryHandeler(INotificationRepository context, IMapper mapper)
+        public GetAllNotificationsQueryHandeler(Database.Repositories.Interface.INotification context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

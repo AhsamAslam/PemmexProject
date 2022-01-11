@@ -1,5 +1,6 @@
 ﻿using Authentication.API.Configuration;
 using Authentication.API.Database.Entities;
+using Authentication.API.Database.Repositories.Interface;
 using Authentication.API.Queries.GetUserByName;
 using MediatR;
 using Microsoft.Extensions.Configuration;

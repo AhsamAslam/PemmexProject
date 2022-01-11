@@ -10,7 +10,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Notifications.API.Database.context;
-using Notifications.API.NotificationHub;
+using Notifications.API.Database.Repositories.Interface;
+using Notifications.API.Database.Repositories.Repository;
 using PemmexCommonLibs.Application.Helpers;
 using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Infrastructure.Services;
@@ -45,8 +46,8 @@ namespace Notifications.API
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddHttpContextAccessor();
 
-            services.AddScoped<INotificationRepository, NotificationRepository>();
-            services.AddSingleton<IUserConnectionManager, UserConnectionManager>();
+            services.AddScoped<Database.Repositories.Interface.INotification, NotificationRepository>();
+            services.AddSingleton<IUserConnectionManager, UserConnectionManagerRepository>();
 
             services.AddAuthentication("Bearer")
                .AddJwtBearer("Bearer", option =>
@@ -95,7 +96,7 @@ namespace Notifications.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<NotificationUserHub>("/NotificationUserHub");
+                endpoints.MapHub<NotificationUserHubRepository>("/NotificationUserHub");
             });
         }
     }

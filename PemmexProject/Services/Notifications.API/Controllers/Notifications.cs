@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Notifications.API.Commands.MarkNotification;
 using Notifications.API.Commands.SaveNotification;
-using Notifications.API.NotificationHub;
+using Notifications.API.Database.Repositories.Interface;
+using Notifications.API.Database.Repositories.Repository;
 using Notifications.API.Queries.GetAllNotifications;
 using Notifications.API.Queries.GetUnReadNotificationsCount;
 using PemmexCommonLibs.Application.Helpers;
@@ -18,13 +19,13 @@ namespace Notifications.API.Controllers
     [Microsoft.AspNetCore.Authorization.Authorize]
     public class Notifications : ApiControllerBase
     {
-        private readonly IHubContext<NotificationUserHub> _notificationUserHubContext;
+        private readonly IHubContext<NotificationUserHubRepository> _notificationUserHubContext;
         private readonly IUserConnectionManager _userConnectionManager;
-        private readonly INotificationRepository _notificationRepository;
+        private readonly INotification _notificationRepository;
 
-        public Notifications(IHubContext<NotificationUserHub> notificationUserHubContext,
+        public Notifications(IHubContext<NotificationUserHubRepository> notificationUserHubContext,
             IUserConnectionManager userConnectionManager,
-            INotificationRepository notificationRepository)
+            INotification notificationRepository)
         {
             _notificationUserHubContext = notificationUserHubContext;
             _userConnectionManager = userConnectionManager;
