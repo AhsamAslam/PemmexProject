@@ -10,6 +10,7 @@ using Organization.API.Commands.CreateEmployee;
 using Organization.API.Dtos;
 using Organization.API.Entities;
 using Organization.API.Interfaces;
+using Organization.API.Repositories.Interface;
 using PemmexCommonLibs.Application.Exceptions;
 using PemmexCommonLibs.Application.Helpers;
 
@@ -24,10 +25,12 @@ namespace Organization.API.Commands.UpdateEmployee
     public class UpdateEmployeeCommandHandeler : IRequestHandler<UpdateEmployeeCommand, int>
     {
         private readonly IApplicationDbContext _context;
+        private readonly IEmployee _employee;
         private readonly IMapper _mapper;
-        public UpdateEmployeeCommandHandeler(IApplicationDbContext context, IMapper mapper)
+        public UpdateEmployeeCommandHandeler(IApplicationDbContext context, IEmployee employee, IMapper mapper)
         {
             _context = context;
+            _employee = employee;
             _mapper = mapper;
         }
         public async Task<int> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
@@ -35,8 +38,9 @@ namespace Organization.API.Commands.UpdateEmployee
             try
             {
                 var guid = Guid.Parse(request.Id);
-                var e = await _context.Employees.Where(i => i.Emp_Guid == guid)
-                    .FirstOrDefaultAsync(cancellationToken);
+                //var e = await _context.Employees.Where(i => i.Emp_Guid == guid)
+                //    .FirstOrDefaultAsync(cancellationToken);
+                var e = await _employee.GetEmployeeByGuidId(guid); 
                 if (e == null)
                 {
                     throw new NotFoundException(nameof(Employee), request.Id);
@@ -91,9 +95,10 @@ namespace Organization.API.Commands.UpdateEmployee
                 //{
                 //    e.CostCenter.ParentCostCenterIdentifier = request.employee.CostCenter.ParentCostCenterIdentifier;
                 //    e.CostCenter.CostCenterName = request.employee.CostCenter.CostCenterName;
-                    
+
                 //}
-                await _context.SaveChangesAsync(cancellationToken);
+                //await _context.SaveChangesAsync(cancellationToken);
+                var employee = await _employee.UpdateEmployee(e);
                 return e.EmployeeId;
             }
             catch(Exception)

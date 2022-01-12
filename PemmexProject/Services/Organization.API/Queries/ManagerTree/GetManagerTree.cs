@@ -8,6 +8,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Organization.API.Dtos;
 using Organization.API.Interfaces;
+using Organization.API.Repositories.Interface;
 
 namespace Organization.API.Queries.GetOrganization
 {
@@ -17,20 +18,21 @@ namespace Organization.API.Queries.GetOrganization
     }
     public class GetManagerTreeQueryHandler : IRequestHandler<GetManagerTree, List<EmployeeResponse>>
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IEmployee _employee;
         private readonly IMapper _mapper;
 
-        public GetManagerTreeQueryHandler(IApplicationDbContext context, IMapper mapper)
+        public GetManagerTreeQueryHandler(IEmployee employee, IMapper mapper)
         {
-            _context = context;
+            _employee = employee;
             _mapper = mapper;
         }
 
         public async Task<List<EmployeeResponse>> Handle(GetManagerTree request, CancellationToken cancellationToken)
         {
 
-            var o = await _context.Employees.FromSqlRaw($"sp_GetEmployeeTreeForManager {request.Id}").ToListAsync();
-            return _mapper.Map<List<Entities.Employee>, List<EmployeeResponse>>(o);
+            //var o = await _context.Employees.FromSqlRaw($"sp_GetEmployeeTreeForManager {request.Id}").ToListAsync();
+            var o = await _employee.GetEmployeeTreeForManager(request.Id);
+            return _mapper.Map<List<Entities.Employee>, List<EmployeeResponse>>(o.ToList());
         }
     }
 }

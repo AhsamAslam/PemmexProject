@@ -3,6 +3,7 @@ using MediatR;
 using Organization.API.Dtos;
 using Organization.API.Entities;
 using Organization.API.Interfaces;
+using Organization.API.Repositories.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +19,12 @@ namespace Organization.API.Commands.CreateCostCenter
 
     public class CreateCostCenterCommandHandeler : IRequestHandler<CreateCostCenterCommand, int>
     {
-        private readonly IApplicationDbContext _context;
+        private readonly ICostCenter _costCenter;
         private readonly IMapper _mapper;
-        public CreateCostCenterCommandHandeler(IApplicationDbContext context,
+        public CreateCostCenterCommandHandeler(ICostCenter costCenter,
             IMapper mapper)
         {
-            _context = context;
+            _costCenter = costCenter;
             _mapper = mapper;
         }
         public async Task<int> Handle(CreateCostCenterCommand request, CancellationToken cancellationToken)
@@ -31,11 +32,12 @@ namespace Organization.API.Commands.CreateCostCenter
             try
             {
                 var e = _mapper.Map<CostCenterRequest, CostCenter>(request.costCenterRequest);
-                _context.CostCenters.Add(e);
-                await _context.SaveChangesAsync(cancellationToken);
+                //_context.CostCenters.Add(e);
+                //await _context.SaveChangesAsync(cancellationToken);
+                var CostCenter = await _costCenter.AddCostCenterRequest(request.costCenterRequest);
                 return e.CostCenterId;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }

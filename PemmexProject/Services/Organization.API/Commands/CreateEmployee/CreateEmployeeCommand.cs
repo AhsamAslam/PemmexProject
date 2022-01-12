@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Components;
 using Organization.API.Dtos;
 using Organization.API.Entities;
 using Organization.API.Interfaces;
+using Organization.API.Repositories.Interface;
 using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Infrastructure.Services.LogService;
 
@@ -22,10 +23,12 @@ namespace Organization.API.Commands.CreateEmployee
     public class CreateEmployeeCommandHandeler : IRequestHandler<CreateEmployeeCommand, int>
     {
         private readonly IApplicationDbContext _context;
+        private readonly IEmployee _employee;
         private readonly IMapper _mapper;
-        public CreateEmployeeCommandHandeler(IApplicationDbContext context, 
+        public CreateEmployeeCommandHandeler(IApplicationDbContext context, IEmployee employee,
             IMapper mapper)
         {
+            _employee = employee;
             _context = context;
             _mapper = mapper;
         }
@@ -35,8 +38,9 @@ namespace Organization.API.Commands.CreateEmployee
             {
                 var e = _mapper.Map<EmployeeRequest, Employee>(request.employee);
                 e.IsActive = true;
-                _context.Employees.Add(e);
-                await _context.SaveChangesAsync(cancellationToken);
+                //_context.Employees.Add(e);
+                //await _context.SaveChangesAsync(cancellationToken);
+                var employee = await _employee.AddEmployee(e);
                 return e.EmployeeId;
             }
             catch (Exception)

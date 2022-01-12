@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Organization.API.Dtos;
 using Organization.API.Entities;
 using Organization.API.Interfaces;
+using Organization.API.Repositories.Interface;
 
 namespace Organization.API.Queries.GetEmployee
 {
@@ -19,11 +20,13 @@ namespace Organization.API.Queries.GetEmployee
     public class GetEmployeeQueryHandeler : IRequestHandler<GetEmployeeQuery, EmployeeResponse>
     {
         private readonly IApplicationDbContext _context;
+        private readonly IEmployee _employee;
         private readonly IMapper _mapper;
 
-        public GetEmployeeQueryHandeler(IApplicationDbContext context, IMapper mapper)
+        public GetEmployeeQueryHandeler(IApplicationDbContext context, IEmployee employee, IMapper mapper)
         {
             _context = context;
+            _employee = employee;
             _mapper = mapper;
         }
         public async Task<EmployeeResponse> Handle(GetEmployeeQuery request, CancellationToken cancellationToken)
@@ -32,21 +35,23 @@ namespace Organization.API.Queries.GetEmployee
             bool isValid = Guid.TryParse(request.Id, out guidOutput);
             if(isValid)
             {
-                var employee = await _context.Employees
-                .Where(e => e.Emp_Guid == guidOutput && e.IsActive == true)
-                .Include(x => x.CostCenter)
-                .Include(x => x.employeeContacts)
-                .FirstOrDefaultAsync(cancellationToken);
+                //var employee = await _context.Employees
+                //.Where(e => e.Emp_Guid == guidOutput && e.IsActive == true)
+                //.Include(x => x.CostCenter)
+                //.Include(x => x.employeeContacts)
+                //.FirstOrDefaultAsync(cancellationToken);
+                var employee = await _employee.GetEmployeeByEmpGuid(guidOutput);
                 return _mapper.Map<Employee, EmployeeResponse>(employee);
 
             }
             else
             {
-                var employee = await _context.Employees
-                .Where(e => e.EmployeeIdentifier == request.Id && e.IsActive == true)
-                .Include(x => x.CostCenter)
-                .Include(x => x.employeeContacts)
-                .FirstOrDefaultAsync(cancellationToken);
+                //var employee = await _context.Employees
+                //.Where(e => e.EmployeeIdentifier == request.Id && e.IsActive == true)
+                //.Include(x => x.CostCenter)
+                //.Include(x => x.employeeContacts)
+                //.FirstOrDefaultAsync(cancellationToken);
+                var employee = await _employee.GetEmployeeByEmployeeIdentifier(request.Id);
                 return _mapper.Map<Employee, EmployeeResponse>(employee);
             }            
         }

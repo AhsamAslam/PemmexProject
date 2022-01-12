@@ -24,6 +24,8 @@ using Organization.API.Services;
 using PemmexCommonLibs.Infrastructure.Services.FileUploadService;
 using PemmexCommonLibs.Application.Helpers;
 using PemmexCommonLibs.Infrastructure.Services.LogService;
+using Organization.API.Repositories.Interface;
+using Organization.API.Repositories.Repository;
 
 namespace Organization.API
 {
@@ -44,6 +46,12 @@ namespace Organization.API
 
             services.AddTransient<IDateTime, DateTimeService>();
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<PemmexOrganizationContext>());
+            services.AddScoped<ICostCenter, CostCenterRepository>();
+            services.AddScoped<IBusiness, BusinessRepository>();
+            services.AddScoped<IEmployee, EmployeeRepository>();
+            services.AddScoped<IEmployeeBonuses, EmployeeBonusesRepository>();
+            services.AddScoped<IEmployeeContact, EmployeeContactsRepository>();
+            services.AddScoped<IOrganization, OrganizationRepository>();
             services.AddControllers();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());

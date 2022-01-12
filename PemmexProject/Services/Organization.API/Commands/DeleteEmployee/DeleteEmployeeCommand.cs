@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Organization.API.Entities;
 using Organization.API.Interfaces;
+using Organization.API.Repositories.Interface;
 using PemmexCommonLibs.Application.Exceptions;
 
 namespace Organization.API.Commands.DeleteEmployee
@@ -19,9 +20,11 @@ namespace Organization.API.Commands.DeleteEmployee
     public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand,int>
     {
         private readonly IApplicationDbContext _context;
+        private readonly IEmployee _employee;
 
-        public DeleteEmployeeCommandHandler(IApplicationDbContext context)
+        public DeleteEmployeeCommandHandler(IApplicationDbContext context, IEmployee employee)
         {
+            _employee = employee;
             _context = context;
         }
 
@@ -29,16 +32,16 @@ namespace Organization.API.Commands.DeleteEmployee
         {
             try
             {
-                var entity = await _context.Employees.Where(x=>x.Emp_Guid == request.Id).FirstOrDefaultAsync(cancellationToken);
-
+                //var entity = await _context.Employees.Where(x=>x.Emp_Guid == request.Id).FirstOrDefaultAsync(cancellationToken);
+                var entity = await _employee.GetEmployeeByGuidId(request.Id);
                 if (entity == null)
                 {
                     throw new NotFoundException(nameof(Employee), request.Id);
                 }
 
                 entity.IsActive = false;
-
-                return await _context.SaveChangesAsync(cancellationToken);
+                var employee = await _employee.UpdateEmployee(entity);
+                return entity.EmployeeId;
             }
             catch (Exception)
             {
