@@ -189,11 +189,83 @@ namespace Organization.API.Repositories.Repository
                 throw;
             }
         }
+        
+
+        public async Task<IEnumerable<string>> GetEmployeeManagerIdentifierByParentBusinessId(string ParentBusinessId)
+        {
+            try
+            {
+                var Sql = "Select e.ManagerIdentifier from  Employees e inner join Businesses " +
+                    "b on e.BusinessId = b.Id where ISNULL(e.IsActive,1)=1 and b.ParentBusinessId = @Id";
+                return await db.QueryAsync<string>(Sql, new { @Id = ParentBusinessId }).ConfigureAwait(false);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public async Task<IEnumerable<Employee>> GetEmployeeCostCenterByEmployeeIdentifier(string[] EmployeeIdentifier)
+        {
+            try
+            {
+                List<Employee> employee = new List<Employee>();
+                foreach (var item in EmployeeIdentifier)
+                {
+                    var Sql = "Select * from Employees e " +
+                    "inner join CostCenters c on e.CostCenterId = c.CostCenterId " +
+                    "where e.EmployeeIdentifier = @EmployeeIdentifier";
+                    employee.Add(await db.QueryFirstAsync<Employee>(Sql, new { @EmployeeIdentifier = item }).ConfigureAwait(false));
+                }
+
+                return employee;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public async Task<IEnumerable<Employee>> GetEmployeeByBusinessIdentifier(string BusinessIdentifier)
+        {
+            try
+            {
+                var Sql = "Select * from  Employees e " +
+                    "inner join Businesses b on e.BusinessId = b.Id where ISNULL(e.IsActive,1)=1 " +
+                    "and b.BusinessIdentifier = @BusinessIdentifier";
+                return await db.QueryAsync<Employee>(Sql, new { @BusinessIdentifier = BusinessIdentifier }).ConfigureAwait(false);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public async Task<IEnumerable<Employee>> GetEmployeeAndBusinessAndCostCenterByParentBusinessId(string ParentBusinessId)
+        {
+            try
+            {
+                var Sql = "Select * from Employees e inner join CostCenters c " +
+                    "on e.CostCenterId = c.CostCenterId  inner join Businesses b " +
+                    "on e.BusinessId = b.Id  where b.ParentBusinessId = @ParentBusinessId" +
+                    " and isnull(e.IsActive,1) = 1";            
+                return await db.QueryAsync<Employee>(Sql, new { @ParentBusinessId = ParentBusinessId }).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
         private DynamicParameters SetParameter(string EmployeeIdentifier)
         {
             DynamicParameters param = new DynamicParameters();
             param.Add("@EmployeeIdentifier", EmployeeIdentifier);
             return param;
         }
+
+       
     }
 }

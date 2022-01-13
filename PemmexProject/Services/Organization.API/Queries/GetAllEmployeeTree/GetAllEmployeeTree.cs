@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Organization.API.Dtos;
 using Organization.API.Interfaces;
 using Organization.API.Queries.GetOrganization;
+using Organization.API.Repositories.Interface;
 
 namespace Organization.API.Queries.GetAllEmployeeTree
 {
@@ -18,20 +19,21 @@ namespace Organization.API.Queries.GetAllEmployeeTree
     }
     public class GetAllEmployeeTreeHandler : IRequestHandler<GetAllEmployeeTree, List<EmployeeResponse>>
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IBusiness _business;
         private readonly IMapper _mapper;
-        public GetAllEmployeeTreeHandler(IApplicationDbContext context, IMapper mapper)
+        public GetAllEmployeeTreeHandler(IBusiness business, IMapper mapper)
         {
-            _context = context;
+            _business = business;
             _mapper = mapper;
         }
 
         public async Task<List<EmployeeResponse>> Handle(GetAllEmployeeTree request, CancellationToken cancellationToken)
         {
-            var org = await _context.Businesses
-                .Include(e => e.Employees)
-                .Where(e => e.IsActive == true && (e.ParentBusinessId == request.Id || e.BusinessIdentifier == request.Id))
-                .ToListAsync(cancellationToken);
+            //var org = await _context.Businesses
+            //    .Include(e => e.Employees)
+            //    .Where(e => e.IsActive == true && (e.ParentBusinessId == request.Id || e.BusinessIdentifier == request.Id))
+            //    .ToListAsync(cancellationToken);
+            var org = await _business.GetAllEmployeeTree(request.Id);
             List<EmployeeResponse> employeeResponses = new List<EmployeeResponse>();
             foreach(var business in org)
             {

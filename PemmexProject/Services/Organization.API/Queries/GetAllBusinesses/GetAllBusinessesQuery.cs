@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Organization.API.Dtos;
 using Organization.API.Entities;
 using Organization.API.Interfaces;
+using Organization.API.Repositories.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,21 +20,22 @@ namespace Organization.API.Queries.GetAllOrganizationEmployees
 
     public class GetAllBusinessesQueryHandeler : IRequestHandler<GetAllBusinessesQuery, List<BusinessVM>>
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IBusiness _business;
         private readonly IMapper _mapper;
 
-        public GetAllBusinessesQueryHandeler(IApplicationDbContext context, IMapper mapper)
+        public GetAllBusinessesQueryHandeler(IBusiness business, IMapper mapper)
         {
-            _context = context;
+            _business = business;
             _mapper = mapper;
         }
         public async Task<List<BusinessVM>> Handle(GetAllBusinessesQuery request, CancellationToken cancellationToken)
         {
-            var businesses = await _context.Businesses
-                .Where(e => e.ParentBusinessId == request.Id && e.IsActive == true)
-                .ToListAsync(cancellationToken);
+            //var businesses = await _context.Businesses
+            //    .Where(e => e.ParentBusinessId == request.Id && e.IsActive == true)
+            //    .ToListAsync(cancellationToken);
+            var businesses = await _business.GetBusinessByParentBusinessId(request.Id);
 
-            return _mapper.Map<List<Business>, List<BusinessVM>>(businesses);
+            return _mapper.Map<List<Business>, List<BusinessVM>>(businesses.ToList());
         }
     }
 }
