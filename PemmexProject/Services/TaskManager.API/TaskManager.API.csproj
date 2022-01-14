@@ -26,6 +26,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNet.SignalR.Core" Version="2.4.2" />
@@ -44,10 +45,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\EventBus.Messages\EventBus.Messages.csproj" />
     <ProjectReference Include="..\..\Common\PemmexCommonLibs\PemmexCommonLibs.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Database\Repositories\Repository\" />
   </ItemGroup>
 
 </Project>

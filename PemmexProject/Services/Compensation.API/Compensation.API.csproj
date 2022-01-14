@@ -27,5 +27,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\PemmexCommonLibs\PemmexCommonLibs.csproj" />
   </ItemGroup>
+ 
+  <ItemGroup>
+    <Folder Include="Database\Interfaces\" />
+  </ItemGroup>
 
 </Project>

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Compensation.API.Database.context;
+using Compensation.API.Database.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,21 +19,24 @@ namespace Compensation.API.Queries.GetOrganizationTotalSalaryCount
     public class GetOrganizationTotalSalaryCountQueryHandeler : IRequestHandler<GetOrganizationTotalSalaryCountQuery, double>
     {
         private readonly IApplicationDbContext _context;
+        private ICompensationSalaryRepository _compensation;
         private readonly IMapper _mapper;
 
-        public GetOrganizationTotalSalaryCountQueryHandeler(IApplicationDbContext context, IMapper mapper)
+        public GetOrganizationTotalSalaryCountQueryHandeler(IApplicationDbContext context, ICompensationSalaryRepository compensation, IMapper mapper)
         {
             _context = context;
+            _compensation = compensation;
             _mapper = mapper;
         }
         public async Task<double> Handle(GetOrganizationTotalSalaryCountQuery request, CancellationToken cancellationToken)
         {
-            var salary = await _context.Compensation
-            .Where(c => c.organizationIdentifier == request.organizationIdentifier)
-            .Select(o => o.TotalMonthlyPay)
-            .ToListAsync();
+            //var salary = await _context.Compensation
+            //.Where(c => c.organizationIdentifier == request.organizationIdentifier)
+            //.Select(o => o.TotalMonthlyPay)
+            //.ToListAsync();
+            var salary = await _compensation.GetCompensationTotalAmountByOrganizationIdentifier(request.organizationIdentifier);
 
-            return salary.Sum();
+            return salary.Sum(x => x.TotalMonthlyPay);
         }
     }
 }

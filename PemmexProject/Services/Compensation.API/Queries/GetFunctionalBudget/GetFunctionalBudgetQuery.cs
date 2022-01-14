@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Compensation.API.Database.context;
+using Compensation.API.Database.Repositories.Interface;
 using Compensation.API.Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -20,23 +21,24 @@ namespace Compensation.API.Queries.GetFunctionalBudget
 
     public class GetFunctionalBudgetQueryHandeler : IRequestHandler<GetFunctionalBudgetQuery, List<FunctionalBudgetDto>>
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IBudget _budget;
         private readonly IMapper _mapper;
 
-        public GetFunctionalBudgetQueryHandeler(IApplicationDbContext context, IMapper mapper)
+        public GetFunctionalBudgetQueryHandeler(IBudget budget, IMapper mapper)
         {
-            _context = context;
+            _budget = budget;
             _mapper = mapper;
         }
         public async Task<List<FunctionalBudgetDto>> Handle(GetFunctionalBudgetQuery request, CancellationToken cancellationToken)
         {
             List<FunctionalBudgetDto> budgets = new List<FunctionalBudgetDto>();
-           var budget = await _context.OrganizationBudgets
-                .Where(o => o.organizationIdentifier == request.organizationIdentifier
-                && o.startDate.Date == request.budgetDate.Date)
-                .ToListAsync(cancellationToken);
+            //var budget = await _context.OrganizationBudgets
+            //     .Where(o => o.organizationIdentifier == request.organizationIdentifier
+            //     && o.startDate.Date == request.budgetDate.Date)
+            //     .ToListAsync(cancellationToken);
+            var budget = await _budget.GetOrganizationBudgetByOrganizationIdentifier(request.organizationIdentifier);
 
-            foreach(var b in budget)
+            foreach (var b in budget)
             {
                 FunctionalBudgetDto dto = new FunctionalBudgetDto();
                 dto.budgetPercentage = b.budgetPercentage;
