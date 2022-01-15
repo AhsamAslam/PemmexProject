@@ -22,6 +22,32 @@ namespace TaskManager.API.Database.Repositories.Repository
             this.db = new SqlConnection(configuration.GetConnectionString("TaskManagerConnection"));
         }
 
+        public async Task AddBaseTask(BaseTask BaseTask)
+        {
+            try
+            {
+                var Sql = "INSERT INTO BaseTasks (TaskIdentifier,RequestedByIdentifier," +
+                    "ManagerIdentifier,appliedStatus,currentTaskStatus,taskType," +
+                    "isActive,taskDescription,Created,CreatedBy) VALUES " +
+                    "(@TaskIdentifier,@RequestedByIdentifier,@ManagerIdentifier," +
+                    "@appliedStatus,@currentTaskStatus,@taskType,@isActive,@taskDescription," +
+                    "@Created,@CreatedBy)";
+                await db.ExecuteAsync(Sql, BaseTask).ConfigureAwait(false);
+
+                var SqlHoliday = "INSERT INTO dbo.ChangeHolidays " +
+                    "(HolidayTaskId,EmployeeIdentifier,SubsituteId,SubsituteIdentifier," +
+                    "HolidayStartDate,HolidayEndDate,holidayType,FileName) VALUES " +
+                    "(@HolidayTaskId,@EmployeeIdentifier,@SubsituteId,@SubsituteIdentifier," +
+                    "@HolidayStartDate,@HolidayEndDate,@holidayType,@FileName)";
+                await db.ExecuteAsync(SqlHoliday, BaseTask).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task AddOrganizationApprovalSettings(OrganizationApprovalSettings OrganizationApprovalSettings)
         {
             try
@@ -48,6 +74,94 @@ namespace TaskManager.API.Database.Repositories.Repository
                     await db.ExecuteAsync(Sql, new { @Id = item.Id });
                 }
                 
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<List<BaseTask>> GetAllBaseTaskByTaskIdentifier(Guid[] TaskIdentifier, int currentTaskStatus)
+        {
+            try
+            {
+                List<BaseTask> baseTasks = new List<BaseTask>();
+                foreach (var item in TaskIdentifier)
+                {
+                    var Sql = "Select * from BaseTasks bt with (nolock) " +
+                        "inner join ChangeHolidays ch with (nolock) on " +
+                        "bt.TaskId = ch.HolidayTaskId inner join ChangeTitles ct with (nolock) on " +
+                        "bt.TaskId = ct.TitleTaskId inner join ChangeManagers cm with (nolock) " +
+                        "on bt.TaskId = cm.ManagerTaskId inner join ChangeCompensations cc with (nolock) " +
+                        "on bt.TaskId = cc.CompensationTaskId inner join ChangeGrades cg with (nolock) " +
+                        "on bt.TaskId = cg.GradeTaskId inner join ChangeTeam cht with (nolock) " +
+                        "on bt.TaskId = cht.TeamTaskId inner join BonusTask bot with (nolock) " +
+                        "on bt.TaskId = bot.BonusTaskId  where bt.TaskIdentifier = @TaskIdentifier " +
+                        "and bt.currentTaskStatus = @currentTaskStatus";
+                    baseTasks.Add(await db.QueryFirstAsync<BaseTask>(Sql, new { @TaskIdentifier = item, @currentTaskStatus = currentTaskStatus }).ConfigureAwait(false));
+                }
+                return baseTasks;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<List<BaseTask>> GetAllBaseTaskByTaskIdentifierAndStatuses(Guid[] TaskIdentifier, int currentTaskStatus, int currentTaskStatus2)
+        {
+            try
+            {
+                List<BaseTask> baseTasks = new List<BaseTask>();
+                foreach (var item in TaskIdentifier)
+                {
+                    var Sql = "Select * from BaseTasks bt with (nolock) " +
+                        "inner join ChangeHolidays ch with (nolock) on " +
+                        "bt.TaskId = ch.HolidayTaskId inner join ChangeTitles ct with (nolock) on " +
+                        "bt.TaskId = ct.TitleTaskId inner join ChangeManagers cm with (nolock) " +
+                        "on bt.TaskId = cm.ManagerTaskId inner join ChangeCompensations cc with (nolock) " +
+                        "on bt.TaskId = cc.CompensationTaskId inner join ChangeGrades cg with (nolock) " +
+                        "on bt.TaskId = cg.GradeTaskId inner join ChangeTeam cht with (nolock) " +
+                        "on bt.TaskId = cht.TeamTaskId inner join BonusTask bot with (nolock) " +
+                        "on bt.TaskId = bot.BonusTaskId  where bt.TaskIdentifier = @TaskIdentifier " +
+                        "and (bt.currentTaskStatus = @currentTaskStatus or bt.currentTaskStatus = @currentTaskStatus2)";
+                    baseTasks.Add(await db.QueryFirstAsync<BaseTask>(Sql, new { @TaskIdentifier = item, @currentTaskStatus = currentTaskStatus, @currentTaskStatus2 = currentTaskStatus2 }).ConfigureAwait(false));
+                }
+                return baseTasks;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<BaseTask>> GetBaseTaskAndByRequestedByIdentifierAndStatuses(string RequestedByIdentifier, int currentTaskStatus, int currentTaskStatus2)
+        {
+            try
+            {
+                var Sql = "Select distinct TaskIdentifier from BaseTasks with (nolock) " +
+                    "where RequestedByIdentifier = @RequestedByIdentifier and " +
+                    "isnull(isActive,1)=1 and (currentTaskStatus = @currentTaskStatus or currentTaskStatus = @currentTaskStatus2)";
+                return await db.QueryAsync<BaseTask>(Sql, new { @RequestedByIdentifier = RequestedByIdentifier, @currentTaskStatus = currentTaskStatus, @currentTaskStatus2 = currentTaskStatus2 }).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<BaseTask>> GetBaseTaskByRequestedByIdentifier(string RequestedByIdentifier, int currentTaskStatus)
+        {
+            try
+            {
+                var Sql = "Select distinct TaskIdentifier from BaseTasks with (nolock) " +
+                    "where RequestedByIdentifier = @RequestedByIdentifier and " +
+                    "isnull(isActive,1)=1 and (currentTaskStatus = @currentTaskStatus)";
+                return await db.QueryAsync<BaseTask>(Sql, new { @RequestedByIdentifier = RequestedByIdentifier, @currentTaskStatus = currentTaskStatus }).ConfigureAwait(false);
             }
             catch (Exception)
             {

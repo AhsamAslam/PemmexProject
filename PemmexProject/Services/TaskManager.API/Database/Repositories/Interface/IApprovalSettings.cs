@@ -15,6 +15,12 @@ namespace TaskManager.API.Database.Repositories.Interface
 
         Task<OrganizationApprovalSettings> GetOrganizationApprovalSettingsByOrganizationIdentifierAndTaskType(string OrganizationIdentifier, TaskType TaskType);
         Task AddOrganizationApprovalSettings(OrganizationApprovalSettings OrganizationApprovalSettings);
+        Task AddBaseTask(BaseTask BaseTask);
+        Task<IEnumerable<BaseTask>> GetBaseTaskByRequestedByIdentifier(string RequestedByIdentifier, int currentTaskStatus);
+        Task<List<BaseTask>> GetAllBaseTaskByTaskIdentifier(Guid[] TaskIdentifier, int currentTaskStatus);
+        Task<IEnumerable<BaseTask>> GetBaseTaskAndByRequestedByIdentifierAndStatuses(string RequestedByIdentifier, int currentTaskStatus, int currentTaskStatus2);
+        Task<List<BaseTask>> GetAllBaseTaskByTaskIdentifierAndStatuses(Guid[] TaskIdentifier, int currentTaskStatus, int currentTaskStatus2);
+
         Task UpdateOrganizationApprovalSettings(OrganizationApprovalSettings OrganizationApprovalSettings);
 
     }

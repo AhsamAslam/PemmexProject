@@ -23,6 +23,8 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using TaskManager.API.Database.context;
+using TaskManager.API.Database.Repositories.Interface;
+using TaskManager.API.Database.Repositories.Repository;
 
 namespace TaskManager.API
 {
@@ -43,6 +45,8 @@ namespace TaskManager.API
 
             services.AddTransient<IDateTime, DateTimeService>();
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<TaskManagerContext>());
+            services.AddScoped<IApprovalSettings, ApprovalSettingsRepository>();
+            services.AddScoped<IBonusSettings, BonusSettingsRepository>();
 
             services.AddControllers();
             services.AddMediatR(Assembly.GetExecutingAssembly());

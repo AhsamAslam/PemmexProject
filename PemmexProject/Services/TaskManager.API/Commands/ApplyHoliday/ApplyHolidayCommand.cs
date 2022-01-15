@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TaskManager.API.Database.context;
 using TaskManager.API.Database.Entities;
+using TaskManager.API.Database.Repositories.Interface;
 using TaskManager.API.Enumerations;
 
 namespace TaskManager.API.Commands.ApplyHoliday
@@ -39,12 +40,14 @@ namespace TaskManager.API.Commands.ApplyHoliday
     public class ApplyHolidayCommandHandeler : IRequestHandler<ApplyHolidayCommand>
     {
         private readonly IApplicationDbContext _context;
+        private readonly IApprovalSettings _approvalSettings;
         private readonly IMapper _mapper;
         private readonly IDateTime _dateTime;
-        public ApplyHolidayCommandHandeler(IApplicationDbContext context, IMapper mapper,
+        public ApplyHolidayCommandHandeler(IApplicationDbContext context, IApprovalSettings approvalSettings, IMapper mapper,
             IDateTime dateTime)
         {
             _context = context;
+            _approvalSettings = approvalSettings;
             _mapper = mapper;
             _dateTime = dateTime;
         }
@@ -77,15 +80,17 @@ namespace TaskManager.API.Commands.ApplyHoliday
                 baseTask.RequestedByIdentifier = request.EmployeeIdentifier;
                 baseTask.TaskIdentifier = Guid.NewGuid();
                 baseTask.ManagerIdentifier = request.ManagerIdentifier;
-                _context.BaseTasks.Add(baseTask);
+                //_context.BaseTasks.Add(baseTask);
+                await _approvalSettings.AddBaseTask(baseTask);
                 var managerTask = PopulateManagerTask(baseTask);
                 if (approvesetting.ManagerType == OrganizationApprovalStructure.Other)
                 {
                     managerTask.RequestedByIdentifier = approvesetting.EmployeeIdentifier;
                 }
 
-                _context.BaseTasks.Add(managerTask);
-                await _context.SaveChangesAsync(cancellationToken);
+                //_context.BaseTasks.Add(managerTask);
+                //await _context.SaveChangesAsync(cancellationToken);
+                await _approvalSettings.AddBaseTask(managerTask);
                 return Unit.Value;
             }
             catch(Exception)
@@ -96,10 +101,11 @@ namespace TaskManager.API.Commands.ApplyHoliday
         }
         private async Task<OrganizationApprovalSettingDetail> GetApprovalSettingStructure(string organizationIdentifer)
         {
-            var setting = await _context.organizationApprovalSettings
-                  .Include(d => d.organizationApprovalSettingDetails)
-                   .FirstOrDefaultAsync(s => s.OrganizationIdentifier == organizationIdentifer
-                   && s.taskType == TaskType.Holiday);
+            //var setting = await _context.organizationApprovalSettings
+            //      .Include(d => d.organizationApprovalSettingDetails)
+            //       .FirstOrDefaultAsync(s => s.OrganizationIdentifier == organizationIdentifer
+            //       && s.taskType == TaskType.Holiday);
+            var setting = await _approvalSettings.GetOrganizationApprovalSettingsByOrganizationIdentifierAndTaskType(organizationIdentifer, TaskType.Holiday);
 
             return setting.organizationApprovalSettingDetails?.FirstOrDefault();
         }
