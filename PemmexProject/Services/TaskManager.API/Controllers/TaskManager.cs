@@ -42,6 +42,7 @@ namespace TaskManager.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"TaskManager_{CurrentUser.EmployeeIdentifier}");
                 return await Task.FromResult(new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null));
             }
         }
@@ -87,6 +88,8 @@ namespace TaskManager.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"TaskManager_{CurrentUser.EmployeeIdentifier}");
+
                 return await Task.FromResult(new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null));
             }
         }
@@ -101,6 +104,8 @@ namespace TaskManager.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"TaskManager_{CurrentUser.EmployeeIdentifier}");
+
                 return await Task.FromResult(new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null));
             }
         }
@@ -115,6 +120,8 @@ namespace TaskManager.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"TaskManager_{CurrentUser.EmployeeIdentifier}");
+
                 return await Task.FromResult(new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null));
             }
         }

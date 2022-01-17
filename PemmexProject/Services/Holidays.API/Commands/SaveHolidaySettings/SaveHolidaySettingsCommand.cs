@@ -21,43 +21,51 @@ namespace Holidays.API.Commands.SaveHolidaySettings
 
     public class SaveHolidaySettingsCommandHandeler : IRequestHandler<SaveHolidaySettingsCommand, ResponseMessage>
     {
-        private readonly IApplicationDbContext _context;
         private readonly IHolidaySettings _holidaySetting;
         private readonly IMapper _mapper;
         public SaveHolidaySettingsCommandHandeler(IApplicationDbContext context, IHolidaySettings holidaySetting, IMapper mapper)
         {
-            _context = context;
             _holidaySetting = holidaySetting;
             _mapper = mapper;
         }
         public async Task<ResponseMessage> Handle(SaveHolidaySettingsCommand request, CancellationToken cancellationToken)
         {
-           if(request.settings.Count > 0)
-           {
-                var con_settings = _mapper.Map<List<HolidaySettings>>(request.settings);
-                string return_message = "";
-                var settings = _context.HolidaySettings.
-                Where(h => h.OrganizationIdentifier == request.settings.FirstOrDefault().OrganizationIdentifier).ToList();
-                if (settings.Count > 0)
+            try
+            {
+                if (request.settings.Count > 0)
                 {
-                    //_context.HolidaySettings.RemoveRange(settings);
-                    //_context.HolidaySettings.AddRange(con_settings);
-                    await _holidaySetting.AddHolidaySettings(con_settings);
-                    return_message = "Settings Updated";
+                    var con_settings = _mapper.Map<List<HolidaySettings>>(request.settings);
+                    string return_message = "";
+                    //var settings = _context.HolidaySettings.
+                    //Where(h => h.OrganizationIdentifier == request.settings.FirstOrDefault().OrganizationIdentifier).ToList();
+                    var settings = await _holidaySetting.GetHolidaySettingsByOrganizationIdentifier(request.settings.FirstOrDefault().OrganizationIdentifier);
+                    if (settings.ToList().Count > 0)
+                    {
+                        //_context.HolidaySettings.RemoveRange(settings);
+                        //_context.HolidaySettings.AddRange(con_settings);
+                        await _holidaySetting.AddHolidaySettings(con_settings);
+                        return_message = "Settings Updated";
+                    }
+                    else
+                    {
+                        await _holidaySetting.AddHolidaySettings(con_settings);
+                        return_message = "Settings Saved";
+                    }
+
+                    //await _context.SaveChangesAsync(cancellationToken);
+                    return new ResponseMessage(true, EResponse.OK, return_message, null);
                 }
                 else
                 {
-                    await _holidaySetting.AddHolidaySettings(con_settings);
-                    return_message = "Settings Saved";
+                    return new ResponseMessage(true, EResponse.NoData, "No Data in the request", null);
                 }
-
-                //await _context.SaveChangesAsync(cancellationToken);
-                return new ResponseMessage(true, EResponse.OK, return_message, null);
             }
-            else
+            catch (Exception)
             {
-                return new ResponseMessage(true, EResponse.NoData,"No Data in the request", null);
+
+                throw;
             }
+          
            
         }
     }

@@ -3,6 +3,7 @@ using EmailServices.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Domain.Common.Dtos;
 using System;
 using System.Collections.Generic;
@@ -16,8 +17,11 @@ namespace EmailServices.Controllers
     public class EmailController : ControllerBase
     {
         private readonly IEmailService mailService;
-        public EmailController(IEmailService mailService)
+        private readonly ILogService _logService;
+
+        public EmailController(IEmailService mailService, ILogService logService)
         {
+            _logService = logService;
             this.mailService = mailService;
         }
 
@@ -29,9 +33,11 @@ namespace EmailServices.Controllers
                 await mailService.SendEmailAsync(request);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                throw ex;
+                await _logService.WriteLogAsync(e, $"Email_");
+
+                throw;
             }
         }
     }

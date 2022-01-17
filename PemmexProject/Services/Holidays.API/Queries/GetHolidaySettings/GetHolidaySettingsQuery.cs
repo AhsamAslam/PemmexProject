@@ -29,9 +29,18 @@ namespace Holidays.API.Queries.GetHolidaySettings
         }
         public async Task<List<HolidaySettingsDto>> Handle(GetHolidaySettingsQuery request, CancellationToken cancellationToken)
         {
-            var holidaySettings = await _holidaySetting.GetHolidaySettingsById(request.Id);
+            try
+            {
+                var holidaySettings = await _holidaySetting.GetHolidaySettingsById(request.Id);
 
-            return _mapper.Map<List<HolidaySettings>, List<HolidaySettingsDto>>(holidaySettings.ToList());
+                return _mapper.Map<List<HolidaySettings>, List<HolidaySettingsDto>>(holidaySettings.ToList());
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
     }
 }

@@ -37,7 +37,7 @@ namespace Organization.API.Commands.CreateCostCenter
                 var CostCenter = await _costCenter.AddCostCenterRequest(request.costCenterRequest);
                 return e.CostCenterId;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

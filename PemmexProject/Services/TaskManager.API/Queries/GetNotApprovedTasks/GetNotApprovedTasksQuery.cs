@@ -20,13 +20,11 @@ namespace TaskManager.API.Queries.GetHistoryTasksByManagerId
     }
     public class GetHistoryTasksByManagerIdQueryHandeler : IRequestHandler<GetNotApprovedTasksQuery, List<TaskDto>>
     {
-        private readonly IApplicationDbContext _context;
         private readonly IApprovalSettings _approvalSettings;
         private readonly IMapper _mapper;
 
-        public GetHistoryTasksByManagerIdQueryHandeler(IApplicationDbContext context, IApprovalSettings approvalSettings, IMapper mapper)
+        public GetHistoryTasksByManagerIdQueryHandeler(IApprovalSettings approvalSettings, IMapper mapper)
         {
-            _context = context;
             _approvalSettings = approvalSettings;
             _mapper = mapper;
         }

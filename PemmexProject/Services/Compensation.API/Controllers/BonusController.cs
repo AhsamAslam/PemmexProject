@@ -4,6 +4,7 @@ using Compensation.API.Queries.GetUserBonuses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PemmexCommonLibs.Application.Helpers;
+using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,11 @@ namespace Compensation.API.Controllers
     [ApiController]
     public class BonusController : ApiControllerBase
     {
+        private readonly ILogService _logService;
+        public BonusController(ILogService logService)
+        {
+            _logService = logService;
+        }
         [HttpGet]
         [Route("user")]
         public async Task<ActionResult<ResponseMessage>> Get(string EmployeeIdentifier)
@@ -27,6 +33,8 @@ namespace Compensation.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Bonus_{CurrentUser.EmployeeIdentifier}");
+
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
@@ -41,6 +49,8 @@ namespace Compensation.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Bonus_{CurrentUser.EmployeeIdentifier}");
+
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
@@ -55,6 +65,8 @@ namespace Compensation.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Bonus_{CurrentUser.EmployeeIdentifier}");
+
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }

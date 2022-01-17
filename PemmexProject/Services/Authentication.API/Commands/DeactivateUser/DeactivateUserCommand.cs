@@ -28,16 +28,25 @@ namespace Authentication.API.Commands.DeactivateUser
         public async Task<Unit> Handle(DeactivateUserCommand request, CancellationToken cancellationToken)
         {
 
-            //var user = await _context.Users.Where(x => x.Id == request.Id && x.isActive == true).FirstOrDefaultAsync(cancellationToken);
-            var user = await _user.GetUserById(request.Id);
-            if (user != null)
+            try
             {
-                user.isActive = false;
-                //_context.Users.Update(user);
-                //await _context.SaveChangesAsync(cancellationToken);
-                var UpdateUser = await _user.UpdateUser(user);
+                //var user = await _context.Users.Where(x => x.Id == request.Id && x.isActive == true).FirstOrDefaultAsync(cancellationToken);
+                var user = await _user.GetUserById(request.Id);
+                if (user != null)
+                {
+                    user.isActive = false;
+                    //_context.Users.Update(user);
+                    //await _context.SaveChangesAsync(cancellationToken);
+                    var UpdateUser = await _user.UpdateUser(user);
+                }
+                return Unit.Value;
             }
-            return Unit.Value;
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
         }
     }
 }

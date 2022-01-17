@@ -47,6 +47,24 @@ namespace Holidays.API.Repositories.Repository
             throw new NotImplementedException();
         }
 
+        public async Task DeleteHolidayCalendarList(List<HolidayCalendar> HolidayCalendar)
+        {
+            try
+            {
+                foreach (var item in HolidayCalendar)
+                {
+                    var Sql = "Delete from HolidayCalendars where HolidayCalendarId = @HolidayCalendarId";
+                    await db.ExecuteAsync(Sql, new { @HolidayCalendarId = item.HolidayCalendarId }).ConfigureAwait(false);
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<IEnumerable<HolidayCalendar>> GetHolidayCalendar(string CountrCode, int year)
         {
             try

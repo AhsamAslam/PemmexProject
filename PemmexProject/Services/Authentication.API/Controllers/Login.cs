@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using PemmexCommonLibs.Application.Helpers;
+using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -31,9 +32,11 @@ namespace Authentication.API.Controllers
         private readonly IConfiguration _configuration;
         private readonly IdentityServerTools _tools;
         private readonly IMapper _mapper;
-        public Login(IConfiguration configuration, IdentityServerTools tools,IMapper mapper)
+        private readonly ILogService _logService;
+        public Login(IConfiguration configuration, IdentityServerTools tools,IMapper mapper, ILogService logService)
         {
             _configuration = configuration;
+            _logService = logService;
             _tools = tools;
             _mapper = mapper;
         }
@@ -51,6 +54,7 @@ namespace Authentication.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Login_{CurrentUser.EmployeeIdentifier}");
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
@@ -64,6 +68,8 @@ namespace Authentication.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Login_{CurrentUser.EmployeeIdentifier}");
+
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
@@ -78,6 +84,8 @@ namespace Authentication.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Login_{CurrentUser.EmployeeIdentifier}");
+
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
@@ -92,6 +100,8 @@ namespace Authentication.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Login_{CurrentUser.EmployeeIdentifier}");
+
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
@@ -105,6 +115,8 @@ namespace Authentication.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Login_{CurrentUser.EmployeeIdentifier}");
+
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
@@ -139,6 +151,8 @@ namespace Authentication.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Login_{CurrentUser.EmployeeIdentifier}");
+
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }

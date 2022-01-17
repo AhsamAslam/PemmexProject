@@ -24,12 +24,10 @@ namespace Organization.API.Commands.UpdateEmployee
 
     public class UpdateEmployeeCommandHandeler : IRequestHandler<UpdateEmployeeCommand, int>
     {
-        private readonly IApplicationDbContext _context;
         private readonly IEmployee _employee;
         private readonly IMapper _mapper;
-        public UpdateEmployeeCommandHandeler(IApplicationDbContext context, IEmployee employee, IMapper mapper)
+        public UpdateEmployeeCommandHandeler(IEmployee employee, IMapper mapper)
         {
-            _context = context;
             _employee = employee;
             _mapper = mapper;
         }

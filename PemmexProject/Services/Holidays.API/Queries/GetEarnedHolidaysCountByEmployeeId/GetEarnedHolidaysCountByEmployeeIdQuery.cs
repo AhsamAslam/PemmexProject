@@ -54,7 +54,7 @@ namespace Holidays.API.Queries.GetEarnedHolidaysByEmployeeId
                
                 return earned;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
             }

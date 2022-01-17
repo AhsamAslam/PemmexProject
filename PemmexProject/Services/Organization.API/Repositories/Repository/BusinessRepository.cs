@@ -67,6 +67,21 @@ namespace Organization.API.Repositories.Repository
             }
         }
 
+        public async Task<Business> GetBusinessByParentBusinessIdIsActive(string ParentBusinessId)
+        {
+            try
+            {
+                var Sql = "Select top(1)* from Businesses b " +
+                    "where ISNULL(b.IsActive, 1) = 1 AND b.ParentBusinessId = @ParentBusinessId";
+                return await db.QueryFirstAsync<Business>(Sql, new { @ParentBusinessId = ParentBusinessId }).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public Task<Business> UpdateBusiness(Business Business)
         {
             throw new NotImplementedException();

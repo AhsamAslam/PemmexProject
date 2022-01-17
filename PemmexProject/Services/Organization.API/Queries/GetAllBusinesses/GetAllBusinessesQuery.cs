@@ -30,12 +30,21 @@ namespace Organization.API.Queries.GetAllOrganizationEmployees
         }
         public async Task<List<BusinessVM>> Handle(GetAllBusinessesQuery request, CancellationToken cancellationToken)
         {
-            //var businesses = await _context.Businesses
-            //    .Where(e => e.ParentBusinessId == request.Id && e.IsActive == true)
-            //    .ToListAsync(cancellationToken);
-            var businesses = await _business.GetBusinessByParentBusinessId(request.Id);
+            try
+            {
+                //var businesses = await _context.Businesses
+                //    .Where(e => e.ParentBusinessId == request.Id && e.IsActive == true)
+                //    .ToListAsync(cancellationToken);
+                var businesses = await _business.GetBusinessByParentBusinessId(request.Id);
 
-            return _mapper.Map<List<Business>, List<BusinessVM>>(businesses.ToList());
+                return _mapper.Map<List<Business>, List<BusinessVM>>(businesses.ToList());
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
     }
 }

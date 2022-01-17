@@ -26,8 +26,17 @@ namespace Notifications.API.Queries.GetAllNotifications
         }
         public async Task<List<NotificationDto>> Handle(GetAllNotificationsQuery request, CancellationToken cancellationToken)
         {
-            var notifications = await _context.GetAllNotification(request.Id);
-            return _mapper.Map<List<Database.Entities.Notifications>, List<NotificationDto>>(notifications);
+            try
+            {
+                var notifications = await _context.GetAllNotification(request.Id);
+                return _mapper.Map<List<Database.Entities.Notifications>, List<NotificationDto>>(notifications);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
         }
     }
 }

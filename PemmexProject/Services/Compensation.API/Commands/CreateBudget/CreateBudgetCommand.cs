@@ -83,9 +83,9 @@ namespace Compensation.API.Commands.CreateBudgetCommand
                 //await _context.SaveChangesAsync(cancellationToken);
                 return Unit.Value;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw new Exception(e.ToString());
+                throw;
             }
         }
     }

@@ -19,41 +19,48 @@ namespace Organization.API.Queries.GetEmployee
 
     public class GetEmployeeQueryHandeler : IRequestHandler<GetEmployeeQuery, EmployeeResponse>
     {
-        private readonly IApplicationDbContext _context;
         private readonly IEmployee _employee;
         private readonly IMapper _mapper;
 
-        public GetEmployeeQueryHandeler(IApplicationDbContext context, IEmployee employee, IMapper mapper)
+        public GetEmployeeQueryHandeler(IEmployee employee, IMapper mapper)
         {
-            _context = context;
             _employee = employee;
             _mapper = mapper;
         }
         public async Task<EmployeeResponse> Handle(GetEmployeeQuery request, CancellationToken cancellationToken)
         {
-            Guid guidOutput;
-            bool isValid = Guid.TryParse(request.Id, out guidOutput);
-            if(isValid)
+            try
             {
-                //var employee = await _context.Employees
-                //.Where(e => e.Emp_Guid == guidOutput && e.IsActive == true)
-                //.Include(x => x.CostCenter)
-                //.Include(x => x.employeeContacts)
-                //.FirstOrDefaultAsync(cancellationToken);
-                var employee = await _employee.GetEmployeeByEmpGuid(guidOutput);
-                return _mapper.Map<Employee, EmployeeResponse>(employee);
+                Guid guidOutput;
+                bool isValid = Guid.TryParse(request.Id, out guidOutput);
+                if (isValid)
+                {
+                    //var employee = await _context.Employees
+                    //.Where(e => e.Emp_Guid == guidOutput && e.IsActive == true)
+                    //.Include(x => x.CostCenter)
+                    //.Include(x => x.employeeContacts)
+                    //.FirstOrDefaultAsync(cancellationToken);
+                    var employee = await _employee.GetEmployeeByEmpGuid(guidOutput);
+                    return _mapper.Map<Employee, EmployeeResponse>(employee);
 
+                }
+                else
+                {
+                    //var employee = await _context.Employees
+                    //.Where(e => e.EmployeeIdentifier == request.Id && e.IsActive == true)
+                    //.Include(x => x.CostCenter)
+                    //.Include(x => x.employeeContacts)
+                    //.FirstOrDefaultAsync(cancellationToken);
+                    var employee = await _employee.GetEmployeeByEmployeeIdentifier(request.Id);
+                    return _mapper.Map<Employee, EmployeeResponse>(employee);
+                }
             }
-            else
+            catch (Exception)
             {
-                //var employee = await _context.Employees
-                //.Where(e => e.EmployeeIdentifier == request.Id && e.IsActive == true)
-                //.Include(x => x.CostCenter)
-                //.Include(x => x.employeeContacts)
-                //.FirstOrDefaultAsync(cancellationToken);
-                var employee = await _employee.GetEmployeeByEmployeeIdentifier(request.Id);
-                return _mapper.Map<Employee, EmployeeResponse>(employee);
-            }            
+
+                throw;
+            }
+           
         }
     }
 }

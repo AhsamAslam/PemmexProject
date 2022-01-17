@@ -20,25 +20,32 @@ namespace Organization.API.Queries.GetAllBusinessEmployees
 
     public class GetAllBusinessEmployeesQueryHandeler : IRequestHandler<GetAllBusinessEmployeesQuery, List<EmployeeResponse>>
     {
-        private readonly IApplicationDbContext _context;
         private readonly IEmployee _employee;
         private readonly IMapper _mapper;
 
-        public GetAllBusinessEmployeesQueryHandeler(IApplicationDbContext context, IEmployee employee, IMapper mapper)
+        public GetAllBusinessEmployeesQueryHandeler( IEmployee employee, IMapper mapper)
         {
-            _context = context;
             _employee = employee;
             _mapper = mapper;
         }
         public async Task<List<EmployeeResponse>> Handle(GetAllBusinessEmployeesQuery request, CancellationToken cancellationToken)
         {
-            //var employee = await _context.Employees
-            //    .Include(b => b.Businesses)
-            //    .Where(e => e.Businesses.BusinessIdentifier == request.Id && e.IsActive == true)
-            //    .ToListAsync(cancellationToken);
-            var employee = await _employee.GetEmployeeByBusinessIdentifier(request.Id);
+            try
+            {
+                //var employee = await _context.Employees
+                //    .Include(b => b.Businesses)
+                //    .Where(e => e.Businesses.BusinessIdentifier == request.Id && e.IsActive == true)
+                //    .ToListAsync(cancellationToken);
+                var employee = await _employee.GetEmployeeByBusinessIdentifier(request.Id);
+
+                return _mapper.Map<List<Employee>, List<EmployeeResponse>>(employee.ToList());
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
             
-            return _mapper.Map<List<Employee>, List<EmployeeResponse>>(employee.ToList());
         }
     }
 }

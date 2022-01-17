@@ -22,16 +22,14 @@ namespace Holidays.API.Queries.GetLeftHolidaysByBusinessId
     }
     public class GetHolidaysByBusinessIdQueryHandeler : IRequestHandler<GetHolidaysByBusinessIdQuery, List<EmployeeHolidaysCounter>>
     {
-        private readonly IApplicationDbContext _context;
         private readonly IDateTime _dateTime;
         private readonly DbContextOptionsBuilder<HolidaysContext> optionsBuilder = null;
         private readonly IHolidaySettings _holidaySetting;
         private readonly ICompanyToEmployeeHolidays _companyToEmployeeHolidays;
         private readonly IEmployeeHolidays _employeeHolidays;
 
-        public GetHolidaysByBusinessIdQueryHandeler(IApplicationDbContext context, IHolidaySettings holidaySetting, ICompanyToEmployeeHolidays companyToEmployeeHolidays, IEmployeeHolidays employeeHolidays, IDateTime dateTime, IConfiguration configuration)
+        public GetHolidaysByBusinessIdQueryHandeler(IHolidaySettings holidaySetting, ICompanyToEmployeeHolidays companyToEmployeeHolidays, IEmployeeHolidays employeeHolidays, IDateTime dateTime, IConfiguration configuration)
         {
-            _context = context;
             _dateTime = dateTime;
             this.optionsBuilder = new DbContextOptionsBuilder<HolidaysContext>()
             .UseSqlServer(configuration.GetConnectionString("HolidaysConnection"));

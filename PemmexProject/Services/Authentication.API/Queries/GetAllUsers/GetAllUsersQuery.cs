@@ -29,11 +29,13 @@ namespace Authentication.API.Queries.GetAllUsers
         }
         public async Task<List<UserDto>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
-            List<UserDto> usersDto = new List<UserDto>();
-            var users = await _user.GetAllUsers();
-            foreach (var item in users)
+            try
             {
-                usersDto = new List<UserDto>{
+                List<UserDto> usersDto = new List<UserDto>();
+                var users = await _user.GetAllUsers();
+                foreach (var item in users)
+                {
+                    usersDto = new List<UserDto>{
                     new UserDto
                     {
                          EmployeeIdentifier = item.EmployeeIdentifier,
@@ -55,32 +57,39 @@ namespace Authentication.API.Queries.GetAllUsers
 
                     }
                 };
+                }
+
+                //var o = from u in _context.Users
+                //join m in _context.Users on u.ManagerIdentifier equals m.EmployeeIdentifier into ps
+                //from p in ps.DefaultIfEmpty()
+                //select new UserDto
+                //{
+                //    EmployeeIdentifier = u.EmployeeIdentifier,
+                //    ManagerIdentifier = u.ManagerIdentifier,
+                //    ManagerName = (p == null) ? string.Empty : (p.FirstName + " " + p.LastName),
+                //    Grade = u.Grade,
+                //    Email = u.Email,
+                //    CostCenterIdentifier = u.CostCenterIdentifier,
+                //    BusinessIdentifier = u.BusinessIdentifier,
+                //    Id = u.Id,
+                //    JobFunction = Enum.GetName(u.JobFunction),
+                //    OrganizationCountry = u.OrganizationCountry,
+                //    OrganizationIdentifier = u.OrganizationIdentifier,
+                //    Role = u.Role,
+                //    Title = u.Title,
+                //    UserName = u.UserName,
+                //    FirstName = u.FirstName,
+                //    LastName = u.LastName
+                //};
+
+                return usersDto.ToList();
             }
+            catch (Exception)
+            {
 
-            //var o = from u in _context.Users
-            //join m in _context.Users on u.ManagerIdentifier equals m.EmployeeIdentifier into ps
-            //from p in ps.DefaultIfEmpty()
-            //select new UserDto
-            //{
-            //    EmployeeIdentifier = u.EmployeeIdentifier,
-            //    ManagerIdentifier = u.ManagerIdentifier,
-            //    ManagerName = (p == null) ? string.Empty : (p.FirstName + " " + p.LastName),
-            //    Grade = u.Grade,
-            //    Email = u.Email,
-            //    CostCenterIdentifier = u.CostCenterIdentifier,
-            //    BusinessIdentifier = u.BusinessIdentifier,
-            //    Id = u.Id,
-            //    JobFunction = Enum.GetName(u.JobFunction),
-            //    OrganizationCountry = u.OrganizationCountry,
-            //    OrganizationIdentifier = u.OrganizationIdentifier,
-            //    Role = u.Role,
-            //    Title = u.Title,
-            //    UserName = u.UserName,
-            //    FirstName = u.FirstName,
-            //    LastName = u.LastName
-            //};
-
-            return usersDto.ToList();
+                throw;
+            }
+            
         }
     }
 }

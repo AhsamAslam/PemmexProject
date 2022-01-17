@@ -23,10 +23,12 @@ namespace Compensation.API.Controllers
     {
         private readonly IFileUploadService _fileUploadService;
         private readonly IDateTime _dateTime;
-        public JobCatalogueController(IFileUploadService fileUploadService, IDateTime dateTime)
+        private readonly ILogService _logService;
+        public JobCatalogueController(IFileUploadService fileUploadService, IDateTime dateTime, ILogService logService)
         {
             _fileUploadService = fileUploadService;
             _dateTime = dateTime;
+            _logService = logService;
         }
         [AllowAnonymous]
         [HttpPost]
@@ -90,6 +92,8 @@ namespace Compensation.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"JobCatalogue_{CurrentUser.EmployeeIdentifier}");
+
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.ToString(), null);
             }
         }
@@ -111,6 +115,8 @@ namespace Compensation.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"JobCatalogue_{CurrentUser.EmployeeIdentifier}");
+
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }

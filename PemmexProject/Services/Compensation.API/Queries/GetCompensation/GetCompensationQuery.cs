@@ -28,8 +28,17 @@ namespace Compensation.API.Queries.GetCompensation
         }
         public async Task<CompensationDto> Handle(GetCompensationQuery request, CancellationToken cancellationToken)
         {
-            var employee = await _context.GetCurrentCompensation(request.employeeIdentifier);
-            return _mapper.Map<Database.Entities.Compensation, CompensationDto>(employee);
+            try
+            {
+                var employee = await _context.GetCurrentCompensation(request.employeeIdentifier);
+                return _mapper.Map<Database.Entities.Compensation, CompensationDto>(employee);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
     }
 }

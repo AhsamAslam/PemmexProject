@@ -78,6 +78,20 @@ namespace Holidays.API.Repositories.Repository
             throw new NotImplementedException();
         }
 
+        public async Task<IEnumerable<HolidaySettings>> GetHolidaySettingsByOrganizationIdentifier(string OrganizationIdentifier)
+        {
+            try
+            {
+                var sql = "Select * from HolidaySettings where OrganizationIdentifier = @OrganizationIdentifier";
+                return await db.QueryAsync<HolidaySettings>(sql, new { @OrganizationIdentifier = OrganizationIdentifier }).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task<HolidaySettings> GetHolidaySettingsByBusinessIdentifier(string BusinessIdentifier)
         {
             try

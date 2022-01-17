@@ -19,7 +19,16 @@ namespace Notifications.API.Queries.GetUnReadNotificationsCount
         }
         public async Task<int> Handle(GetUnReadNotificationsCountQuery request, CancellationToken cancellationToken)
         {
-            return await _context.CountUnReadNotifications(request.Id);
+            try
+            {
+                return await _context.CountUnReadNotifications(request.Id);
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+            
         }
     }
 }

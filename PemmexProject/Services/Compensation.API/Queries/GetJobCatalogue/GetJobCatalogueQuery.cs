@@ -23,28 +23,35 @@ namespace Organization.API.Queries.GetJobCatalogue
 
     public class GetJobCatalogueQueryHandeler : IRequestHandler<GetJobCatalogueQuery, JobCatalogueDto>
     {
-        private readonly IApplicationDbContext _context;
         private readonly IJobCatalogue _jobCatalogue;
         private readonly IMapper _mapper;
 
-        public GetJobCatalogueQueryHandeler(IApplicationDbContext context, IJobCatalogue jobCatalogue, IMapper mapper)
+        public GetJobCatalogueQueryHandeler( IJobCatalogue jobCatalogue, IMapper mapper)
         {
-            _context = context;
             _jobCatalogue = jobCatalogue;
             _mapper = mapper;
         }
         public async Task<JobCatalogueDto> Handle(GetJobCatalogueQuery request, CancellationToken cancellationToken)
         {
-            var p = request.jobFunction.ToString();
-            //var employee = await _context.JobCatalogues
-            //    .Where(e => e.jobFunction == request.jobFunction.ToString() 
-            //    && e.organizationIdentifier == request.organizationIdentifier
-            //    && e.grade == request.grade
-            //    )
-            //    .FirstOrDefaultAsync(cancellationToken);
-            var employee = await _jobCatalogue.GetJobCatalogueByOrganizationIdentifierAndJobFunctionAndGrade(request.jobFunction.ToString(), request.organizationIdentifier, request.grade);
-             
-            return _mapper.Map<JobCatalogue, JobCatalogueDto>(employee);
+            try
+            {
+                var p = request.jobFunction.ToString();
+                //var employee = await _context.JobCatalogues
+                //    .Where(e => e.jobFunction == request.jobFunction.ToString() 
+                //    && e.organizationIdentifier == request.organizationIdentifier
+                //    && e.grade == request.grade
+                //    )
+                //    .FirstOrDefaultAsync(cancellationToken);
+                var employee = await _jobCatalogue.GetJobCatalogueByOrganizationIdentifierAndJobFunctionAndGrade(request.jobFunction.ToString(), request.organizationIdentifier, request.grade);
+
+                return _mapper.Map<JobCatalogue, JobCatalogueDto>(employee);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
         }
     }
 }

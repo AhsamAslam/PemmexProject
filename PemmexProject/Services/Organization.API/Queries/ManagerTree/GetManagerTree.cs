@@ -29,10 +29,19 @@ namespace Organization.API.Queries.GetOrganization
 
         public async Task<List<EmployeeResponse>> Handle(GetManagerTree request, CancellationToken cancellationToken)
         {
+            try
+            {
+                //var o = await _context.Employees.FromSqlRaw($"sp_GetEmployeeTreeForManager {request.Id}").ToListAsync();
+                var o = await _employee.GetEmployeeTreeForManager(request.Id);
+                return _mapper.Map<List<Entities.Employee>, List<EmployeeResponse>>(o.ToList());
+            }
+            catch (Exception)
+            {
 
-            //var o = await _context.Employees.FromSqlRaw($"sp_GetEmployeeTreeForManager {request.Id}").ToListAsync();
-            var o = await _employee.GetEmployeeTreeForManager(request.Id);
-            return _mapper.Map<List<Entities.Employee>, List<EmployeeResponse>>(o.ToList());
+                throw;
+            }
+
+            
         }
     }
 }

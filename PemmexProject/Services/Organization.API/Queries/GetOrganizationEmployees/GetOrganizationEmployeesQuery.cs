@@ -20,13 +20,11 @@ namespace Organization.API.Queries.GetOrganizationEmployees
 
     public class GetAllOrganizationEmployeesQueryHandeler : IRequestHandler<GetOrganizationEmployeesQuery, List<EmployeeResponse>>
     {
-        private readonly IApplicationDbContext _context;
         private readonly IEmployee _employee;
         private readonly IMapper _mapper;
 
-        public GetAllOrganizationEmployeesQueryHandeler(IApplicationDbContext context, IEmployee employee, IMapper mapper)
+        public GetAllOrganizationEmployeesQueryHandeler(IEmployee employee, IMapper mapper)
         {
-            _context = context;
             _employee = employee;
             _mapper = mapper;
         }
@@ -51,28 +49,38 @@ namespace Organization.API.Queries.GetOrganizationEmployees
             //        }                    
             //    })
             //    .ToListAsync(cancellationToken);
-            List<Employee> employees = new List<Employee>();
-            var employeeList = await _employee.GetEmployeeAndBusinessAndCostCenterByParentBusinessId(request.Id);
-            foreach (var item in employeeList)
+           
+            try
             {
-                Employee emp = new Employee();
-                emp.EmployeeIdentifier = item.EmployeeIdentifier;
-                emp.FirstName = item.FirstName;
-                emp.LastName = item.LastName;
-                emp.ManagerIdentifier = item.ManagerIdentifier;
-                emp.OrganizationIdentifier = item.OrganizationIdentifier;
-                emp.JobFunction = item.JobFunction;
-                emp.Grade = item.Grade;
-                emp.CostCenter = new CostCenter
+                List<Employee> employees = new List<Employee>();
+                var employeeList = await _employee.GetEmployeeAndBusinessAndCostCenterByParentBusinessId(request.Id);
+                foreach (var item in employeeList)
                 {
-                    CostCenterIdentifier = item.CostCenter.CostCenterIdentifier,
-                    CostCenterName = item.CostCenter.CostCenterName
-                };
-                employees.Add(emp);
+                    Employee emp = new Employee();
+                    emp.EmployeeIdentifier = item.EmployeeIdentifier;
+                    emp.FirstName = item.FirstName;
+                    emp.LastName = item.LastName;
+                    emp.ManagerIdentifier = item.ManagerIdentifier;
+                    emp.OrganizationIdentifier = item.OrganizationIdentifier;
+                    emp.JobFunction = item.JobFunction;
+                    emp.Grade = item.Grade;
+                    emp.CostCenter = new CostCenter
+                    {
+                        CostCenterIdentifier = item.CostCenter.CostCenterIdentifier,
+                        CostCenterName = item.CostCenter.CostCenterName
+                    };
+                    employees.Add(emp);
 
+                }
+
+                return _mapper.Map<List<Employee>, List<EmployeeResponse>>(employees);
             }
+            catch (Exception)
+            {
 
-            return _mapper.Map<List<Employee>, List<EmployeeResponse>>(employees);
+                throw;
+            }
+            
         }
     }
 }

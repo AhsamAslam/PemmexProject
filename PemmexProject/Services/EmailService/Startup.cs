@@ -9,6 +9,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PemmexCommonLibs.Application.Helpers;
+using PemmexCommonLibs.Application.Interfaces;
+using PemmexCommonLibs.Infrastructure.Services.LogService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +33,11 @@ namespace EmailServices
         {
             services.Configure<EmailSettings>(Configuration.GetSection("MailSettings"));
             services.AddTransient<IEmailService, EmailService>();
+            services.AddScoped<ILogService>(x => new LogService(new AzureContainerSettings
+            {
+                connectionString = Configuration.GetValue<string>("AzureStorage:ConnectionString"),
+                containerName = Configuration.GetValue<string>("AzureStorage:LogContainerName")
+            }));
             services.AddAuthentication("Bearer")
             .AddJwtBearer("Bearer", option =>
             {

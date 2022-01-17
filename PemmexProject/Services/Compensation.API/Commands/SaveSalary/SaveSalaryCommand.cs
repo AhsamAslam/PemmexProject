@@ -20,13 +20,11 @@ namespace Compensation.API.Commands.SaveSalary
 
     public class SaveSalaryCommandHandeler : IRequestHandler<SaveSalaryCommand>
     {
-        private readonly IApplicationDbContext _context;
         private readonly ICompensationSalaryRepository _compensation;
         private readonly IDateTime _dateTime;
-        public SaveSalaryCommandHandeler(IApplicationDbContext context, ICompensationSalaryRepository compensation,
+        public SaveSalaryCommandHandeler(ICompensationSalaryRepository compensation,
             IDateTime dateTime)
         {
-            _context = context;
             _compensation = compensation;
             _dateTime = dateTime;
         }
@@ -172,9 +170,9 @@ namespace Compensation.API.Commands.SaveSalary
                 }
                 return Unit.Value;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw new Exception(e.ToString());
+                throw;
             }
         }
     }

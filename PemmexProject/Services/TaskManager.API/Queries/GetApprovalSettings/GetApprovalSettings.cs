@@ -31,12 +31,17 @@ namespace TaskManager.API.Queries.GetApprovalSettings
         }
         public async Task<List<ApprovalSettingDto>> Handle(GetApprovalSettings request, CancellationToken cancellationToken)
         {
-            //var settings = await _context.organizationApprovalSettings
-            //    .Where(e => e.OrganizationIdentifier == request.Id)
-            //    .Include(d => d.organizationApprovalSettingDetails)
-            //    .ToListAsync(cancellationToken);
-            var settings = await _approvalSettings.GetOrganizationApprovalSettingsByOrganizationIdentifier(request.Id);
-            return _mapper.Map<List<OrganizationApprovalSettings>, List<ApprovalSettingDto>>(settings.ToList());
+            try
+            {
+                var settings = await _approvalSettings.GetOrganizationApprovalSettingsByOrganizationIdentifier(request.Id);
+                return _mapper.Map<List<OrganizationApprovalSettings>, List<ApprovalSettingDto>>(settings.ToList());
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
     }
 }

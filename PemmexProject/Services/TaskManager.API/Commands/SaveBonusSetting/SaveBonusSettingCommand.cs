@@ -50,9 +50,9 @@ namespace TaskManager.API.Commands.SaveBonusSetting
 
                 return Unit.Value;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw new Exception(e.ToString());
+                throw;
             }
         }
     }

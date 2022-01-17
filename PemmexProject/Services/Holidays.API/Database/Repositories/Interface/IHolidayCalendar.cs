@@ -13,5 +13,6 @@ namespace Holidays.API.Repositories.Interface
         Task<IEnumerable<HolidayCalendar>> AddHolidayCalendar(List<HolidayCalendar> HolidayCalendar);
         Task<HolidayCalendar> UpdateHolidayCalendar(HolidayCalendar HolidayCalendar);
         Task<int> DeleteHolidayCalendar(int Id);
+        Task DeleteHolidayCalendarList(List<HolidayCalendar> HolidayCalendar);
     }
 }

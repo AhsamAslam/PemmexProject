@@ -5,6 +5,9 @@ using Organization.API.Dtos;
 using Organization.API.Queries.GetcostCenterIdentifier;
 using Organization.API.Queries.GetcostCenterIdentifiers;
 using Organization.API.Queries.GetcostCenterIdentifiersTree;
+using PemmexCommonLibs.Application.Helpers;
+using PemmexCommonLibs.Application.Interfaces;
+using PemmexCommonLibs.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +19,11 @@ namespace Organization.API.Controllers
     [ApiController]
     public class CostCentersController : ApiControllerBase
     {
+        private readonly ILogService _logService;
+        public CostCentersController(ILogService logService)
+        {
+            _logService = logService;
+        }
         [HttpGet]
         [Route("{costCenterIdentifier}")]
         public async Task<ActionResult<CostCenterResponse>> GetAsync(string costCenterIdentifier)
@@ -24,8 +32,9 @@ namespace Organization.API.Controllers
             {
                 return await Mediator.Send(new GetcostCenterIdentifierQuery { costCenterIdentifier = costCenterIdentifier });
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"CostCenters_{CurrentUser.EmployeeIdentifier}");
                 throw;
             }
         }
@@ -36,8 +45,10 @@ namespace Organization.API.Controllers
             {
                 return await Mediator.Send(new GetcostCenterIdentifiersQuery { organizationIdentifier = businessIdentifier });
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"CostCenters_{CurrentUser.EmployeeIdentifier}");
+
                 throw;
             }
         }
@@ -49,8 +60,10 @@ namespace Organization.API.Controllers
             {
                 return await Mediator.Send(new GetcostCenterIdentifiersTreeQuery { costCenterIdentifier = costIdentifier });
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"CostCenters_{CurrentUser.EmployeeIdentifier}");
+
                 throw;
             }
         }
@@ -61,8 +74,10 @@ namespace Organization.API.Controllers
             {
                 return await Mediator.Send(new CreateCostCenterCommand { costCenterRequest = costCenterRequest });
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"CostCenters_{CurrentUser.EmployeeIdentifier}");
+
                 throw;
             }
         }

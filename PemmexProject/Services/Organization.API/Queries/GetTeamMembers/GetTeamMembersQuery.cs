@@ -29,14 +29,23 @@ namespace Organization.API.Queries.GetTeamMembers
 
         public async Task<List<EmployeeResponse>> Handle(GetTeamMembersQuery request, CancellationToken cancellationToken)
         {
-            //var o = await _context.Employees
-            //    .Include(b => b.Businesses)
-            //    .Include(c => c.CostCenter)
-            //    .Where(o => o.IsActive == true && o.CostCenter.CostCenterIdentifier == request.costCenterIdentifier)
-            //    .ToListAsync(cancellationToken: cancellationToken);
-            var o = await _employee.GetEmployeeByCostCenterIdentifier(request.costCenterIdentifier);
+            try
+            {
+                //var o = await _context.Employees
+                //    .Include(b => b.Businesses)
+                //    .Include(c => c.CostCenter)
+                //    .Where(o => o.IsActive == true && o.CostCenter.CostCenterIdentifier == request.costCenterIdentifier)
+                //    .ToListAsync(cancellationToken: cancellationToken);
+                var o = await _employee.GetEmployeeByCostCenterIdentifier(request.costCenterIdentifier);
 
-            return _mapper.Map<List<Entities.Employee>, List<EmployeeResponse>>(o.ToList());
+                return _mapper.Map<List<Entities.Employee>, List<EmployeeResponse>>(o.ToList());
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
         }
     }
 }

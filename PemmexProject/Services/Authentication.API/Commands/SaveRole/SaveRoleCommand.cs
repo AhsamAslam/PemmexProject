@@ -32,19 +32,27 @@ namespace Authentication.API.Commands.SaveRole
         }
         public async Task<Unit> Handle(SaveRoleCommand request, CancellationToken cancellationToken)
         {
-
-            //var user = await _context.Users.Where(x => x.Id == request.role.UserId && x.isActive == true).FirstOrDefaultAsync(cancellationToken);
-            var user = await _user.GetUserById(request.role.UserId);
-            if(user != null)
+            try
             {
-                if(Enum.IsDefined(typeof(Roles), request.role.role))
+                //var user = await _context.Users.Where(x => x.Id == request.role.UserId && x.isActive == true).FirstOrDefaultAsync(cancellationToken);
+                var user = await _user.GetUserById(request.role.UserId);
+                if (user != null)
                 {
-                    user.Role = (int) request.role.role;
-                    //await _context.SaveChangesAsync(cancellationToken);
-                    var SaveRole = await _role.SaveRole(request.role);
+                    if (Enum.IsDefined(typeof(Roles), request.role.role))
+                    {
+                        user.Role = (int)request.role.role;
+                        //await _context.SaveChangesAsync(cancellationToken);
+                        var SaveRole = await _role.SaveRole(request.role);
+                    }
                 }
+                return Unit.Value;
             }
-            return Unit.Value;
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
     }
 }

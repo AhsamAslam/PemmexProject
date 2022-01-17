@@ -30,6 +30,7 @@ namespace Organization.API.Controllers
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly IFileUploadService _fileUploadService;
         private readonly IDateTime _dateTime;
+        private readonly ILogService _logService;
         public OrganizationController(IWebHostEnvironment hostEnvironment, 
             IFileUploadService fileUploadService,IDateTime dateTime,
             ILogService logService)
@@ -37,6 +38,7 @@ namespace Organization.API.Controllers
             _hostingEnvironment = hostEnvironment;
             _fileUploadService = fileUploadService;
             _dateTime = dateTime;
+            _logService = logService;
 
         }
         // POST /Upload Organization
@@ -229,6 +231,8 @@ namespace Organization.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Organization_{CurrentUser.EmployeeIdentifier}");
+
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.ToString(), null);
             }
         }
@@ -244,6 +248,7 @@ namespace Organization.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Organization_{CurrentUser.EmployeeIdentifier}");
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
@@ -257,6 +262,8 @@ namespace Organization.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Organization_{CurrentUser.EmployeeIdentifier}");
+
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
@@ -271,6 +278,8 @@ namespace Organization.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Organization_{CurrentUser.EmployeeIdentifier}");
+
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
@@ -282,8 +291,10 @@ namespace Organization.API.Controllers
             {
                 return await Mediator.Send(new GetAllBusinessesQuery { Id = organizationIdentifier });
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Organization_{CurrentUser.EmployeeIdentifier}");
+
                 throw;
             }
         }
@@ -295,8 +306,10 @@ namespace Organization.API.Controllers
             {
                 return await Mediator.Send(new GetOrganizationEmployeesQuery { Id = organizationIdentifier });
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Organization_{CurrentUser.EmployeeIdentifier}");
+
                 throw;
             }
         }
@@ -308,8 +321,10 @@ namespace Organization.API.Controllers
             {
                 return await Mediator.Send(new GetAllBusinessEmployeesQuery { Id = businessIdentifier });
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Organization_{CurrentUser.EmployeeIdentifier}");
+
                 throw;
             }
         }

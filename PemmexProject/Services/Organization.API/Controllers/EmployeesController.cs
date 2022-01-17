@@ -13,6 +13,7 @@ using Organization.API.Queries.GetOrganization;
 using Organization.API.Queries.GetOrganizationEmployees;
 using Organization.API.Queries.GetTeamMembers;
 using PemmexCommonLibs.Application.Helpers;
+using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,11 @@ namespace Organization.API.Controllers
     [ApiController]
     public class EmployeesController : ApiControllerBase
     {
+        private readonly ILogService _logService;
+        public EmployeesController(ILogService logService)
+        {
+            _logService = logService;
+        }
         [HttpGet]
         public async Task<ActionResult<List<EmployeeResponse>>> GetAsync([FromQuery] string[] Identifiers)
         {
@@ -32,8 +38,9 @@ namespace Organization.API.Controllers
             {
                 return await Mediator.Send(new GetEmployeeByIdentifiersQuery { Identifiers = Identifiers });
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Employees_{CurrentUser.EmployeeIdentifier}");
                 throw;
             }
         }
@@ -45,8 +52,10 @@ namespace Organization.API.Controllers
             {
                 return await Mediator.Send(new GetManagerTree { Id = id });
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Employees_{CurrentUser.EmployeeIdentifier}");
+
                 throw;
             }
         }
@@ -60,6 +69,8 @@ namespace Organization.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Employees_{CurrentUser.EmployeeIdentifier}");
+
                 throw;
             }
         }
@@ -71,8 +82,10 @@ namespace Organization.API.Controllers
             {
                 return await Mediator.Send(new GetEmployeeQuery { Id = id });
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Employees_{CurrentUser.EmployeeIdentifier}");
+
                 throw;
             }
         }
@@ -98,8 +111,10 @@ namespace Organization.API.Controllers
                 return await Mediator.Send(new CreateEmployeeCommand { employee = employee });
                 
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Employees_{CurrentUser.EmployeeIdentifier}");
+
                 throw;
             }
         }
@@ -111,8 +126,10 @@ namespace Organization.API.Controllers
             {
                 return await Mediator.Send(new UpdateEmployeeCommand { employee = employee, Id = id });
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Employees_{CurrentUser.EmployeeIdentifier}");
+
                 throw;
             }
         }
@@ -124,8 +141,10 @@ namespace Organization.API.Controllers
             {
                 return await Mediator.Send(new DeleteEmployeeCommand { Id = id });
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Employees_{CurrentUser.EmployeeIdentifier}");
+
                 throw;
             }
         }

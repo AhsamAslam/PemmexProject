@@ -22,14 +22,12 @@ namespace Organization.API.Commands.CreateEmployee
 
     public class CreateEmployeeCommandHandeler : IRequestHandler<CreateEmployeeCommand, int>
     {
-        private readonly IApplicationDbContext _context;
         private readonly IEmployee _employee;
         private readonly IMapper _mapper;
-        public CreateEmployeeCommandHandeler(IApplicationDbContext context, IEmployee employee,
+        public CreateEmployeeCommandHandeler(IEmployee employee,
             IMapper mapper)
         {
             _employee = employee;
-            _context = context;
             _mapper = mapper;
         }
         public async Task<int> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)

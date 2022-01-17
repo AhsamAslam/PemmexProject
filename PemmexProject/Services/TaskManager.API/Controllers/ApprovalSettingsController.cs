@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PemmexCommonLibs.Application.Helpers;
+using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Domain.Common.Dtos;
 using PemmexCommonLibs.Domain.Enums;
 using System;
@@ -21,6 +22,11 @@ namespace TaskManager.API.Controllers
     [Authorize]
     public class ApprovalSettingsController : ApiControllerBase
     {
+        private readonly ILogService _logService;
+        public ApprovalSettingsController(ILogService logService)
+        {
+            _logService = logService;
+        }
         [HttpGet]
         public async Task<ActionResult<ResponseMessage>> GetAsync()
         {
@@ -31,6 +37,7 @@ namespace TaskManager.API.Controllers
             }
             catch (Exception e) 
             {
+                await _logService.WriteLogAsync(e, $"ApprovalSettings_{CurrentUser.EmployeeIdentifier}");
                 return await Task.FromResult(new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null));
             }        
         }
@@ -44,6 +51,8 @@ namespace TaskManager.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"ApprovalSettings_{CurrentUser.EmployeeIdentifier}");
+
                 return await Task.FromResult(new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null));
             }
         }

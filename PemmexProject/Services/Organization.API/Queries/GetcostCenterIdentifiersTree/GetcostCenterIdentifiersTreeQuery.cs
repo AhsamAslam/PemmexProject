@@ -40,24 +40,42 @@ namespace Organization.API.Queries.GetcostCenterIdentifiersTree
             //    };
 
             //var o = _context.CostCenters.FromSqlRaw(sql, parms.ToArray()).ToList();
-            var o = await _costCenter.GetCostCentersTreeByCostCenterIdentifier(request.costCenterIdentifier);
+            try
+            {
+                var o = await _costCenter.GetCostCentersTreeByCostCenterIdentifier(request.costCenterIdentifier);
 
-            var e_response =  _mapper.Map<List<Entities.CostCenter>, List<CostCenterResponse>>(o.ToList());
-            var recursiveData = FillRecursive(e_response, "");
-            return recursiveData;
+                var e_response = _mapper.Map<List<Entities.CostCenter>, List<CostCenterResponse>>(o.ToList());
+                var recursiveData = FillRecursive(e_response, "");
+                return recursiveData;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
 
         }
         private static List<CostCenterResponse> FillRecursive(List<CostCenterResponse> employeeVms, string parentId)
         {
-            return employeeVms.Where(x => x.ParentCostCenterIdentifier == parentId).Select(item => new CostCenterResponse()
+            try
             {
-                CostCenterIdentifier = item.CostCenterIdentifier,
-                businessIdentifier = item.businessIdentifier,
-                CostCenterName = item.CostCenterName,
-                ParentCostCenterIdentifier = item.ParentCostCenterIdentifier,
-                children = FillRecursive(employeeVms, item.CostCenterIdentifier)
+                return employeeVms.Where(x => x.ParentCostCenterIdentifier == parentId).Select(item => new CostCenterResponse()
+                {
+                    CostCenterIdentifier = item.CostCenterIdentifier,
+                    businessIdentifier = item.businessIdentifier,
+                    CostCenterName = item.CostCenterName,
+                    ParentCostCenterIdentifier = item.ParentCostCenterIdentifier,
+                    children = FillRecursive(employeeVms, item.CostCenterIdentifier)
 
-            }).ToList();
+                }).ToList();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
     }

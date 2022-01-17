@@ -31,23 +31,32 @@ namespace Compensation.API.Queries.GetFunctionalBudget
         }
         public async Task<List<FunctionalBudgetDto>> Handle(GetFunctionalBudgetQuery request, CancellationToken cancellationToken)
         {
-            List<FunctionalBudgetDto> budgets = new List<FunctionalBudgetDto>();
-            //var budget = await _context.OrganizationBudgets
-            //     .Where(o => o.organizationIdentifier == request.organizationIdentifier
-            //     && o.startDate.Date == request.budgetDate.Date)
-            //     .ToListAsync(cancellationToken);
-            var budget = await _budget.GetOrganizationBudgetByOrganizationIdentifier(request.organizationIdentifier);
-
-            foreach (var b in budget)
+            try
             {
-                FunctionalBudgetDto dto = new FunctionalBudgetDto();
-                dto.budgetPercentage = b.budgetPercentage;
-                dto.budgetValue = b.budgetValue;
-                dto.businessIdentifier = b.businessIdentifier;
-                dto.jobFunction = b.jobFunction;
-                budgets.Add(dto);
+                List<FunctionalBudgetDto> budgets = new List<FunctionalBudgetDto>();
+                //var budget = await _context.OrganizationBudgets
+                //     .Where(o => o.organizationIdentifier == request.organizationIdentifier
+                //     && o.startDate.Date == request.budgetDate.Date)
+                //     .ToListAsync(cancellationToken);
+                var budget = await _budget.GetOrganizationBudgetByOrganizationIdentifier(request.organizationIdentifier);
+
+                foreach (var b in budget)
+                {
+                    FunctionalBudgetDto dto = new FunctionalBudgetDto();
+                    dto.budgetPercentage = b.budgetPercentage;
+                    dto.budgetValue = b.budgetValue;
+                    dto.businessIdentifier = b.businessIdentifier;
+                    dto.jobFunction = b.jobFunction;
+                    budgets.Add(dto);
+                }
+                return budgets;
             }
-            return budgets;
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
     }
 }

@@ -19,13 +19,11 @@ namespace Organization.API.Commands.DeleteEmployee
 
     public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand,int>
     {
-        private readonly IApplicationDbContext _context;
         private readonly IEmployee _employee;
 
-        public DeleteEmployeeCommandHandler(IApplicationDbContext context, IEmployee employee)
+        public DeleteEmployeeCommandHandler(IEmployee employee)
         {
             _employee = employee;
-            _context = context;
         }
 
         public async Task<int> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)

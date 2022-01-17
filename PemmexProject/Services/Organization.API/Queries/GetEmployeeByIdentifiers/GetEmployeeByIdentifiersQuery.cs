@@ -37,10 +37,19 @@ namespace Organization.API.Queries.GetEmployeeByIdentifiers
             //    .Include(x => x.CostCenter)
             //    .Include(x => x.employeeContacts)
             //    .ToListAsync(cancellationToken);
-            var employee = await _employee.GetEmployeeByEmployeeIdentifier(request.Identifiers);
+            try
+            {
+                var employee = await _employee.GetEmployeeByEmployeeIdentifier(request.Identifiers);
 
 
-            return _mapper.Map<List<Employee>, List<EmployeeResponse>>(employee.ToList());
+                return _mapper.Map<List<Employee>, List<EmployeeResponse>>(employee.ToList());
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
     }
 }

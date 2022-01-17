@@ -33,9 +33,18 @@ namespace Organization.API.Queries.GetcostCenterIdentifier
             //var o = await _context.CostCenters
             //    .Where(o => o.CostCenterIdentifier == request.costCenterIdentifier)
             //    .FirstOrDefaultAsync(cancellationToken: cancellationToken);
-            var o = await _costCenter.GetCostCenterByCostCenterIdentifier(request.costCenterIdentifier);
+            try
+            {
+                var o = await _costCenter.GetCostCenterByCostCenterIdentifier(request.costCenterIdentifier);
 
-            return _mapper.Map<Entities.CostCenter, CostCenterResponse>(o);
+                return _mapper.Map<Entities.CostCenter, CostCenterResponse>(o);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
     }
 }

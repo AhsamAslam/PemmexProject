@@ -93,9 +93,9 @@ namespace TaskManager.API.Commands.SaveSetting
                 //await _context.SaveChangesAsync(cancellationToken);
                 return Unit.Value;
             }
-            catch(Exception e)
+            catch(Exception)
             {
-              throw e;
+              throw;
             }
             //var s = _mapper.Map<ApprovalSettingDto, OrganizationApprovalSettings>(request.setting);
 

@@ -9,6 +9,7 @@ namespace Holidays.API.Repositories.Interface
     public interface IHolidaySettings
     {
         Task<IEnumerable<HolidaySettings>> GetHolidaySettings();
+        Task<IEnumerable<HolidaySettings>> GetHolidaySettingsByOrganizationIdentifier(string OrganizationIdentifier);
         Task<HolidaySettings> GetHolidaySettingsByBusinessIdentifier(string BusinessIdentifier);
         Task<IEnumerable<HolidaySettings>> GetHolidaySettingsById(string Id);
         Task<HolidaySettings> AddHolidaySetting(HolidaySettings HolidaySettings);

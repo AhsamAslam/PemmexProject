@@ -47,9 +47,19 @@ namespace TaskManager.API.Queries.GetPendingTasksByManagerId
             //    .Include(g => g.ChangeTeam)
             //    .Include(g => g.ChangeBonus)
             //    .Where(t => Identifiers.Contains(t.TaskIdentifier) && (t.currentTaskStatus == TaskStatuses.Pending)).ToListAsync();
-            var Id = Identifiers.Select(x => x.TaskIdentifier);
-            var tasks = await _approvalSettings.GetAllBaseTaskByTaskIdentifier(Id.ToArray(), (int)TaskStatuses.Pending);
-            return _mapper.Map<List<BaseTask>, List<TaskDto>>(tasks);
+
+            try
+            {
+                var Id = Identifiers.Select(x => x.TaskIdentifier);
+                var tasks = await _approvalSettings.GetAllBaseTaskByTaskIdentifier(Id.ToArray(), (int)TaskStatuses.Pending);
+                return _mapper.Map<List<BaseTask>, List<TaskDto>>(tasks);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
     }
 }

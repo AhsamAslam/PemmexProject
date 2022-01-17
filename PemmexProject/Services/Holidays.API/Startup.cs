@@ -19,6 +19,7 @@ using PemmexCommonLibs.Application.Helpers;
 using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Infrastructure.Services;
 using PemmexCommonLibs.Infrastructure.Services.FileUploadService;
+using PemmexCommonLibs.Infrastructure.Services.LogService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,7 +67,11 @@ namespace Holidays.API
             });
 
             services.AddHostedService<HolidayTopicReciever>();
-
+            services.AddScoped<ILogService>(x => new LogService(new AzureContainerSettings
+            {
+                connectionString = Configuration.GetValue<string>("AzureStorage:ConnectionString"),
+                containerName = Configuration.GetValue<string>("AzureStorage:LogContainerName")
+            }));
             services.AddSingleton<ISubscriptionClient>(x => new SubscriptionClient(
                 Configuration.GetValue<string>("AppSettings:QueueConnectionString"),
                 Configuration.GetValue<string>("AppSettings:TopicName"),

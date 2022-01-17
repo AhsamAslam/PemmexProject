@@ -3,6 +3,7 @@ using Compensation.API.Queries.GetFunctionalBudget;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PemmexCommonLibs.Application.Helpers;
+using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,11 @@ namespace Compensation.API.Controllers
     [ApiController]
     public class BudgetController : ApiControllerBase
     {
+        private readonly ILogService _logService;
+        public BudgetController(ILogService logService)
+        {
+            _logService = logService;
+        }
         [HttpPost]
         public async Task<ActionResult<ResponseMessage>> Post(CreateBudgetCommand command)
         {
@@ -25,6 +31,7 @@ namespace Compensation.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Budget_{CurrentUser.EmployeeIdentifier}");
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
@@ -38,6 +45,8 @@ namespace Compensation.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Budget_{CurrentUser.EmployeeIdentifier}");
+
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }

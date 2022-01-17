@@ -15,6 +15,7 @@ using Notifications.API.Database.Repositories.Repository;
 using PemmexCommonLibs.Application.Helpers;
 using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Infrastructure.Services;
+using PemmexCommonLibs.Infrastructure.Services.LogService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +49,11 @@ namespace Notifications.API
 
             services.AddScoped<Database.Repositories.Interface.INotification, NotificationRepository>();
             services.AddSingleton<IUserConnectionManager, UserConnectionManagerRepository>();
-
+            services.AddScoped<ILogService>(x => new LogService(new AzureContainerSettings
+            {
+                connectionString = Configuration.GetValue<string>("AzureStorage:ConnectionString"),
+                containerName = Configuration.GetValue<string>("AzureStorage:LogContainerName")
+            }));
             services.AddAuthentication("Bearer")
                .AddJwtBearer("Bearer", option =>
                {

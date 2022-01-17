@@ -33,9 +33,18 @@ namespace TaskManager.API.Queries.GetBonusSetting
             //var salary = await _context.BonusSettings
             //    .Where(e => e.businessIdentifier == request.businessIdentifier)
             //    .FirstOrDefaultAsync(cancellationToken);
-            var salary = await _bonusSettings.GetBonusSettingsByBusinessIdentifier(request.businessIdentifier);
+            try
+            {
+                var salary = await _bonusSettings.GetBonusSettingsByBusinessIdentifier(request.businessIdentifier);
 
-            return _mapper.Map<Database.Entities.BonusSettings, BonusSettingsDto>(salary);
+                return _mapper.Map<Database.Entities.BonusSettings, BonusSettingsDto>(salary);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
     }
 }
