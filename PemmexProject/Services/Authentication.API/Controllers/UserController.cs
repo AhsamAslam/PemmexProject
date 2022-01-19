@@ -50,7 +50,7 @@ namespace Authentication.API.Controllers
         {
             try
             {
-                var data = await Mediator.Send(new GetAllUsersQuery { Identifier = "hjhj" });
+                var data = await Mediator.Send(new GetAllUsersQuery { Identifier = CurrentUser.EmployeeIdentifier });
                 return new ResponseMessage(true, EResponse.OK, null, data);
             }
             catch (Exception e)
