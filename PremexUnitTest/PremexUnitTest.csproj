@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PemmexProject\Services\Authentication.API\Authentication.API.csproj" />
+    <ProjectReference Include="..\PemmexProject\Services\Compensation.API\Compensation.API.csproj" />
   </ItemGroup>
 
 </Project>

@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 namespace PremexUnitTest
 {
     [TestClass]
-    public class AuthenticationAPIUnitTests : ApiControllerBase
+    public class AuthenticationAPIUnitTests
     {
         private IConfiguration _configuration;
         private IdentityServerTools _tools;
