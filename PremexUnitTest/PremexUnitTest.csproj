@@ -16,6 +16,10 @@
   <ItemGroup>
     <ProjectReference Include="..\PemmexProject\Services\Authentication.API\Authentication.API.csproj" />
     <ProjectReference Include="..\PemmexProject\Services\Compensation.API\Compensation.API.csproj" />
+    <ProjectReference Include="..\PemmexProject\Services\Holidays.API\Holidays.API.csproj" />
+    <ProjectReference Include="..\PemmexProject\Services\Notifications.API\Notifications.API.csproj" />
+    <ProjectReference Include="..\PemmexProject\Services\Organization.API\Organization.API.csproj" />
+    <ProjectReference Include="..\PemmexProject\Services\TaskManager.API\TaskManager.API.csproj" />
   </ItemGroup>
 
 </Project>
