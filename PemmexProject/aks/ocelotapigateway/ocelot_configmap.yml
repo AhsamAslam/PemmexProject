@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ocelot-connection-configmaps
+data:
+  AllowedChatOrigins: https://pemmex.eu
+  IdentityUrl: https://identity.pemmex.eu

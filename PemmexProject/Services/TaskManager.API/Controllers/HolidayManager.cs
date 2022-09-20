@@ -1,7 +1,8 @@
-﻿using Holidays.API.Enumerations;
-using MediatR;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PemmexCommonLibs.Application.Extensions;
 using PemmexCommonLibs.Application.Helpers;
 using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Domain.Enums;
@@ -16,6 +17,7 @@ namespace TaskManager.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class HolidayManager : ApiControllerBase
     {
         private readonly ILogService _logService;
@@ -45,8 +47,11 @@ namespace TaskManager.API.Controllers
 
                 command.UserId = CurrentUser.Id;
                 command.organizationIdentifier = CurrentUser.OrganizationIdentifier;
+                command.businessIdentifier = CurrentUser.BusinessIdentifier;
+                command.costcenterIdentifier = CurrentUser.CostCenterIdentifier;
                 command.EmployeeIdentifier = CurrentUser.EmployeeIdentifier;
                 command.ManagerIdentifier = CurrentUser.ManagerIdentifier;
+                
                
                 var data = await Mediator.Send(command);
                 return await Task.FromResult(new ResponseMessage(true, EResponse.OK, null, data));

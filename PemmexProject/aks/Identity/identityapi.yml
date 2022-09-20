@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identityapi-deployment
+  labels:
+    app: identityapi
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: identityapi
+  template:
+    metadata:
+      labels:
+        app: identityapi
+    spec:
+      containers:
+        - name: identityapi
+          image: pemmexmicroservicesacr.azurecr.io/pemmexidentity:v1
+          imagePullPolicy: Always          
+          ports:
+            - containerPort: 80
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Production
+            - name: ConnectionStrings__IdentityConnection
+              valueFrom:
+                configMapKeyRef:
+                  name: identity-connection-configmaps
+                  key: db-connection-string
+            - name: IdentityUrl
+              valueFrom:
+                configMapKeyRef:
+                  name: identity-connection-configmaps
+                  key: IdentityUrl
+            - name: AllowedChatOrigins
+              valueFrom:
+                configMapKeyRef:
+                  name: identity-connection-configmaps
+                  key: AllowedChatOrigins
+
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "0.1"
+            limits:
+              memory: "128Mi"
+              cpu: "0.3"
+      imagePullSecrets:
+        - name: acr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  # annotations:
+  #   service.beta.kubernetes.io/azure-load-balancer-resource-group: PemmexSponsorResourceGroup
+  name: identityapi-service
+spec:
+  # loadBalancerIP: 20.107.2.218
+  type: LoadBalancer  
+  selector:
+    app: identityapi
+  ports:
+    - targetPort: 80
+      port: 80

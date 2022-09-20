@@ -44,10 +44,6 @@ namespace Holidays.API.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("EmployeeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("EmployeeIdentifier")
                         .HasColumnType("nvarchar(max)");
 
@@ -78,7 +74,13 @@ namespace Holidays.API.Migrations
                     b.Property<int>("UsedHolidaysCurrentYear")
                         .HasColumnType("int");
 
+                    b.Property<string>("businessIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("costcenterIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("organizationIdentifier")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CompanyToEmployeeHolidayId");
@@ -102,10 +104,6 @@ namespace Holidays.API.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("EmployeeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("EmployeeIdentifier")
                         .HasColumnType("nvarchar(max)");
 
@@ -123,9 +121,6 @@ namespace Holidays.API.Migrations
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("SubsituteId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("SubsituteIdentifier")
                         .HasColumnType("nvarchar(max)");

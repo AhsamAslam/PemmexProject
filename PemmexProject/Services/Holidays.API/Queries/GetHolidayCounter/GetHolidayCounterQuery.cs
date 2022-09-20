@@ -3,11 +3,10 @@ using Holidays.API.Common;
 using Holidays.API.Database.context;
 using Holidays.API.Database.Entities;
 using Holidays.API.Dtos;
-using Holidays.API.Enumerations;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using PemmexCommonLibs.Application.Helpers;
-using PemmexCommonLibs.Application.Interfaces;
+using PemmexCommonLibs.Application.Extensions;
+using PemmexCommonLibs.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -19,7 +18,7 @@ namespace Holidays.API.Queries
 {
     public class GetHolidayCounterQuery:IRequest<HolidayEmployeeCounter> 
     {
-        public Guid Id { get; set; }
+        public string EmployeeIdentifier { get; set; }
         public string businessIdentifier { get; set; }
     }
     public class GetHolidayCounterQueryHandeler : IRequestHandler<GetHolidayCounterQuery, HolidayEmployeeCounter>
@@ -41,7 +40,7 @@ namespace Holidays.API.Queries
                     .OrderByDescending(d => d.HolidayCalendarYear).FirstOrDefaultAsync();
 
                 var holidays = await _context.CompanyToEmployeeHolidays
-                    .Where(e => e.EmployeeId == request.Id && e.HolidaySettingsIdentitfier == setting.HolidaySettingsIdentitfier)
+                    .Where(e => e.EmployeeIdentifier == request.EmployeeIdentifier && e.HolidaySettingsIdentitfier == setting.HolidaySettingsIdentitfier)
                     .FirstOrDefaultAsync(cancellationToken);
 
 
@@ -53,9 +52,9 @@ namespace Holidays.API.Queries
                 counter.AccruedHolidayForCurrentYear = holidays.AccruedHolidaysPreviousYear;
                 counter.UserIdentifier = holidays.EmployeeIdentifier;
                 counter.AccruedHolidayForNextYear = (int)(((decimal)holidays.AnnualHolidaysEntitled / (DateTime.IsLeapYear(DateTime.Now.Year) ? 366 : 365))
-                    * await GetDaysEmployeeWorkFor(holidays.EmployementStartDate.ToDateTime3(),setting, request.Id));
+                    * await GetDaysEmployeeWorkFor(holidays.EmployementStartDate.ToDateTime3(),setting, request.EmployeeIdentifier));
 
-                counter.UsedHolidaysCurrentYear = await GetUsedHolidaysEmployee(holidays.EmployementStartDate.ToDateTime3(),setting,request.Id);
+                counter.UsedHolidaysCurrentYear = await GetUsedHolidaysEmployee(holidays.EmployementStartDate.ToDateTime3(),setting,request.EmployeeIdentifier);
 
                 counter.LeftHolidaysCurrentYear = counter.AccruedHolidayForCurrentYear - counter.UsedHolidaysCurrentYear;
 
@@ -68,7 +67,7 @@ namespace Holidays.API.Queries
                 throw;
             }
         }
-        private async Task<int> GetDaysEmployeeWorkFor(DateTime startedDate, HolidaySettings setting,Guid EmployeeId)
+        private async Task<int> GetDaysEmployeeWorkFor(DateTime startedDate, HolidaySettings setting,string EmployeeId)
         {
             try
             {
@@ -77,7 +76,7 @@ namespace Holidays.API.Queries
                 var holidays = await _context.EmployeeHolidays
                 .Where(h => h.HolidayStartDate >= start_calendar && h.HolidayStartDate <= end_calendar)
                 .Where(h => h.HolidayEndDate >= start_calendar && h.HolidayEndDate <= end_calendar)
-                .Where(h => h.EmployeeId == EmployeeId)
+                .Where(h => h.EmployeeIdentifier == EmployeeId)
                 .ToListAsync();
 
                 var Holidays = holidays.Where(h => (h.holidayType == HolidayTypes.Parental || h.holidayType == HolidayTypes.Sick || h.holidayType == HolidayTypes.TimeOffWithoutSalary))
@@ -101,7 +100,7 @@ namespace Holidays.API.Queries
 
             }
         }
-        private async Task<int> GetUsedHolidaysEmployee(DateTime startedDate,HolidaySettings setting, Guid EmployeeId)
+        private async Task<int> GetUsedHolidaysEmployee(DateTime startedDate,HolidaySettings setting, string EmployeeId)
         {
             try
             {
@@ -111,7 +110,7 @@ namespace Holidays.API.Queries
                 .Where(h => h.HolidayStartDate >= start_calendar && h.HolidayStartDate <= end_calendar)
                 .Where(h => h.HolidayEndDate >= start_calendar && h.HolidayEndDate <= end_calendar)
                 .Where(h => h.holidayType == HolidayTypes.AnnualHoliday)
-                .Where(h=> h.EmployeeId == EmployeeId)
+                .Where(h=> h.EmployeeIdentifier == EmployeeId)
                 .ToListAsync();
 
                 int leaves = 0;

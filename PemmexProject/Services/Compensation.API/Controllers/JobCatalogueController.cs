@@ -1,10 +1,12 @@
 ﻿using Compensation.API.Commands.UploadJobCatalogue;
 using Compensation.API.Dtos;
+using Compensation.API.Queries.GetOrganizationJobCatalogues;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 using Organization.API.Queries.GetJobCatalogue;
+using PemmexCommonLibs.Application.Extensions;
 using PemmexCommonLibs.Application.Helpers;
 using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Domain.Enums;
@@ -18,15 +20,18 @@ namespace Compensation.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize("ClientIdPolicy")]
+    //[Authorize("ClientIdPolicy")]
+    [Authorize]
     public class JobCatalogueController : ApiControllerBase
     {
         private readonly IFileUploadService _fileUploadService;
         private readonly IDateTime _dateTime;
-        public JobCatalogueController(IFileUploadService fileUploadService, IDateTime dateTime)
+        private readonly ILogService _logService;
+        public JobCatalogueController(IFileUploadService fileUploadService, IDateTime dateTime, ILogService logService)
         {
             _fileUploadService = fileUploadService;
             _dateTime = dateTime;
+            _logService = logService;
         }
         [AllowAnonymous]
         [HttpPost]
@@ -64,7 +69,8 @@ namespace Compensation.API.Controllers
                                     o.currency = sheet.Cells[r, 7].Value.ToString2();
                                     o.jobFunction = sheet.Cells[r, 8].Value.ToString2();
                                     o.acv_bonus_percentage = sheet.Cells[r, 9].Value.ToDouble2();
-                                    o.organizationIdentifier = sheet.Cells[r, 10].Value.ToString2();
+                                    o.businessIdentifier = sheet.Cells[r, 10].Value.ToString2();
+                                    o.organizationIdentifier = OrganizationIdentifier;
 
                                     jobCatalogueDtos.Add(o);
                                 }
@@ -90,6 +96,7 @@ namespace Compensation.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"JobCatalogue_{CurrentUser.EmployeeIdentifier}");
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.ToString(), null);
             }
         }
@@ -102,8 +109,7 @@ namespace Compensation.API.Controllers
             {
                 var data = await Mediator.Send(new GetJobCatalogueQuery
                 {
-                    organizationIdentifier = businessIdentifier
-                ,
+                    businessIdentifier = businessIdentifier,
                     grade = grade,
                     jobFunction = jobFunction
                 });
@@ -111,7 +117,27 @@ namespace Compensation.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"JobCatalogue_{CurrentUser.EmployeeIdentifier}");
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
+            }
+        }
+
+        [HttpGet]
+        [Route("OrganizationJobCatalogues")]
+        public async Task<ActionResult<List<JobCatalogueDto>>> OrganizationJobCatalogues(string organizationIdentifier)
+        {
+            try
+            {
+                var data = await Mediator.Send(new GetOrganizationJobCataloguesQuery
+                {
+                    organizationIdentifier = organizationIdentifier
+                });
+                return data;
+            }
+            catch (Exception e)
+            {
+                await _logService.WriteLogAsync(e, $"JobCatalogue_{CurrentUser.EmployeeIdentifier}");
+                throw;
             }
         }
     }

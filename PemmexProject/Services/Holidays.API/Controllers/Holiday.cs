@@ -3,7 +3,6 @@ using Holidays.API.Commands.SaveHolidays;
 using Holidays.API.Commands.SaveHolidaySetting;
 using Holidays.API.Commands.SaveHolidaySettings;
 using Holidays.API.Dtos;
-using Holidays.API.Enumerations;
 using Holidays.API.Queries;
 using Holidays.API.Queries.GetCountTakenHolidaysByEmployeeId;
 using Holidays.API.Queries.GetEarnedHolidaysByEmployeeId;
@@ -12,12 +11,15 @@ using Holidays.API.Queries.GetHolidaySettings;
 using Holidays.API.Queries.GetLeftHolidaysByBusinessId;
 using Holidays.API.Queries.GetLeftHolidaysByEmployeeId;
 using Holidays.API.Queries.GetPlannedHolidaysByEmployeeId;
+using Holidays.API.Queries.GetSiblingsHolidays;
 using Holidays.API.Queries.GetTakenHolidaysByTeamId;
+using Holidays.API.Queries.GetTeamHeirarchyHolidays;
 using Holidays.API.Queries.TeamHolidays;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PemmexCommonLibs.Application.Helpers;
+using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Domain.Common.Dtos;
 using PemmexCommonLibs.Domain.Enums;
 using PemmexCommonLibs.Infrastructure.Services.FileUploadService;
@@ -32,6 +34,12 @@ namespace Holidays.API.Controllers
     [Authorize]
     public class Holiday : ApiControllerBase
     {
+        private readonly ILogService _logService;
+
+        public Holiday(ILogService logService)
+        {
+            _logService = logService;
+        }
         [HttpGet]
         [Route("Types")]
         public async Task<ActionResult<ResponseMessage>> HolidayTypes()
@@ -43,9 +51,12 @@ namespace Holidays.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Holiday_{CurrentUser.EmployeeIdentifier}");
                 return await Task.FromResult(new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null));
             }
         }
+        
+        [Authorize("BuHR")]
         [HttpPost]
         [Route("HolidaySettings")]
         public async Task<ActionResult<ResponseMessage>> SaveHolidaySettings(List<HolidaySettingsDto> settings)
@@ -57,9 +68,11 @@ namespace Holidays.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Holiday_{CurrentUser.EmployeeIdentifier}");
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
+        [Authorize("BuHR")]
         [HttpPost]
         [Route("HolidaySetting")]
         public async Task<ActionResult<ResponseMessage>> SaveHolidaySetting(HolidaySettingsDto settings)
@@ -71,9 +84,11 @@ namespace Holidays.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Holiday_{CurrentUser.EmployeeIdentifier}");
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
+        [Authorize("BuHR")]
         [HttpGet]
         [Route("HolidaySettings")]
         public async Task<ActionResult<ResponseMessage>> GetHolidaySettings()
@@ -85,102 +100,126 @@ namespace Holidays.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Holiday_{CurrentUser.EmployeeIdentifier}");
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
-        [HttpPost]
-        [Route("SaveHolidays")]
-        public async Task<ActionResult<ResponseMessage>> SaveHolidays([FromBody] SaveHolidayCommand command)
-        {
-            try
-            {
-                var data = await Mediator.Send(command);
-                return new ResponseMessage(true, EResponse.OK, null, data);
-            }
-            catch (Exception e)
-            {
-                return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
-            }
-        }
+        //[HttpPost]
+        //[Route("SaveHolidays")]
+        //public async Task<ActionResult<ResponseMessage>> SaveHolidays([FromBody] SaveHolidayCommand command)
+        //{
+        //    try
+        //    {
+        //        var data = await Mediator.Send(command);
+        //        return new ResponseMessage(true, EResponse.OK, null, data);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        await _logService.WriteLogAsync(e, $"Holiday_{CurrentUser.EmployeeIdentifier}");
+        //        return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
+        //    }
+        //}
         [HttpGet]
         [Route("HolidayCounter")]
         public async Task<ActionResult<ResponseMessage>> HolidayCounter()
         {
             try
             {
-                var data = await Mediator.Send(new GetHolidayCounterQuery() { businessIdentifier = CurrentUser.BusinessIdentifier, Id = CurrentUser.Id});
+                var data = await Mediator.Send(new GetHolidayCounterQuery() { businessIdentifier = CurrentUser.BusinessIdentifier, EmployeeIdentifier = CurrentUser.EmployeeIdentifier});
                 return new ResponseMessage(true, EResponse.OK, null, data);
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Holiday_{CurrentUser.EmployeeIdentifier}");
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
         [AllowAnonymous]
         [HttpGet]
         [Route("UserEarnedHolidays")]
-        public async Task<ActionResult<int>> UserEarnedHolidays(string BusinessIdentifier, Guid EmployeeId)
+        public async Task<ActionResult<int>> UserEarnedHolidays(string BusinessIdentifier, string EmployeeIdentifier)
         {
             try
             {
-                return await Mediator.Send(new GetEarnedHolidaysCountByEmployeeIdQuery() { businessIdentifier = BusinessIdentifier, Id = EmployeeId });
+                return await Mediator.Send(new GetEarnedHolidaysCountByEmployeeIdQuery() { businessIdentifier = BusinessIdentifier, Identifier = EmployeeIdentifier });
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Holiday_{CurrentUser.EmployeeIdentifier}");
                 throw;
             }
         }
         [AllowAnonymous]
         [HttpGet]
         [Route("UserPlannedHolidays")]
-        public async Task<ActionResult<int>> UserPlannedHolidays(string BusinessIdentifier,Guid EmployeeId)
+        public async Task<ActionResult<int>> UserPlannedHolidays(string BusinessIdentifier,string EmployeeIdentifier)
         {
             try
             {
-                return await Mediator.Send(new GetPlannedHolidaysCountByEmployeeIdQuery() { businessIdentifier = BusinessIdentifier, Id = EmployeeId });
+                return await Mediator.Send(new GetPlannedHolidaysCountByEmployeeIdQuery() { businessIdentifier = BusinessIdentifier, EmployeeIdentifier = EmployeeIdentifier });
             }
-            catch (Exception e) { 
+            catch (Exception e) {
+                await _logService.WriteLogAsync(e, $"Holiday_{CurrentUser.EmployeeIdentifier}");
                 throw;  
             }
         }
         [AllowAnonymous]
         [HttpGet]
         [Route("UserRemainingHolidays")]
-        public async Task<ActionResult<int>> UserRemainingHolidays(string BusinessIdentifier, Guid EmployeeId,string country)
+        public async Task<ActionResult<int>> UserRemainingHolidays(string BusinessIdentifier, string EmployeeIdentifier, string country)
         {
             try
             {
-                return await Mediator.Send(new GetLeftHolidaysCountByEmployeeIdQuery() { businessIdentifier = BusinessIdentifier, Id = EmployeeId,country = country });
+                return await Mediator.Send(new GetLeftHolidaysCountByEmployeeIdQuery() { businessIdentifier = BusinessIdentifier, EmployeeIdentifier = EmployeeIdentifier, country = country });
             }
-            catch (Exception e) { throw;  }
+            catch (Exception e) {
+                await _logService.WriteLogAsync(e, $"Holiday_{CurrentUser.EmployeeIdentifier}"); 
+                throw; 
+            }
         }
         [AllowAnonymous]
         [HttpGet]
         [Route("UserAvailedHolidays")]
-        public async Task<ActionResult<int>> UserAvailedHolidays(string BusinessIdentifier, Guid EmployeeId,string country)
+        public async Task<ActionResult<int>> UserAvailedHolidays(string BusinessIdentifier, string EmployeeIdentifier, string country)
         {
             try
             {
                 return await Mediator.Send(new GetTakenHolidaysCountByEmployeeIdQuery() { businessIdentifier = BusinessIdentifier,
-                    Id = EmployeeId,country = country
+                    EmployeeIdentifier = EmployeeIdentifier,
+                    country = country
                 });
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Holiday_{CurrentUser.EmployeeIdentifier}");
                 throw;
             }
         }
-        [AllowAnonymous]
         [HttpGet]
-        [Route("TeamHolidays")]
-        public async Task<ActionResult<List<TakenHolidayDto>>> TeamHolidays(string BusinessIdentifier,string costcenterIdentifier)
+        [Route("SiblingsHolidays")]
+        public async Task<ActionResult<List<EmployeeHolidayDto>>> SiblingsHolidays([FromQuery] string[] employeeIdentifiers)
         {
             try
             {
-                return await Mediator.Send(new GetTakenHolidaysByTeamIdQuery() { businessIdentifier = BusinessIdentifier, TeamId = costcenterIdentifier });
+                return await Mediator.Send(new GetSiblingsHolidaysQuery() { employeeIdentifiers = employeeIdentifiers,organizationIdentifier = CurrentUser.OrganizationIdentifier });
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Holiday_{CurrentUser.EmployeeIdentifier}");
+                throw;
+            }
+        }
+        [HttpGet]
+        [Route("TeamHeirarchyHolidays")]
+        public async Task<ActionResult<List<EmployeeHolidayDto>>> TeamHeirarchyHolidays([FromQuery]string[] employeeIdentifiers)
+        {
+            try
+            {
+                return await Mediator.Send(new GetTeamHeirarchyHolidaysQuery() { employeeIdentifiers = employeeIdentifiers, organizationIdentifier = CurrentUser.OrganizationIdentifier });
+            }
+            catch (Exception e)
+            {
+                await _logService.WriteLogAsync(e, $"Holiday_{CurrentUser.EmployeeIdentifier}");
                 throw;
             }
         }
@@ -194,6 +233,7 @@ namespace Holidays.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Holiday_{CurrentUser.EmployeeIdentifier}");
                 throw;
             }
         }
@@ -236,6 +276,7 @@ namespace Holidays.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Holiday_{CurrentUser.EmployeeIdentifier}");
                 throw;
             }
         }
@@ -250,6 +291,7 @@ namespace Holidays.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Holiday_{CurrentUser.EmployeeIdentifier}");
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }

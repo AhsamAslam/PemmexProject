@@ -2,6 +2,7 @@
 using Holidays.API.Database.Entities;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using PemmexCommonLibs.Infrastructure.Services.LogService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,12 +25,22 @@ namespace Holidays.API.Commands.SaveHolidays
         }
         public async Task<Unit> Handle(SaveCompanyGivenHolidays request, CancellationToken cancellationToken)
         {
-
-            using (var scope = _serviceProvider.CreateScope())
+            try
             {
-                var _context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
-                _context.CompanyToEmployeeHolidays.Add(request.companyHolidays);
-                await _context.SaveChangesAsync(cancellationToken);
+                using (var scope = _serviceProvider.CreateScope())
+                {
+                    var _context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
+                    _context.CompanyToEmployeeHolidays.Add(request.companyHolidays);
+                    await _context.SaveChangesAsync(cancellationToken);
+                }
+            }
+            catch(Exception e)
+            {
+                using (var scope = _serviceProvider.CreateScope())
+                {
+                    var _logService = scope.ServiceProvider.GetRequiredService<LogService>();
+                    await _logService.WriteLogAsync(e, $"{request.companyHolidays.EmployeeIdentifier}");
+                }
             }
             return Unit.Value;
         }

@@ -1,0 +1,27 @@
+﻿@model RolesViewModel
+
+<div class="login-page">
+    <partial name="_ValidationSummary" />
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form asp-route="Role">
+                        <input type="hidden" asp-for="ReturnUrl" />
+                        <fieldset>
+                            <div class="form-group">
+                                <label asp-for="RoleName"></label>
+                                <input type="RoleName" class="form-control" placeholder="Role" asp-for="RoleName" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary" name="button" value="role">Save</button>
+                                <button class="btn btn-default" name="button" value="cancel">Cancel</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

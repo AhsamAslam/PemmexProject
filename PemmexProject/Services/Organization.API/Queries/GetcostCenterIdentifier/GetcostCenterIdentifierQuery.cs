@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Organization.API.Database.Context;
+using Organization.API.Database.Entities;
 using Organization.API.Dtos;
-using Organization.API.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,11 +29,17 @@ namespace Organization.API.Queries.GetcostCenterIdentifier
 
         public async Task<CostCenterResponse> Handle(GetcostCenterIdentifierQuery request, CancellationToken cancellationToken)
         {
-            var o = await _context.CostCenters
-                .Where(o => o.CostCenterIdentifier == request.costCenterIdentifier)
-                .FirstOrDefaultAsync(cancellationToken: cancellationToken);
-
-            return _mapper.Map<Entities.CostCenter, CostCenterResponse>(o);
+            try
+            {
+                var o = await _context.CostCenters
+                       .Where(o => o.CostCenterIdentifier == request.costCenterIdentifier)
+                       .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+                return _mapper.Map<CostCenter, CostCenterResponse>(o);
+            }
+            catch(Exception)
+            {
+                throw;
+            }
         }
     }
 }

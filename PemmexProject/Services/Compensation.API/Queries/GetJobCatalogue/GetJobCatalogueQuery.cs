@@ -15,7 +15,7 @@ namespace Organization.API.Queries.GetJobCatalogue
 {
     public class GetJobCatalogueQuery : IRequest<JobCatalogueDto>
     {
-        public string organizationIdentifier { get; set; }
+        public string businessIdentifier { get; set; }
         public JobFunction jobFunction { get; set; }
         public string grade { get; set; }
     }
@@ -32,15 +32,22 @@ namespace Organization.API.Queries.GetJobCatalogue
         }
         public async Task<JobCatalogueDto> Handle(GetJobCatalogueQuery request, CancellationToken cancellationToken)
         {
-            var p = request.jobFunction.ToString();
-            var employee = await _context.JobCatalogues
-                .Where(e => e.jobFunction == request.jobFunction.ToString() 
-                && e.organizationIdentifier == request.organizationIdentifier
-                && e.grade == request.grade
-                )
-                .FirstOrDefaultAsync(cancellationToken);
+            try
+            {
+                var p = request.jobFunction.ToString();
+                var employee = await _context.JobCatalogues
+                    .Where(e => e.jobFunction == request.jobFunction.ToString()
+                    && e.businessIdentifier == request.businessIdentifier
+                    && e.grade == request.grade
+                    )
+                    .FirstOrDefaultAsync(cancellationToken);
 
-            return _mapper.Map<JobCatalogue, JobCatalogueDto>(employee);
+                return _mapper.Map<JobCatalogue, JobCatalogueDto>(employee);
+            }
+            catch(Exception)
+            {
+                throw;
+            }
         }
     }
 }

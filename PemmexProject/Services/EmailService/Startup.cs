@@ -1,5 +1,7 @@
 using EmailServices.Dtos;
 using EmailServices.Services;
+using IdentityServer4.AccessTokenValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
@@ -28,21 +31,57 @@ namespace EmailServices
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var Identity = Configuration["IdentityUrl"];
             services.Configure<EmailSettings>(Configuration.GetSection("MailSettings"));
             services.AddTransient<IEmailService, EmailService>();
-            services.AddAuthentication("Bearer")
-            .AddJwtBearer("Bearer", option =>
-            {
-                option.Authority = "https://localhost:5001";
-                option.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateAudience = false
-                };
-            });
+            
             services.AddControllers();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = Identity;
+                options.RequireHttpsMetadata = false;
+                options.Audience = "EmailServices";
+            });
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "EmailServices", Version = "v1" });
+                c.CustomSchemaIds(x => x.FullName);
+                c.AddSecurityDefinition(
+                    "token",
+                    new OpenApiSecurityScheme
+                    {
+                        Type = SecuritySchemeType.Http,
+                        BearerFormat = "JWT",
+                        Scheme = "Bearer",
+                        In = ParameterLocation.Header,
+                        Name = HeaderNames.Authorization
+                    }
+                );
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
+
+                        },
+                        new List<string>()
+                    }
+                });
             });
         }
 

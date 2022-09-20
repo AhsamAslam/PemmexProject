@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
+using Organization.API.Database.Context;
+using Organization.API.Database.Entities;
 using Organization.API.Dtos;
-using Organization.API.Entities;
-using Organization.API.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

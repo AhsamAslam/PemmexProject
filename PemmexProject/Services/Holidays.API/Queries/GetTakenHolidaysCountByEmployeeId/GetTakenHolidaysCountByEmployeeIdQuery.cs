@@ -2,11 +2,12 @@
 using Holidays.API.Common;
 using Holidays.API.Database.context;
 using Holidays.API.Database.Entities;
-using Holidays.API.Enumerations;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using PemmexCommonLibs.Application.Extensions;
 using PemmexCommonLibs.Application.Helpers;
 using PemmexCommonLibs.Application.Interfaces;
+using PemmexCommonLibs.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Holidays.API.Queries.GetCountTakenHolidaysByEmployeeId
 {
     public class GetTakenHolidaysCountByEmployeeIdQuery : IRequest<int>
     {
-        public Guid Id { get; set; }
+        public string EmployeeIdentifier { get; set; }
         public string businessIdentifier { get; set; }
         public string country { get; set; }
     }
@@ -40,7 +41,7 @@ namespace Holidays.API.Queries.GetCountTakenHolidaysByEmployeeId
                     .OrderByDescending(d => d.HolidayCalendarYear).FirstOrDefaultAsync();
 
                 var holidays = await _context.CompanyToEmployeeHolidays
-                    .Where(e => e.EmployeeId == request.Id && e.HolidaySettingsIdentitfier == setting.HolidaySettingsIdentitfier)
+                    .Where(e => e.EmployeeIdentifier == request.EmployeeIdentifier && e.HolidaySettingsIdentitfier == setting.HolidaySettingsIdentitfier)
                     .FirstOrDefaultAsync(cancellationToken);
 
 
@@ -48,7 +49,7 @@ namespace Holidays.API.Queries.GetCountTakenHolidaysByEmployeeId
                     return 0;
 
 
-                var used = await GetUsedHolidaysEmployee(request.country, holidays.EmployementStartDate.ToDateTime3(), setting,request.Id);
+                var used = await GetUsedHolidaysEmployee(request.country, holidays.EmployementStartDate.ToDateTime3(), setting,request.EmployeeIdentifier);
 
 
                 return used;
@@ -58,7 +59,7 @@ namespace Holidays.API.Queries.GetCountTakenHolidaysByEmployeeId
                 throw;
             }
         }
-        private async Task<int> GetUsedHolidaysEmployee(string countryName, DateTime startedDate, HolidaySettings setting,Guid EmployeeId)
+        private async Task<int> GetUsedHolidaysEmployee(string countryName, DateTime startedDate, HolidaySettings setting,string EmployeeId)
         {
             try
             {
@@ -69,7 +70,7 @@ namespace Holidays.API.Queries.GetCountTakenHolidaysByEmployeeId
                 .Where(h => h.HolidayEndDate >= start_calendar && h.HolidayEndDate <= end_calendar)
                 .Where(h => h.holidayType == HolidayTypes.AnnualHoliday)
                 .Where(h => h.HolidayStatus == HolidayStatus.Availed)
-                .Where(h => h.EmployeeId == EmployeeId)
+                .Where(h => h.EmployeeIdentifier == EmployeeId)
                 .ToListAsync();
 
                 int leaves = 0;
@@ -87,7 +88,6 @@ namespace Holidays.API.Queries.GetCountTakenHolidaysByEmployeeId
             catch (Exception)
             {
                 throw;
-
             }
         }
     }

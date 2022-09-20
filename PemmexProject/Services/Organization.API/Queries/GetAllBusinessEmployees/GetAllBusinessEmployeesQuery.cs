@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Organization.API.Database.Context;
+using Organization.API.Database.Entities;
 using Organization.API.Dtos;
-using Organization.API.Entities;
-using Organization.API.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,21 +20,38 @@ namespace Organization.API.Queries.GetAllBusinessEmployees
     public class GetAllBusinessEmployeesQueryHandeler : IRequestHandler<GetAllBusinessEmployeesQuery, List<EmployeeResponse>>
     {
         private readonly IApplicationDbContext _context;
-        private readonly IMapper _mapper;
 
-        public GetAllBusinessEmployeesQueryHandeler(IApplicationDbContext context, IMapper mapper)
+        public GetAllBusinessEmployeesQueryHandeler(IApplicationDbContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
         public async Task<List<EmployeeResponse>> Handle(GetAllBusinessEmployeesQuery request, CancellationToken cancellationToken)
         {
-            var employee = await _context.Employees
+            try
+            {
+                var employee = await _context.Employees
                 .Include(b => b.Businesses)
                 .Where(e => e.Businesses.BusinessIdentifier == request.Id && e.IsActive == true)
-                .ToListAsync(cancellationToken);
+                .Select(x => new EmployeeResponse
+                {
+                    EmployeeIdentifier = x.EmployeeIdentifier,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    ManagerIdentifier = x.ManagerIdentifier,
+                    OrganizationIdentifier = x.Businesses.ParentBusinessId,
+                    BusinessIdentifier = x.Businesses.BusinessIdentifier,
+                    JobFunction = Enum.GetName(x.JobFunction),
+                    Grade = x.Grade,
+                    CostCenterIdentifier = x.CostCenter.CostCenterIdentifier,
+                    CostCenterName = x.CostCenter.CostCenterName
+                }).ToListAsync(cancellationToken);
 
-            return _mapper.Map<List<Employee>, List<EmployeeResponse>>(employee);
+                return employee;
+            }
+            catch(Exception)
+            {
+                throw;
+            }
         }
     }
 }

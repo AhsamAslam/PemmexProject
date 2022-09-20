@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Organization.API.Database.Context;
+using Organization.API.Database.Entities;
 using Organization.API.Dtos;
-using Organization.API.Entities;
-using Organization.API.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,11 +29,17 @@ namespace Organization.API.Queries.GetAllOrganizationEmployees
         }
         public async Task<List<BusinessVM>> Handle(GetAllBusinessesQuery request, CancellationToken cancellationToken)
         {
-            var businesses = await _context.Businesses
+            try
+            {
+                var businesses = await _context.Businesses
                 .Where(e => e.ParentBusinessId == request.Id && e.IsActive == true)
                 .ToListAsync(cancellationToken);
-
-            return _mapper.Map<List<Business>, List<BusinessVM>>(businesses);
+                return _mapper.Map<List<Business>, List<BusinessVM>>(businesses);
+            }
+            catch(Exception)
+            {
+                throw;
+            }
         }
     }
 }

@@ -44,6 +44,8 @@ namespace TaskManager.API.Queries.GetPendingTasksByManagerId
                 .Include(g => g.ChangeGrade)
                 .Include(g => g.ChangeTeam)
                 .Include(g => g.ChangeBonus)
+                .Include(g => g.ChangeBudgetPromotion)
+                .ThenInclude(h => h.changeBudgetPromotionDetails)
                 .Where(t => Identifiers.Contains(t.TaskIdentifier) && (t.currentTaskStatus == TaskStatuses.Pending)).ToListAsync();
 
 

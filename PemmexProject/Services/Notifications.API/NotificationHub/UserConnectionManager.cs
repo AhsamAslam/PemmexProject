@@ -41,7 +41,8 @@ namespace Notifications.API.NotificationHub
             var conn = new List<string>();
             lock (userConnectionMapLocker)
             {
-                conn = userConnectionMap[userId];
+                if (userConnectionMap.ContainsKey(userId))
+                    conn = userConnectionMap[userId];
             }
             return conn;
         }

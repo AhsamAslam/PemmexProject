@@ -1,16 +1,17 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Organization.API/Organization.API.csproj", "Organization.API/"]
-COPY ["PemmexCommonLibs/PemmexCommonLibs.csproj", "PemmexCommonLibs/"]
-RUN dotnet restore "Organization.API/Organization.API.csproj"
+COPY ["Services/Organization.API/Organization.API.csproj", "Services/Organization.API/"]
+COPY ["Common/PemmexCommonLibs/PemmexCommonLibs.csproj", "Common/PemmexCommonLibs/"]
+COPY ["Common/EventBus.Messages/EventBus.Messages.csproj", "Common/EventBus.Messages/"]
+RUN dotnet restore "Services/Organization.API/Organization.API.csproj" --disable-parallel
 COPY . .
-WORKDIR "/src/Organization.API"
+WORKDIR "/src/Services/Organization.API"
 RUN dotnet build "Organization.API.csproj" -c Release -o /app/build
 
 FROM build AS publish

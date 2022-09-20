@@ -38,7 +38,12 @@ namespace Authentication.API.Services
                     var data = JsonConvert.DeserializeObject<HolidaySettings>(response);
                     var d = await _mediator.Send(new UploadHolidaySettingsCommand { settings = data });
                 }
-                else
+                else if (a.Value != null && a.Value.ToString() == nameof(EmployeeHolidayEntity))
+                {
+                    var data = JsonConvert.DeserializeObject<SaveHolidayCommand>(response);
+                    var d = await _mediator.Send(data);
+                }
+                else if (a.Value != null && a.Value.ToString() == nameof(CompanyToEmployeeHolidayEntity))
                 {
                     var holidayData = JsonConvert.DeserializeObject<CompanyToEmployeeHolidays>(response);
                     var data = await _mediator.Send(new SaveCompanyGivenHolidays { companyHolidays = holidayData });

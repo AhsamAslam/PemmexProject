@@ -23,6 +23,7 @@ namespace Compensation.API.Database.Entities
         public double one_time_bonus { get; set; }
         public double annual_bonus { get; set; }
         public DateTime IssuedDate { get; set; }
+        public string currencyCode { get; set; }
         public string organizationIdentifier { get; set; }
         public string businessIdentifier { get; set; }
 

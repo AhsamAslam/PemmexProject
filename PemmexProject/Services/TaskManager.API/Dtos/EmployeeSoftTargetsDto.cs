@@ -1,0 +1,36 @@
+﻿using PemmexCommonLibs.Domain.Enums;
+using System;
+
+namespace TaskManager.API.Dtos
+{
+    public class EmployeeSoftTargetsDto
+    {
+        public int ChangeEmployeeSoftTargetsTaskId { get; set; }
+        public Guid Emp_Guid { get; set; }
+        public string EmployeeIdentifier { get; set; }
+        public string BusinessIdentifier { get; set; }
+        public string BusinessName { get; set; }
+        public DateTime EmployeeDob { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string MiddleName { get; set; }
+        public string Title { get; set; }
+        public string ContractualOrganization { get; set; }
+        public string Grade { get; set; }
+        public string ManagerIdentifier { get; set; }
+        public string ManagerName { get; set; }
+        public string CostCenterIdentifier { get; set; }
+        public string CostCenterName { get; set; }
+        public string OrganizationCountry { get; set; }
+        public string JobFunction { get; set; }
+        public string OrganizationIdentifier { get; set; }
+
+        public int SoftTargetsId { get; set; }
+        public string SoftTargetsName { get; set; }
+        public string SoftTargetsDescription { get; set; }
+        public string SoftTargetsMultiplier { get; set; }
+        public EPerformanceCriteria PerformanceCriteria { get; set; }
+        public DateTime EvaluationDateTime { get; set; }
+        public bool isActive { get; set; }
+    }
+}

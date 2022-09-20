@@ -15,6 +15,7 @@ namespace Authentication.API.Dtos
         public string Email { get; set; }
         public string EmployeeIdentifier { get; set; }
         public string ManagerIdentifier { get; set; }
+        public string ManagerName { get; set; }
         public string CostCenterIdentifier { get; set; }
         public string BusinessIdentifier { get; set; }
         public string OrganizationIdentifier { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Compensation.API.Commands.SaveCompensation;
+using Compensation.API.Commands.SaveFunctionalBudgetByWorkFlow;
 using Compensation.API.Commands.UpdateCompensationAndBonus;
 using Compensation.API.Dtos;
 using MediatR;
@@ -39,6 +40,11 @@ namespace Compensation.API.Services
                 else if(a.Value.ToString() == nameof(OrganizationUpdateEntity))
                 {
                     var compensation = JsonConvert.DeserializeObject<UpdateCompensationAndBonusCommand>(response);
+                    var data = await _mediator.Send(compensation);
+                }
+                else if (a.Value.ToString() == nameof(BudgetPromotionUpdateEntity))
+                {
+                    var compensation = JsonConvert.DeserializeObject<SaveFunctionalBudgetByWorkFlowCommand>(response);
                     var data = await _mediator.Send(compensation);
                 }
                 _ = _subscriptionClient.CompleteAsync(message.SystemProperties.LockToken);

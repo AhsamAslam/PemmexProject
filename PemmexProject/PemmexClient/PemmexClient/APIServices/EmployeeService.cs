@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace PemmexClient.APIServices
@@ -18,6 +19,9 @@ namespace PemmexClient.APIServices
         {
             _httpClientFactory = httpClientFactory;
             httpClient = _httpClientFactory.CreateClient("pemmex_mvc_client");
+            //var authheader = new AuthenticationHeaderValue("Bearer", accessToken);
+            //httpClient.DefaultRequestHeaders.Authorization = authheader;
+
         }
 
         public async Task<ResponseMessage> CreateEmployee(Employee employee)

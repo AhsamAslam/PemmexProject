@@ -9,7 +9,7 @@ namespace PemmexCommonLibs.Infrastructure.Services
 {
     public class DateTimeService : IDateTime
     {
-        public DateTime Now => DateTime.Now;
+        public DateTime Now => DateTime.UtcNow;
         public int DaysInMonth => DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
     }
 }

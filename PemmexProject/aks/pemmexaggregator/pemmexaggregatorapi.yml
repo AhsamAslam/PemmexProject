@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pemmexaggregatorapi-deployment
+  labels:
+    app: pemmexaggregatorapi
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: pemmexaggregatorapi
+  template:
+    metadata:
+      labels:
+        app: pemmexaggregatorapi
+    spec:
+      containers:
+        - name: pemmexaggregatorapi
+          image: pemmexmicroservicesacr.azurecr.io/pemmexapiaggregator:v1
+          imagePullPolicy: IfNotPresent          
+          ports:
+            - containerPort: 80
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Production
+            - name: ApiSettings__OrganizationUrl
+              valueFrom:
+                configMapKeyRef:
+                  name: pemmexaggregator-configmap
+                  key: OrganizationUrl
+            - name: ApiSettings__HolidaysUrl
+              valueFrom:
+                configMapKeyRef:
+                  name: pemmexaggregator-configmap
+                  key: HolidaysUrl
+            - name: ApiSettings__CompensationsUrl
+              valueFrom:
+                configMapKeyRef:
+                  name: pemmexaggregator-configmap
+                  key: CompensationsUrl
+            - name: ApiSettings__NotificationUrl
+              valueFrom:
+                configMapKeyRef:
+                  name: pemmexaggregator-configmap
+                  key: NotificationUrl
+            - name: ApiSettings__EmployeeTargetsUrl
+              valueFrom:
+                configMapKeyRef:
+                  name: pemmexaggregator-configmap
+                  key: EmployeeTargetsUrl
+            - name: ApiSettings__TaskManagerUrl
+              valueFrom:
+                configMapKeyRef:
+                  name: pemmexaggregator-configmap
+                  key: TaskManagerUrl
+            - name: ApiSettings__SurveyUrl
+              valueFrom:
+                configMapKeyRef:
+                  name: pemmexaggregator-configmap
+                  key: SurveyUrl
+            - name: ApiSettings__IdentityUrl
+              valueFrom:
+                configMapKeyRef:
+                  name: pemmexaggregator-configmap
+                  key: IdentityUrl                                          
+                    
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "0.1"
+            limits:
+              memory: "128Mi"
+              cpu: "0.3"
+      imagePullSecrets:
+        - name: acr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pemmexaggregatorapi-service
+spec:
+  type: LoadBalancer  
+  selector:
+    app: pemmexaggregatorapi
+  ports:
+    - targetPort: 80
+      port: 80

@@ -21,6 +21,29 @@
       }
     },
     {
+      "DownstreamPathTemplate": "/api/User/AddUserToBusinessUnit",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5001"
+        }
+      ],
+      "UpstreamPathTemplate": "/User/AddUserToBusinessUnit",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
+    },
+    {
       "DownstreamPathTemplate": "/api/User/roles",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
@@ -37,11 +60,11 @@
         "Period": "5s",
         "PeriodTimespan": 1,
         "Limit": 1
-      },
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
-        "AllowedScopes": []
       }
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
     },
     {
       "DownstreamPathTemplate": "/api/User/allusers",
@@ -60,11 +83,11 @@
         "Period": "5s",
         "PeriodTimespan": 1,
         "Limit": 1
-      },
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
-        "AllowedScopes": []
       }
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
     },
     {
       "DownstreamPathTemplate": "/api/User/role",
@@ -85,9 +108,32 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
+    },
+    {
+      "DownstreamPathTemplate": "/api/User/updaterole",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5001"
+        }
+      ],
+      "UpstreamPathTemplate": "/User/updaterole",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
     },
     {
       "DownstreamPathTemplate": "/api/User/deactivate/{id}",
@@ -108,7 +154,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -131,7 +177,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -222,7 +268,7 @@
         }
       ],
       "UpstreamPathTemplate": "/organization",
-      "UpstreamHttpMethod": [ "Post", "Get" ],
+      "UpstreamHttpMethod": [ "Post" ],
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
@@ -241,11 +287,11 @@
         }
       ],
       "UpstreamPathTemplate": "/organization/fullOrganization",
-      "UpstreamHttpMethod": [ "Get" ]
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "IdentityApiKey",
-      //  "AllowedScopes": []
-      //}
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/api/organization/managers",
@@ -264,11 +310,11 @@
         "Period": "5s",
         "PeriodTimespan": 1,
         "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
       }
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "IdentityApiKey",
-      //  "AllowedScopes": []
-      //}
     },
     {
       "DownstreamPathTemplate": "/api/organization/Businesses",
@@ -287,11 +333,11 @@
         "Period": "5s",
         "PeriodTimespan": 1,
         "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
       }
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "IdentityApiKey",
-      //  "AllowedScopes": []
-      //}
     },
     {
       "DownstreamPathTemplate": "/api/employees",
@@ -303,18 +349,18 @@
         }
       ],
       "UpstreamPathTemplate": "/employees",
-      "UpstreamHttpMethod": [ "Post", "Get" ],
+      "UpstreamHttpMethod": [ "Post" ],
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
         "Period": "5s",
         "PeriodTimespan": 1,
         "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
       }
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "IdentityApiKey",
-      //  "AllowedScopes": []
-      //}
     },
     {
       "DownstreamPathTemplate": "/api/employees/{id}",
@@ -333,14 +379,14 @@
         "Period": "5s",
         "PeriodTimespan": 1,
         "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
       }
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "IdentityApiKey",
-      //  "AllowedScopes": []
-      //}
     },
     {
-      "DownstreamPathTemplate": "/api/employees/ManagerTree",
+      "DownstreamPathTemplate": "/api/employees/TeamMembers/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -348,7 +394,7 @@
           "Port": "5002"
         }
       ],
-      "UpstreamPathTemplate": "/employees/ManagerTree",
+      "UpstreamPathTemplate": "/employees/TeamMembers/{id}",
       "UpstreamHttpMethod": [ "Get" ],
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -358,12 +404,12 @@
         "Limit": 1
       }
       //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "IdentityApiKey",
+      //  "AuthenticationProviderKey": "Bearer",
       //  "AllowedScopes": []
       //}
     },
     {
-      "DownstreamPathTemplate": "/api/employees/TeamMembers",
+      "DownstreamPathTemplate": "/api/employees/Siblings/{employeeIdentifier}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -371,7 +417,7 @@
           "Port": "5002"
         }
       ],
-      "UpstreamPathTemplate": "/employees/TeamMembers",
+      "UpstreamPathTemplate": "/employees/Siblings/{employeeIdentifier}",
       "UpstreamHttpMethod": [ "Get" ],
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -379,11 +425,11 @@
         "Period": "5s",
         "PeriodTimespan": 1,
         "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
       }
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "IdentityApiKey",
-      //  "AllowedScopes": []
-      //}
     },
     {
       "DownstreamPathTemplate": "/api/CostCenters/{costCenterIdentifier}",
@@ -404,7 +450,7 @@
         "Limit": 1
       }
       //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "IdentityApiKey",
+      //  "AuthenticationProviderKey": "Bearer",
       //  "AllowedScopes": []
       //}
     },
@@ -427,7 +473,7 @@
         "Limit": 1
       }
       //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "IdentityApiKey",
+      //  "AuthenticationProviderKey": "Bearer",
       //  "AllowedScopes": []
       //}
     },
@@ -450,7 +496,7 @@
         "Limit": 1
       }
       //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "IdentityApiKey",
+      //  "AuthenticationProviderKey": "Bearer",
       //  "AllowedScopes": []
       //}
     },
@@ -473,9 +519,74 @@
         "Limit": 1
       }
       //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "IdentityApiKey",
+      //  "AuthenticationProviderKey": "Bearer",
       //  "AllowedScopes": []
       //}
+    },
+    {
+      "DownstreamPathTemplate": "/api/Currency",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5002"
+        }
+      ],
+      "UpstreamPathTemplate": "/Currency",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
+    },
+    {
+      "DownstreamPathTemplate": "/api/Currency/CurrencyConvert",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5002"
+        }
+      ],
+      "UpstreamPathTemplate": "/Currency/CurrencyConvert",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/organization/BusinessUnitHeads",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5002"
+        }
+      ],
+      "UpstreamPathTemplate": "/organization/BusinessUnitHeads",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
 
     //Holidays Microservice
@@ -498,7 +609,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -521,7 +632,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -544,7 +655,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -567,7 +678,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -590,7 +701,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -613,7 +724,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -636,7 +747,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -659,7 +770,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -678,7 +789,7 @@
       "UpstreamPathTemplate": "/JobCatalogue",
       "UpstreamHttpMethod": [ "Get" ],
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -759,7 +870,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/Salary/TotalSalary",
+      "DownstreamPathTemplate": "/api/Salary/OrganizationTotalSalaryCount",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -767,45 +878,7 @@
           "Port": "5004"
         }
       ],
-      "UpstreamPathTemplate": "/Salary/TotalSalary",
-      "UpstreamHttpMethod": [ "Get" ],
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "5s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/api/Bonus/User",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5004"
-        }
-      ],
-      "UpstreamPathTemplate": "/Bonus/User",
-      "UpstreamHttpMethod": [ "Get" ],
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "5s",
-        "PeriodTimespan": 1,
-        "Limit": 1
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/api/Bonus/Team",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5004"
-        }
-      ],
-      "UpstreamPathTemplate": "/Bonus/Team",
+      "UpstreamPathTemplate": "/Salary/OrganizationTotalSalaryCount",
       "UpstreamHttpMethod": [ "Get" ],
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -835,7 +908,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/Salary/FunctionalSalary",
+      "DownstreamPathTemplate": "/api/Salary/OrganizationTotalSalaryCountByDate",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -843,7 +916,26 @@
           "Port": "5004"
         }
       ],
-      "UpstreamPathTemplate": "/Salary/FunctionalSalary",
+      "UpstreamPathTemplate": "/Salary/OrganizationTotalSalaryCountByDate",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Salary/FunctionalSalaryCount",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5004"
+        }
+      ],
+      "UpstreamPathTemplate": "/Salary/FunctionalSalaryCount",
       "UpstreamHttpMethod": [ "Get" ],
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -864,6 +956,63 @@
       ],
       "UpstreamPathTemplate": "/Budget",
       "UpstreamHttpMethod": [ "Get", "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Budget/SaveFunctionalBudget",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5004"
+        }
+      ],
+      "UpstreamPathTemplate": "/Budget/SaveFunctionalBudget",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/PerformanceEvaluationSummary/UpdatePerformanceMultiplier",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5004"
+        }
+      ],
+      "UpstreamPathTemplate": "/PerformanceEvaluationSummary/UpdatePerformanceMultiplier",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/PerformanceEvaluationSummary/UpdateCompanyProfitabilityMultiplier",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5004"
+        }
+      ],
+      "UpstreamPathTemplate": "/PerformanceEvaluationSummary/UpdateCompanyProfitabilityMultiplier",
+      "UpstreamHttpMethod": [ "Post" ],
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,
@@ -893,7 +1042,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -916,7 +1065,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -939,7 +1088,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -962,7 +1111,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -985,7 +1134,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -1008,7 +1157,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -1031,7 +1180,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -1054,7 +1203,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -1077,7 +1226,122 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/TaskNotification/UnReadNotificationsCount",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5005"
+        }
+      ],
+      "UpstreamPathTemplate": "/TaskNotification/UnReadNotificationsCount",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/TaskNotification/Notifications",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5005"
+        }
+      ],
+      "UpstreamPathTemplate": "/TaskNotification/Notifications",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        ".PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/TaskNotification/MarkAsRead",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5005"
+        }
+      ],
+      "UpstreamPathTemplate": "/TaskNotification/MarkAsRead",
+      "UpstreamHttpMethod": [ "Put" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        ".PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/TaskManager/BudgetPromotionPendingTasks",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5005"
+        }
+      ],
+      "UpstreamPathTemplate": "/TaskManager/BudgetPromotionPendingTasks",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        ".PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/TaskManager/BudgetPromotionPendingTasks",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5005"
+        }
+      ],
+      "UpstreamPathTemplate": "/TaskManager/BudgetPromotionPendingTasks",
+      "UpstreamHttpMethod": [ "Put" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        ".PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -1122,7 +1386,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -1145,12 +1409,12 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
     {
-      "DownstreamPathTemplate": "/api/Holiday/GetTeamMemberHolidaySummary/{Id}",
+      "DownstreamPathTemplate": "/api/Holiday/GetSiblingsHolidaySummary",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -1158,7 +1422,7 @@
           "Port": "5000"
         }
       ],
-      "UpstreamPathTemplate": "/Holiday/GetTeamMemberHolidaySummary/{Id}",
+      "UpstreamPathTemplate": "/Holiday/GetSiblingsHolidaySummary",
       "UpstreamHttpMethod": [ "Get" ],
       "RateLimitOptions": {
         "ClientWhitelist": [],
@@ -1168,7 +1432,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -1191,7 +1455,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -1214,7 +1478,30 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/holiday/SiblingsHolidays",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/holiday/SiblingsHolidays",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -1237,7 +1524,53 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/holiday/EmployeesWithSickLeaves",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/holiday/EmployeesWithSickLeaves",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/holiday/EmployeesWithMaternityLeaves",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/holiday/EmployeesWithMaternityLeaves",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -1260,9 +1593,239 @@
         "Limit": 1
       }
       //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "IdentityApiKey",
+      //  "AuthenticationProviderKey": "Bearer",
       //  "AllowedScopes": []
       //}
+    },
+    {
+      "DownstreamPathTemplate": "/api/AnnualSalaryPlanning/OrganizationBUnitBasedSalarySummaryByQuery",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/AnnualSalaryPlanning/OrganizationBUnitBasedSalarySummaryByQuery",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
+    },
+    {
+      "DownstreamPathTemplate": "/api/AnnualSalaryPlanning/OrganizationBUnitBasedSalarySummary",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/AnnualSalaryPlanning/OrganizationBUnitBasedSalarySummary",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
+    },
+    {
+      "DownstreamPathTemplate": "/api/AnnualSalaryPlanning/FunctionalSalaryCount",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/AnnualSalaryPlanning/FunctionalSalaryCount",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
+    },
+    {
+      "DownstreamPathTemplate": "/api/AnnualSalaryPlanning/FunctionalBudgetCount",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/AnnualSalaryPlanning/FunctionalBudgetCount",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
+    },
+    {
+      "DownstreamPathTemplate": "/api/AnnualSalaryPlanning/TeamSalaryDetails",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/AnnualSalaryPlanning/TeamSalaryDetails",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
+    },
+    {
+      "DownstreamPathTemplate": "/api/AnnualSalaryPlanning/BUnitFunctionalBudgetDetails",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/AnnualSalaryPlanning/BUnitFunctionalBudgetDetails",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
+    },
+    {
+      "DownstreamPathTemplate": "/api/Compensation/EmployeeBonus",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/Compensation/EmployeeBonus",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Compensation/TeamBonuses",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/Compensation/TeamBonuses",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
+    },
+    {
+      "DownstreamPathTemplate": "/api/AnnualSalaryPlanning/UpdateFunctionalBudget",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/AnnualSalaryPlanning/UpdateFunctionalBudget",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AnnualSalaryPlanning/TeamBudgetSummary",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/AnnualSalaryPlanning/TeamBudgetSummary",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
 
     //Notifications Microservice
@@ -1285,7 +1848,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -1308,7 +1871,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -1331,7 +1894,7 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     },
@@ -1354,14 +1917,731 @@
         "Limit": 1
       },
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+    // Survey Microservice
+    {
+      "DownstreamPathTemplate": "/api/Survey/GetEmployeeSurvey",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5008"
+        }
+      ],
+      "UpstreamPathTemplate": "/Survey/GetEmployeeSurvey",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Survey/UpdateEmployeeSurvey",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5008"
+        }
+      ],
+      "UpstreamPathTemplate": "/Survey/UpdateEmployeeSurvey",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Survey/GetQuestionnaire",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5008"
+        }
+      ],
+      "UpstreamPathTemplate": "/Survey/GetQuestionnaire",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Survey/CreateOrganizationSurvey",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/Survey/CreateOrganizationSurvey",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Survey/GetSurveyAverage",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/Survey/GetSurveyAverage",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+    //Performance Bonus Microservice
+    {
+      "DownstreamPathTemplate": "/api/Performance/JobTypeBasedPerformanceBonusSummary",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/Performance/JobTypeBasedPerformanceBonusSummary",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/OrganizationBUnitBasedBonusSummary",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/Performance/OrganizationBUnitBasedBonusSummary",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/TotalPerformanceBonusCount",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/Performance/TotalPerformanceBonusCount",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/UserSoftTargets",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/Performance/UserSoftTargets",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/TeamSoftTargets",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/Performance/TeamSoftTargets",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/GroupSoftTargets",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/Performance/GroupSoftTargets",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/GroupHardTargets",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/Performance/GroupHardTargets",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/TeamHardTargets",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/Performance/TeamHardTargets",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/EmployeeHardTargets",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/Performance/EmployeeHardTargets",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/GeneratePerformanceSummary",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/Performance/GeneratePerformanceSummary",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/PerformancePlanningResultBusinessUnit",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/Performance/PerformancePlanningResultBusinessUnit",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/PerformanceBudgetResultDetail",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/Performance/PerformanceBudgetResultDetail",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/PerformanceWholeTeamSummary",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/Performance/PerformanceWholeTeamSummary",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/UpdateBonusFromPerformanceBonus",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5000"
+        }
+      ],
+      "UpstreamPathTemplate": "/Performance/UpdateBonusFromPerformanceBonus",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+    //Target Microservice
+    {
+      "DownstreamPathTemplate": "/api/HardTargets/ShowHardTargets",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5007"
+        }
+      ],
+      "UpstreamPathTemplate": "/HardTargets/ShowHardTargets",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/HardTargets/ShowHardTargetsByUserId",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5007"
+        }
+      ],
+      "UpstreamPathTemplate": "/HardTargets/ShowHardTargetsByUserId",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/SoftTargets/ShowSoftTargets",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5007"
+        }
+      ],
+      "UpstreamPathTemplate": "/SoftTargets/ShowSoftTargets",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/SoftTargets/ShowSoftTargetsByUserId",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5007"
+        }
+      ],
+      "UpstreamPathTemplate": "/SoftTargets/ShowSoftTargetsByUserId",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/PerformanceBudget/CreatePerformanceEvaluationSummary",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5007"
+        }
+      ],
+      "UpstreamPathTemplate": "/PerformanceBudget/CreatePerformanceEvaluationSummary",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/PerformanceBudget",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5007"
+        }
+      ],
+      "UpstreamPathTemplate": "/PerformanceBudget",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/PerformanceBudget/CreatePerformanceEvaluationSetting",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5007"
+        }
+      ],
+      "UpstreamPathTemplate": "/PerformanceBudget/CreatePerformanceEvaluationSetting",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/PerformanceBudget/DeletePerformanceEvaluationSetting/{Id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5007"
+        }
+      ],
+      "UpstreamPathTemplate": "/PerformanceBudget/DeletePerformanceEvaluationSetting/{Id}",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/PerformanceBudget/GetPerformanceEvaluationSettings",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5007"
+        }
+      ],
+      "UpstreamPathTemplate": "/PerformanceBudget/GetPerformanceEvaluationSettings",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/HardTargets/UpdateHardTargetsMeasurementCriteriaResult",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5007"
+        }
+      ],
+      "UpstreamPathTemplate": "/HardTargets/UpdateHardTargetsMeasurementCriteriaResult",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/HardTargets/UpdateHardTargetsWeightage",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5007"
+        }
+      ],
+      "UpstreamPathTemplate": "/HardTargets/UpdateHardTargetsWeightage",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/PerformanceBudget/GetEmployeePerformanceBonus",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "5007"
+        }
+      ],
+      "UpstreamPathTemplate": "/PerformanceBudget/GetEmployeePerformanceBonus",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
         "AllowedScopes": []
       }
     }
-
   ],
   "GlobalConfiguration": {
     "BaseUrl": "http://localhost:5050"
-  },
-  "AllowedChatOrigins": "http://localhost:3000"
+  }
 }

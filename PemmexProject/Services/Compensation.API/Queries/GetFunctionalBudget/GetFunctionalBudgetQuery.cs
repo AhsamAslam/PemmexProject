@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Compensation.API.Database.context;
+using Compensation.API.Database.Interfaces;
 using Compensation.API.Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,40 +13,41 @@ using System.Threading.Tasks;
 
 namespace Compensation.API.Queries.GetFunctionalBudget
 {
-    public class GetFunctionalBudgetQuery : IRequest<List<FunctionalBudgetDto>>
+    public class GetFunctionalBudgetQuery : IRequest<List<OrganizationBudgetDto>>
     {
         public string organizationIdentifier { get; set; }
-        public DateTime budgetDate { get; set; }
     }
 
-    public class GetFunctionalBudgetQueryHandeler : IRequestHandler<GetFunctionalBudgetQuery, List<FunctionalBudgetDto>>
+    public class GetFunctionalBudgetQueryHandeler : IRequestHandler<GetFunctionalBudgetQuery, List<OrganizationBudgetDto>>
     {
-        private readonly IApplicationDbContext _context;
-        private readonly IMapper _mapper;
+        private readonly IFunctionalBudgetRepository _context;
 
-        public GetFunctionalBudgetQueryHandeler(IApplicationDbContext context, IMapper mapper)
+        public GetFunctionalBudgetQueryHandeler(IFunctionalBudgetRepository context)
         {
             _context = context;
-            _mapper = mapper;
         }
-        public async Task<List<FunctionalBudgetDto>> Handle(GetFunctionalBudgetQuery request, CancellationToken cancellationToken)
+        public async Task<List<OrganizationBudgetDto>> Handle(GetFunctionalBudgetQuery request, CancellationToken cancellationToken)
         {
-            List<FunctionalBudgetDto> budgets = new List<FunctionalBudgetDto>();
-           var budget = await _context.OrganizationBudgets
-                .Where(o => o.organizationIdentifier == request.organizationIdentifier
-                && o.startDate.Date == request.budgetDate.Date)
-                .ToListAsync(cancellationToken);
-
-            foreach(var b in budget)
+            try
             {
-                FunctionalBudgetDto dto = new FunctionalBudgetDto();
-                dto.budgetPercentage = b.budgetPercentage;
-                dto.budgetValue = b.budgetValue;
-                dto.businessIdentifier = b.businessIdentifier;
-                dto.jobFunction = b.jobFunction;
-                budgets.Add(dto);
+                List<OrganizationBudgetDto> budgets = new List<OrganizationBudgetDto>();
+                var budget = await _context.GetOrganizationBudget(request.organizationIdentifier);
+                foreach (var b in budget)
+                {
+                    OrganizationBudgetDto dto = new OrganizationBudgetDto();
+                    dto.budgetPercentage = b.budgetPercentage;
+                    dto.budgetValue = b.budgetValue;
+                    dto.businessIdentifier = b.businessIdentifier;
+                    dto.jobFunction = Enum.GetName(typeof(JobFunction), b.jobFunction);
+                    dto.mandatoryBudgetValue = b.compulsoryPercentage;
+                    budgets.Add(dto);
+                }
+                return budgets;
             }
-            return budgets;
+            catch(Exception)
+            {
+                throw;
+            }
         }
     }
 }

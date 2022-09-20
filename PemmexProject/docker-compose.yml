@@ -1,18 +1,119 @@
 version: '3.4'
 
 services:
+
   organization.api:
     image: ${DOCKER_REGISTRY-}organizationapi
     build:
       context: .
-      dockerfile: Organization.API/Dockerfile
-  organizationdb:
-    image: mcr.microsoft.com/mssql/server:2017-latest
-  pemmex-rabbit:
-    image: rabbitmq:management
+      dockerfile: Services/Organization.API/Dockerfile
+    depends_on:
+      - pemmexsql
+      - pemmex.identity
+
+  pemmexsql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+
   ocelotapigateway:
     image: ${DOCKER_REGISTRY-}ocelotapigateway
     build:
       context: .
       dockerfile: ApiGateWays/OcelotApiGateWay/Dockerfile
+    depends_on:
+      - pemmex.identity
+      - organization.api
+      - compensation.api
+      - holidays.api
+      - taskmanager.api
+      - employeetargets.api
+      - survey.api
+      - emailservices
+      - notifications.api
+
+  pemmex.identity:
+    image: ${DOCKER_REGISTRY-}pemmexidentity
+    build:
+      context: .
+      dockerfile: Services/Pemmex.Identity/Dockerfile
+    depends_on:
+      - pemmexsql  
+
+  compensation.api:
+    image: ${DOCKER_REGISTRY-}compensationapi
+    build:
+      context: .
+      dockerfile: Services/Compensation.API/Dockerfile
+    depends_on:
+      - pemmexsql
+      - pemmex.identity
+
+  holidays.api:
+    image: ${DOCKER_REGISTRY-}holidaysapi
+    build:
+      context: .
+      dockerfile: Services/Holidays.API/Dockerfile
+    depends_on:
+      - pemmexsql
+      - pemmex.identity
+
+  taskmanager.api:
+    image: ${DOCKER_REGISTRY-}taskmanagerapi
+    build:
+      context: .
+      dockerfile: Services/TaskManager.API/Dockerfile
+    depends_on:
+      - pemmexsql
+      - pemmex.identity
+
+  employeetargets.api:
+    image: ${DOCKER_REGISTRY-}employeetargetsapi
+    build:
+      context: .
+      dockerfile: Services/EmployeeTargets.API/Dockerfile
+    depends_on:
+      - pemmexsql
+      - pemmex.identity
+
+  survey.api:
+    image: ${DOCKER_REGISTRY-}surveyapi
+    build:
+      context: .
+      dockerfile: Services/Survey.API/Dockerfile
+    depends_on:
+      - pemmexsql
+      - pemmex.identity
+
+  emailservices:
+    image: ${DOCKER_REGISTRY-}emailservices
+    build:
+      context: .
+      dockerfile: Services/EmailService/Dockerfile
+    depends_on:
+      - pemmexsql
+      - pemmex.identity
+
+  notifications.api:
+    image: ${DOCKER_REGISTRY-}notificationsapi
+    build:
+      context: .
+      dockerfile: Services/Notifications.API/Dockerfile
+    depends_on:
+      - pemmexsql
+      - pemmex.identity
+
+  pemmexapiaggregator:
+    image: ${DOCKER_REGISTRY-}pemmexapiaggregator
+    build:
+      context: .
+      dockerfile: ApiGateWays/PemmexAPIAggregator/Dockerfile
+    depends_on:
+      - pemmex.identity
+      - organization.api
+      - compensation.api
+      - holidays.api
+      - taskmanager.api
+      - employeetargets.api
+      - survey.api
+      - emailservices
+      - notifications.api
 

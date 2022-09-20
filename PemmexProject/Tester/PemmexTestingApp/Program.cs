@@ -16,9 +16,9 @@ namespace PemmexTestingApp
         static ITopicClient topicClient;
 
         // the following parameters for receving messages
-        //const string SubscriptionName = "holiday-subscription/$deadletterqueue";
+        const string SubscriptionName = "taskUpdation-subscription/$deadletterqueue";
         //const string SubscriptionName = "user-subscription";
-        const string SubscriptionName = "holiday-subscription";
+        //const string SubscriptionName = "user-subscription";
 
         static ISubscriptionClient subscriptionClient;
 

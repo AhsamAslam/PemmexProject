@@ -1,0 +1,42 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  name: pemmexfrontend
+spec:
+  tls:
+  - hosts:
+    - pemmex.eu
+    secretName: pemmex-app-tls
+  rules:
+  - host: pemmex.eu
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: pemmexfrontend-service
+            port: 
+              number: 80
+  - host: identity.pemmex.eu
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: identityapi-service
+            port: 
+              number: 80            
+  - host: api.pemmex.eu
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service: 
+            name: ocelotapigatewayapi-service
+            port: 
+              number: 80

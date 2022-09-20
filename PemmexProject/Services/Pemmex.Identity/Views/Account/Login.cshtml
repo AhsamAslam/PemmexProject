@@ -1,0 +1,78 @@
+﻿@model LoginViewModel
+
+<div class="login-page">
+    <partial name="_ValidationSummary" />
+
+    <section class="mm-container">
+        <div class="mm-form-container">
+            <div class="mm-form-container-inner">
+                <div class="form-heading-div">
+                    <p>Hi, Welcome Back!</p>
+                </div>
+                <div class="form-heading-label-div">
+                    <p>Login</p>
+                </div>
+                <form asp-route="Login" class="authentication-form">
+                    <div class="input-outer-div">
+                        <label for="name">Email</label>
+                        <div class="input-inner-div">
+                            <input type="email" placeholder="adnanrana371@gmail.com" asp-for="Email" autofocus>
+
+                        </div>
+                    </div>
+                    <div class="input-outer-div">
+                        <label for="name">Password</label>
+                        <div class="input-inner-div">
+                            <input type="password" placeholder="888888888" asp-for="Password" autocomplete="off">
+
+                        </div>
+                    </div>
+
+                    <div class="frgt-pswd-div">
+                        @*<a href="#">Forgot Password?</a>*@
+                        <a asp-area="" asp-controller="Account" asp-action="SendEmailForPasswordReset">Forgot Password?</a>
+                    </div>
+                    <div class="button-div">
+                        @*<button type="submit">Login</button>*@
+                        <button name="button" value="login">Login</button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="mm-logo-container">
+            <div class="mm-pemmex-img-div">
+                @{
+                    var image = "/img/logo.png";
+                }
+                <img src="@image" alt="" />
+            </div>
+        </div>
+    </section>
+
+    @* <div class="row">
+        <div class="col-sm-6">
+        <div class="panel panel-default">
+        <div class="panel-body">
+        <form asp-route="Login">
+        <input type="hidden" asp-for="ReturnUrl" />
+        <fieldset>
+        <div class="form-group">
+        <label asp-for="Email"></label>
+        <input class="form-control" placeholder="Email" asp-for="Email" autofocus>
+        </div>
+        <div class="form-group">
+        <label asp-for="Password"></label>
+        <input type="password" class="form-control" placeholder="Password" asp-for="Password" autocomplete="off">
+        </div>
+        <div class="form-group">
+        <button class="btn btn-primary" name="button" value="login">Login</button>
+        <button class="btn btn-default" name="button" value="cancel">Cancel</button>
+        </div>
+        </fieldset>
+        </form>
+        </div>
+        </div>
+        </div>
+        </div>*@
+</div>

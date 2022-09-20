@@ -19,17 +19,24 @@ using PemmexCommonLibs.Application.Interfaces;
 using Organization.API.Queries.GetAllOrganizationEmployees;
 using Organization.API.Queries.GetOrganizationEmployees;
 using Organization.API.Queries.GetAllBusinessEmployees;
+using Organization.API.Queries.GetBusinessUnits;
+using Microsoft.AspNetCore.Authorization;
+using PemmexCommonLibs.Application.Extensions;
+using Organization.API.Database.Entities;
+using Organization.API.Queries.GetBusinessUnitHeads;
 
 namespace Organization.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize("ClientIdPolicy")]
+    [Authorize]
     public class OrganizationController : ApiControllerBase
     {
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly IFileUploadService _fileUploadService;
         private readonly IDateTime _dateTime;
+        private readonly ILogService _logService;
+
         public OrganizationController(IWebHostEnvironment hostEnvironment, 
             IFileUploadService fileUploadService,IDateTime dateTime,
             ILogService logService)
@@ -37,14 +44,17 @@ namespace Organization.API.Controllers
             _hostingEnvironment = hostEnvironment;
             _fileUploadService = fileUploadService;
             _dateTime = dateTime;
+            _logService = logService;
 
         }
         // POST /Upload Organization
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult<ResponseMessage>> PostAsync(string organizationIdentifier)
         {
             try
             {
+                //await _logService.WriteLogAsync(new Exception("hello Ahsam"), $"Organization_add{DateTime.Now.ToString("yyyyMMddHHmmss")}");
                 IFormFile file = Request.Form.Files[0];
                 if (file.Length > 0)
                 {
@@ -101,7 +111,7 @@ namespace Organization.API.Controllers
                                         emp_req.ThirdLanguageSkills = sheet.Cells[r, 28].Value.ToString2() == "" ? null : sheet.Cells[r, 28].Value.ToString2().ToEnum<LanguageSkills>();
                                         emp_req.UserName = sheet.Cells[r, 35].Value.ToString2();
                                         emp_req.Role = sheet.Cells[r, 59].Value.ToString2();
-                                        emp_req.JobFunction = sheet.Cells[r, 60].Value.ToString2() == "" ? null : sheet.Cells[r, 60].Value.ToString2().ToEnum<JobFunction>(); ;
+                                        emp_req.JobFunction = sheet.Cells[r, 60].Value.ToString2() == "" ? null : sheet.Cells[r, 60].Value.ToString2().ToEnum<JobFunction>();
                                         emp_req.IsActive = true;
 
                                         List<EmployeeContactUpload> emp_contact = new List<EmployeeContactUpload>();
@@ -187,6 +197,7 @@ namespace Organization.API.Controllers
                                     o.OrgNumber = sheet.Cells[r, 2].Value.ToString2();
                                     o.ParentNumber = sheet.Cells[r, 3].Value.ToString2();
                                     o.OrganizationCountry = sheet.Cells[r, 4].Value.ToString2();
+                                    o.CurrencyCode = sheet.Cells[r, 5].Value.ToString2();
                                     o.FileName = FileName;
                                     businesses.Add(o);
                                 }
@@ -229,61 +240,54 @@ namespace Organization.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Organization_add{DateTime.Now.ToString("yyyyMMddHHmmss")}");
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.ToString(), null);
             }
         }
-        // GET /full organization
+        // GET full organization
         [HttpGet]
         [Route("fullOrganization")]
-        public async Task<ActionResult<ResponseMessage>> fullOrganization(string organizationIdentifier)
+        public async Task<ActionResult<ResponseMessage>> fullOrganization()
         {
             try
             {
-                var data = await Mediator.Send(new GetAllEmployeeTree { Id = organizationIdentifier });
+                var data = await Mediator.Send(new GetAllEmployeeTree { Id = CurrentUser.OrganizationIdentifier });
                 return new ResponseMessage(true, EResponse.OK, null, data);
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Organization_{CurrentUser.EmployeeIdentifier}");
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
-        }
-        [HttpGet]
-        public async Task<ActionResult<ResponseMessage>> GetAsync(string organizationIdentifier)
-        {
-            try
-            {
-                var data = await Mediator.Send(new GetOrganizationQuery { Id =  organizationIdentifier});
-                return new ResponseMessage(true, EResponse.OK, null, data);
-            }
-            catch (Exception e)
-            {
-                return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
-            }
-        }
+        }     
+        [Authorize("Manager")]
         [HttpGet]
         [Route("managers")]
-        public async Task<ActionResult<ResponseMessage>> GetManagersAsync(string organizationIdentifier)
+        public async Task<ActionResult<List<EmployeeResponse>>> GetManagersAsync()
         {
             try
             {
-                 var data = await Mediator.Send(new GetManagersQuery { Id = organizationIdentifier});
-                return new ResponseMessage(true, EResponse.OK, null, data);
+                 return await Mediator.Send(new GetManagersQuery { Id = CurrentUser.OrganizationIdentifier});
+                //return new ResponseMessage(true, EResponse.OK, null, data);
             }
             catch (Exception e)
             {
-                return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
+                await _logService.WriteLogAsync(e, $"Organization_{CurrentUser.EmployeeIdentifier}");
+                throw;
             }
         }
+        [Authorize("Manager")]
         [HttpGet]
         [Route("Businesses")]
-        public async Task<ActionResult<List<BusinessVM>>> Businesses(string organizationIdentifier)
+        public async Task<ActionResult<List<BusinessVM>>> Businesses()
         {
             try
             {
-                return await Mediator.Send(new GetAllBusinessesQuery { Id = organizationIdentifier });
+                return await Mediator.Send(new GetAllBusinessesQuery { Id = CurrentUser.OrganizationIdentifier });
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Organization_{CurrentUser.EmployeeIdentifier}");
                 throw;
             }
         }
@@ -295,8 +299,9 @@ namespace Organization.API.Controllers
             {
                 return await Mediator.Send(new GetOrganizationEmployeesQuery { Id = organizationIdentifier });
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Organization_{CurrentUser.EmployeeIdentifier}");
                 throw;
             }
         }
@@ -308,11 +313,43 @@ namespace Organization.API.Controllers
             {
                 return await Mediator.Send(new GetAllBusinessEmployeesQuery { Id = businessIdentifier });
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Organization_{CurrentUser.EmployeeIdentifier}");
                 throw;
             }
         }
+        [HttpGet]
+        [Route("BusinessUnits")]
+        public async Task<ActionResult<List<sp_GetBusinessUnitsDto>>> GetAllBusinessUnitsAsync(string organizationIdentifier)
+        {
+            try
+            {
+                return await Mediator.Send(new GetBusinessUnitsQuery { organizationIdentifier = organizationIdentifier });
+            }
+            catch (Exception e)
+            {
+                await _logService.WriteLogAsync(e, $"Organization_{CurrentUser.EmployeeIdentifier}");
+                throw;
+            }
+        }
+        [HttpGet]
+        [Route("BusinessUnitHeads")]
+        public async Task<ActionResult<List<EmployeeResponse>>> GetBusinessUnitHeadsAsync()
+        {
+            try
+            {
+                return await Mediator.Send(new GetBusinessUnitHeadsQuery { organizationIdentifier = CurrentUser.OrganizationIdentifier });
+            }
+            catch (Exception e)
+            {
+                await _logService.WriteLogAsync(e, $"Organization_{CurrentUser.EmployeeIdentifier}");
+                throw;
+            }
+        }
+
+
+
         //[AllowAnonymous]
         //[HttpPut]
         //[Route("UpdateCompensation")]

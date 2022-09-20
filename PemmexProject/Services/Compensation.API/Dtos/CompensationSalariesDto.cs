@@ -22,5 +22,6 @@ namespace Compensation.API.Dtos
         public DateTime IssuedDate { get; set; }
         public string organizationIdentifier { get; set; }
         public string businessIdentifier { get; set; }
+        public string currencyCode { get; set; }
     }
 }

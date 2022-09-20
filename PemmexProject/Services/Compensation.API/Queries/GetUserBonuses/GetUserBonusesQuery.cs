@@ -28,22 +28,29 @@ namespace Compensation.API.Queries.GetUserBonuses
         }
         public async Task<List<UserBonus>> Handle(GetUserBonusesQuery request, CancellationToken cancellationToken)
         {
-            List<UserBonus> userBonuses = new List<UserBonus>();
-            var salary = await _context.CompensationSalaries
-                .Where(e => e.EmployeeIdentifier == request.employeeIdentifier)
-                .Where(c => (c.IssuedDate.Year == DateTime.Now.Year))
-                .ToListAsync(cancellationToken);
-            foreach(var s in salary)
+            try
             {
-                userBonuses.Add(new UserBonus()
+                List<UserBonus> userBonuses = new List<UserBonus>();
+                var salary = await _context.CompensationSalaries
+                    .Where(e => e.EmployeeIdentifier == request.employeeIdentifier)
+                    .Where(c => (c.IssuedDate.Year == DateTime.Now.Year))
+                    .ToListAsync(cancellationToken);
+                foreach (var s in salary)
                 {
-                    bonusAmount = s.one_time_bonus,
-                    bonusDateTime = s.IssuedDate,
-                    EmployeeIdentifier = s.EmployeeIdentifier
-                });
-            }
+                    userBonuses.Add(new UserBonus()
+                    {
+                        bonusAmount = s.one_time_bonus,
+                        bonusDateTime = s.IssuedDate,
+                        EmployeeIdentifier = s.EmployeeIdentifier
+                    });
+                }
 
-            return userBonuses;
+                return userBonuses;
+            }
+            catch(Exception)
+            {
+                throw;
+            }
         }
     }
 }

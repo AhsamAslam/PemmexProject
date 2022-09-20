@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Holidays.API.Enumerations
+namespace PemmexCommonLibs.Domain.Enums
 {
     public enum HolidayTypes
     {

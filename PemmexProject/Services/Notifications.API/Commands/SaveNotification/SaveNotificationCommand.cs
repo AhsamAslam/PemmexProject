@@ -47,7 +47,7 @@ namespace Notifications.API.Commands.SaveNotification
                 {
                     foreach (var connectionId in connections)
                     {
-                        await _notificationUserHubContext.Clients.Client(connectionId).SendAsync("ReceiveMessage", "Workflow Created", "There is a Request to approve Please see the details", await _notificationRepository.CountUnReadNotifications(n.EmployeeId));
+                        await _notificationUserHubContext.Clients.Client(connectionId).SendAsync("New Message",n.title, n.description, await _notificationRepository.CountUnReadNotifications(n.EmployeeId));
                     }
                 }
 

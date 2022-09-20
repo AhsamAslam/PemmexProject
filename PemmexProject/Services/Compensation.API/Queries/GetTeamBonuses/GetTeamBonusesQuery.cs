@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Compensation.API.Database.context;
+using Compensation.API.Database.Interfaces;
 using Compensation.API.Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -13,33 +14,40 @@ namespace Compensation.API.Queries.GetTeamBonuses
 {
     public class GetTeamBonusesQuery : IRequest<List<UserBonus>>
     {
-        public List<string> employeeIdentifiers { get; set; }
+        public string[] employeeIdentifiers { get; set; }
     }
 
     public class GetTeamBonusesQueryHandeler : IRequestHandler<GetTeamBonusesQuery, List<UserBonus>>
     {
-        private readonly IApplicationDbContext _context;
+        private readonly ICompensationSalaryRepository _context;
         private readonly IMapper _mapper;
 
-        public GetTeamBonusesQueryHandeler(IApplicationDbContext context, IMapper mapper)
+        public GetTeamBonusesQueryHandeler(ICompensationSalaryRepository context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
         public async Task<List<UserBonus>> Handle(GetTeamBonusesQuery request, CancellationToken cancellationToken)
         {
-            List<UserBonus> userBonuses = new List<UserBonus>();
-            var salary = await _context.CompensationSalaries
-                .Where(e => request.employeeIdentifiers.Contains(e.EmployeeIdentifier))
-                .GroupBy(c => c.EmployeeIdentifier)
-                .Select(cl => new UserBonus
-                 {
-                     EmployeeIdentifier = cl.First().EmployeeIdentifier,
-                     bonusAmount = cl.Sum(c => c.one_time_bonus),
-                 })
-                .ToListAsync(cancellationToken);
-
-            return userBonuses;
+            try
+            {
+                List<UserBonus> userBonuses = new List<UserBonus>();
+                var compensationSalaries = await _context.GetTeamBonus(request.employeeIdentifiers);
+                foreach(var c in compensationSalaries)
+                {
+                    UserBonus b = new UserBonus()
+                    {
+                        bonusAmount = c.one_time_bonus,
+                        EmployeeIdentifier = c.EmployeeIdentifier
+                    };
+                    userBonuses.Add(b);
+                }
+                return userBonuses;
+            }
+            catch(Exception)
+            {
+                throw;
+            }
         }
     }
 }

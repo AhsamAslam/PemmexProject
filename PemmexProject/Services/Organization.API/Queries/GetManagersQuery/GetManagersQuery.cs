@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Organization.API.Database.Context;
+using Organization.API.Database.Entities;
 using Organization.API.Dtos;
-using Organization.API.Interfaces;
 
 namespace Organization.API.Queries.GetManagersQuery
 {
@@ -27,19 +29,25 @@ namespace Organization.API.Queries.GetManagersQuery
 
         public async Task<List<EmployeeResponse>> Handle(GetManagersQuery request, CancellationToken cancellationToken)
         {
-
-            var list = await _context.Employees
+            try
+            {
+                var list = await _context.Employees
                 .Where(e => e.IsActive == true && e.Businesses.ParentBusinessId == request.Id)
                 .Select(e => e.ManagerIdentifier)
                 .Distinct()
                 .ToListAsync(cancellationToken);
 
-            var e = await _context.Employees
-                .Include(e => e.CostCenter)
-                .Where(x => list.Contains(x.EmployeeIdentifier))
-                .ToListAsync(cancellationToken);
+                var e = await _context.Employees
+                    .Include(e => e.CostCenter)
+                    .Where(x => list.Contains(x.EmployeeIdentifier))
+                    .ToListAsync(cancellationToken);
 
-            return _mapper.Map<List<Entities.Employee>, List<EmployeeResponse>>(e);
+                return _mapper.Map<List<Employee>, List<EmployeeResponse>>(e);
+            }
+            catch(Exception)
+            {
+                throw;
+            }
         }
     }
 }

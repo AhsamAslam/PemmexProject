@@ -30,26 +30,32 @@ namespace Holidays.API.Commands.SaveHolidaySetting
         }
         public async Task<ResponseMessage> Handle(SaveHolidaySettingCommand request, CancellationToken cancellationToken)
         {
-            var con_settings = _mapper.Map<HolidaySettings>(request.setting);
-            string return_message = "";
-            var settings = _context.HolidaySettings.AsNoTracking()
-            .FirstOrDefault(h => h.BusinessIdentifier == request.setting.BusinessIdentifier);
-            if (settings != null)
+            try
             {
-                settings.HolidayCalendarYear = con_settings.HolidayCalendarYear;
-                settings.MaximumLimitHolidayToNextYear = con_settings.MaximumLimitHolidayToNextYear;
-                _context.HolidaySettings.Update(con_settings);
-                return_message = "Settings Updated";
+                var con_settings = _mapper.Map<HolidaySettings>(request.setting);
+                string return_message = "";
+                var settings = _context.HolidaySettings.AsNoTracking()
+                .FirstOrDefault(h => h.BusinessIdentifier == request.setting.BusinessIdentifier);
+                if (settings != null)
+                {
+                    settings.HolidayCalendarYear = con_settings.HolidayCalendarYear;
+                    settings.MaximumLimitHolidayToNextYear = con_settings.MaximumLimitHolidayToNextYear;
+                    _context.HolidaySettings.Update(con_settings);
+                    return_message = "Settings Updated";
+                }
+                else
+                {
+                    _context.HolidaySettings.AddRange(con_settings);
+                    return_message = "Settings Saved";
+                }
+
+                await _context.SaveChangesAsync(cancellationToken);
+                return new ResponseMessage(true, EResponse.OK, return_message, null);
             }
-            else
+            catch(Exception)
             {
-                _context.HolidaySettings.AddRange(con_settings);
-                return_message = "Settings Saved";
+                throw;
             }
-
-            await _context.SaveChangesAsync(cancellationToken);
-            return new ResponseMessage(true, EResponse.OK, return_message, null);
-
         }
     }
 }

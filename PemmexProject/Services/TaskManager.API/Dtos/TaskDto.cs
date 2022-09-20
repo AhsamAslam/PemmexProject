@@ -15,6 +15,8 @@ namespace TaskManager.API.Dtos
         public Guid TaskIdentifier { get; set; }
         public string RequestedByIdentifier { get; set; }
         public string ManagerIdentifier { get; set; }
+        public string RequesterName { get; set; }
+        public string ManagerName { get; set; }
         public TaskStatuses appliedStatus { get; set; }
         public TaskStatuses currentTaskStatus { get; set; }
         public TaskType taskType { get; set; }
@@ -29,5 +31,9 @@ namespace TaskManager.API.Dtos
         public GradeTask GradeTask { get; set; }
         public TeamTask TeamTask { get; set; }
         public BonusTask BonusTask { get; set; }
+        public BudgetPromotionTask BudgetPromotionTask { get; set; }
+
+        public EmployeeSoftTargetsDto EmployeeSoftTargetsDto { get; set; }
+        public EmployeeHardTargetsDto EmployeeHardTargetsDto { get; set; }
     }
 }

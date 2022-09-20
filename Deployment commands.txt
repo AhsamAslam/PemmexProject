@@ -1,0 +1,63 @@
+az login
+az group create --name PemmexSponsorResourceGroup --location westeurope
+az acr create --resource-group PemmexSponsorResourceGroup --name pemmexmicroservicesacr --sku Basic
+az acr update -n pemmexmicroservicesacr --admin-enabled true
+az acr login --name pemmexmicroservicesacr
+az acr list --resource-group PemmexSponsorResourceGroup --query "[].{acrLoginServer:loginServer}" --output table
+docker tag organizationapi:latest pemmexmicroservicesacr.azurecr.io/organizationapi:v1  
+docker push pemmexmicroservicesacr.azurecr.io/organizationapi:v1
+az acr repository list --name pemmexmicroservicesacr --output table
+az acr repository show-tags --name pemmexmicroservicesacr --repository organizationapi --output table
+
+az aks create -g myResourceGroup -n myAKSCluster --enable-managed-identity --node-count 1 --enable-addons monitoring
+
+az aks create --resource-group PemmexSponsorResourceGroup --name PemmexAKSCluster --enable-managed-identity --node-count 1 --generate-ssh-keys --attach-acr pemmexmicroservicesacr --enable-addons monitoring --node-vm-size Standard_d16ads_v5
+
+
+--
+Install the Kubernetes CLI
+az aks install-cli
+
+--
+Connect to cluster using kubectl
+az aks get-credentials --resource-group PemmexSponsorResourceGroup --name PemmexAKSCluster
+.
+--
+To verify;
+kubectl get nodes
+kubectl get all
+--
+Check Kube Config
+
+kubectl config get-contexts
+kubectl config current-context
+kubectl config use-context gcpcluster-k8s-1
+	Switched to context "gcpcluster-k8s-1"
+
+kubectl create secret docker-registry acr-secret --docker-server=pemmexmicroservicesacr.azurecr.io --docker-username=pemmexmicroservicesacr --docker-password=UIAfQXqQNKyVjDFiv8//QtiIhHj0sxr/ --docker-email=syed.ahsam@pemmex.com
+
+--
+Deploy microservices to AKS
+
+kubectl apply -f .\aks\
+--
+Clean All AKS and Azure Resources
+
+az group delete --name myResourceGroup --yes --no-wait
+
+
+pemmex_sql_sa_user
+#p123987@!$%&^sq!#
+
+pemmex_vm_2022
+pemmex_azure_vm@8765!
+
+
+
+az aks show --resource-group PemmexSponsorResourceGroup 
+    --name PemmexAKSCluster
+    --query apiServerAccessProfile.authorizedIpRanges 
+
+kubectl exec -it podNAme -- sh 
+printenv
+kubectl -n default delete rs $(kubectl -n default get rs | awk '{if ($2 + $3 + $4 == 0) print $1}' | grep -v 'NAME')

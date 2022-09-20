@@ -32,8 +32,36 @@ namespace Authentication.API.Queries.GetUserByName
             using (var scope = _serviceProvider.CreateScope())
             {
                 var _context = scope.ServiceProvider.GetRequiredService<IApplicationDbContext>();
-                var user = await _context.Users.Where(u => (u.UserName == request.Name || u.Email == request.Name) && u.isActive == true).FirstOrDefaultAsync();
-                return user;
+                IEnumerable<User> employees = (from e in _context.Users.Where(e1 => (e1.UserName == request.Name || e1.Email == request.Name)
+                                && e1.isActive == true)
+                                               join e1 in _context.Users on e.ManagerIdentifier
+                                               equals e1.EmployeeIdentifier into ps
+                                               from p in ps.DefaultIfEmpty()
+                                               select new User
+                                               {
+                                                   EmployeeIdentifier = e.EmployeeIdentifier,
+                                                   ManagerIdentifier = e.ManagerIdentifier,
+                                                   BusinessIdentifier = e.BusinessIdentifier,
+                                                   OrganizationIdentifier = e.OrganizationIdentifier,
+                                                   OrganizationCountry = e.OrganizationCountry,
+                                                   Email = e.Email,
+                                                   Grade = e.Grade,
+                                                   Id = e.Id,
+                                                   FirstName = e.FirstName,
+                                                   LastName = e.LastName,
+                                                   JobFunction = e.JobFunction,
+                                                   ManagerName = p == null ? "" : (p.FirstName + " " + p.LastName),
+                                                   Title = e.Title,
+                                                   CostCenterIdentifier = e.CostCenterIdentifier,
+                                                   Role = e.Role,
+                                                   UserName = e.UserName,
+                                                   IsPasswordReset = e.IsPasswordReset
+                                               }).ToList();
+
+                return employees.FirstOrDefault();
+
+
+
             }
         }
     }

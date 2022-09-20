@@ -5,12 +5,13 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Options;
+using Organization.API.Database.Context;
+using Organization.API.Database.Entities;
 using Organization.API.Dtos;
-using Organization.API.Entities;
-using Organization.API.Interfaces;
 using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Domain.Common;
 
@@ -19,24 +20,21 @@ namespace Organization.API
     public class PemmexOrganizationContext:DbContext,IApplicationDbContext
     {
         private readonly IDateTime _dateTime;
-        
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public PemmexOrganizationContext(
             DbContextOptions options,
-            IDateTime dateTime) : base(options)
+            IDateTime dateTime, IHttpContextAccessor httpContextAccessor) : base(options)
         {
             _dateTime = dateTime;
+            _httpContextAccessor = httpContextAccessor;
         }
-        public DbSet<Entities.Business> Businesses { get; set; }
+        public DbSet<Business> Businesses { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<EmployeeContacts> EmployeeContacts { get; set; }
         public DbSet<spGetEmployeeTreeForManagerDto> SpGetEmployeeTreeForManagerDtos { get; set; }
         public DbSet<CostCenter> CostCenters { get; set; }
         public DbSet<EmployeeBonuses> Bonuses { get; set; }
-
-        //public DbSet<Employee_History> Employee_History { get; set; }
-        //public DbSet<BusinessDetail_History> BusinessDetail_History { get; set; }
-        //public DbSet<Compensation_History> Compensations_History { get; set; }
-
+        public DbSet<sp_GetBusinessUnitsDto> sp_GetBusinessUnits { get; set; }
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             try
@@ -48,12 +46,12 @@ namespace Organization.API
                         switch (entry.State)
                         {
                             case EntityState.Added:
-                                entry.Entity.CreatedBy = "test";
+                                entry.Entity.CreatedBy = _httpContextAccessor.HttpContext?.User?.Claims?.FirstOrDefault(claim => claim.Type == "sub")?.Value;
                                 entry.Entity.Created = _dateTime.Now;
                                 break;
 
                             case EntityState.Modified:
-                                entry.Entity.LastModifiedBy = "test";
+                                entry.Entity.LastModifiedBy = _httpContextAccessor.HttpContext.User.Claims.First(claim => claim.Type == "sub").Value;
                                 entry.Entity.LastModified = _dateTime.Now;
                                 break;
                         }
@@ -105,9 +103,17 @@ namespace Organization.API
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Entities.Business>()
+            builder.Entity<Business>()
                 .HasMany(e => e.Employees);
+            builder.Entity<Employee>()
+            .Ignore(i => i.ManagerName)
+            .Ignore(i => i.BusinessName)
+            .Ignore(i => i.CostCenterName)
+            .Ignore(i => i.CostCenterIdentifier)
+            .Ignore(i => i.BusinessIdentifier);
             builder.Entity<spGetEmployeeTreeForManagerDto>().HasNoKey().ToView(null);
+            builder.Entity<sp_GetBusinessUnitsDto>().HasNoKey().ToView(null);
+
         }
     }
 }

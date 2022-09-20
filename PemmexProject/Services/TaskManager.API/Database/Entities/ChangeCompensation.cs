@@ -22,8 +22,11 @@ namespace TaskManager.API.Database.Entities
         public double PhoneBenefit { get; set; }
         public double EmissionBenefit { get; set; }
         public double HomeInternetBenefit { get; set; }
+        public string currencyCode { get; set; }
+        public string EmployeeName { get; set; }
+        public string organizationIdentifier { get; set; }
+        public string businessIdentifier { get; set; }
+        public string costcenterIdentifier { get; set; }
         public virtual BaseTask BaseTask { get; set; }
-
-
     }
 }

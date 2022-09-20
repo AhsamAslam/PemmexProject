@@ -15,6 +15,10 @@ namespace TaskManager.API.Database.Entities
         public string oldTitle { get; set; }
         public string NewTitle { get; set; }
         public string EmployeeIdentifier { get; set; }
+        public string EmployeeName { get; set; }
+        public string organizationIdentifier { get; set; }
+        public string businessIdentifier { get; set; }
+        public string costcenterIdentifier { get; set; }
         public virtual BaseTask BaseTask { get; set; }
     }
 }

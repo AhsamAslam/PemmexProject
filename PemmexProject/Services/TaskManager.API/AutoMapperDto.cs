@@ -22,10 +22,15 @@ namespace TaskManager.API
              .ForMember(d => d.titleTask, opt => opt.MapFrom(s => s.ChangeTitle))
              .ForMember(d => d.TeamTask, opt => opt.MapFrom(s => s.ChangeTeam))
              .ForMember(d => d.BonusTask, opt => opt.MapFrom(s => s.ChangeBonus))
+             .ForMember(d => d.BudgetPromotionTask, opt => opt.MapFrom(s => s.ChangeBudgetPromotion))
+             .ForMember(d => d.EmployeeSoftTargetsDto, opt => opt.MapFrom(s => s.ChangeEmployeeSoftTargets))
+             .ForMember(d => d.EmployeeHardTargetsDto, opt => opt.MapFrom(s => s.ChangeEmployeeHardTargets))
+
+             //.ForMember(d => d.RequesterName, opt => opt.MapFrom(s => s.RequesterName))
              .ReverseMap();
 
-            CreateMap<ChangeHoliday, ApplyHolidayCommand>()
-                .ReverseMap();
+            CreateMap<ApplyHolidayCommand, ChangeHoliday>()
+                .ForMember(d => d.Description, opt => opt.MapFrom(s => s.taskDescription));
 
 
             CreateMap<CompensationTask,ChangeCompensation>().ReverseMap();
@@ -33,8 +38,22 @@ namespace TaskManager.API
             CreateMap<HolidayTask, ChangeHoliday>().ReverseMap();
             CreateMap<ManagerTask, ChangeManager>().ReverseMap();
             CreateMap<TitleTask, ChangeTitle>().ReverseMap();
+            CreateMap<BudgetPromotionTask, ChangeBudgetPromotion>()
+                .ForMember(d => d.changeBudgetPromotionDetails, opt => opt.MapFrom(s => s.BudgetPromotionTaskDetail))
+                .ReverseMap();
+            CreateMap<ChangeBudgetPromotionDetail,BudgetPromotionTaskDetail>().ReverseMap();
             CreateMap<TeamTask, ChangeTeam>().ReverseMap();
             CreateMap<Dtos.BonusTask, Database.Entities.BonusTask>().ReverseMap();
+
+
+
+            CreateMap<UpdateBudgetPromotionTask, ChangeBudgetPromotion>()
+                .ForMember(d => d.changeBudgetPromotionDetails, opt => opt.MapFrom(s => s.BudgetPromotionTaskDetail))
+                .ReverseMap();
+            CreateMap<ChangeBudgetPromotionDetail, UpdateBudgetPromotionTaskDetail>().ReverseMap();
+            
+
+
 
             CreateMap<ApprovalSettingDto, OrganizationApprovalSettings>()
                 .ForMember(d => d.organizationApprovalSettingDetails , opt => opt.MapFrom(s => s.approvalSettingDetails))
@@ -44,7 +63,10 @@ namespace TaskManager.API
 
             CreateMap<BonusSettings, BonusSettingsDto>();
             CreateMap<SaveBonusSettingCommand, BonusSettings>();
-            
+            CreateMap<NotificationDto, Database.Entities.Notifications>().ReverseMap();
+
+            CreateMap<EmployeeSoftTargetsDto, ChangeEmployeeSoftTargets>().ReverseMap();
+            CreateMap<EmployeeHardTargetsDto, ChangeEmployeeHardTargets>().ReverseMap();
         }
 
     }

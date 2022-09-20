@@ -2,8 +2,9 @@
 using MediatR;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Organization.API.Database.Context;
+using Organization.API.Database.Entities;
 using Organization.API.Dtos;
-using Organization.API.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,37 +30,45 @@ namespace Organization.API.Queries.GetcostCenterIdentifiersTree
 
         public async Task<List<CostCenterResponse>> Handle(GetcostCenterIdentifiersTreeQuery request, CancellationToken cancellationToken)
         {
+            try
+            {
+                string sql = "EXEC sp_GetCostCentersTree @costCenterIdentifier";
 
-            string sql = "EXEC sp_GetCostCentersTree @costCenterIdentifier";
-
-            List<SqlParameter> parms = new List<SqlParameter>
+                List<SqlParameter> parms = new List<SqlParameter>
                 {
                     // Create parameter(s)    
                     new SqlParameter { ParameterName = "@costCenterIdentifier", Value = request.costCenterIdentifier }
                 };
 
-            var o = _context.CostCenters.FromSqlRaw(sql, parms.ToArray()).ToList();
+                var o = _context.CostCenters.FromSqlRaw(sql, parms.ToArray()).ToList();
+                var e_response = _mapper.Map<List<CostCenter>, List<CostCenterResponse>>(o);
+                var recursiveData = FillRecursive(e_response, "");
+                return recursiveData;
 
-            //var o = await _context.CostCenters
-            //    .Where(o => o.CostCenterIdentifier == request.organizationIdentifier)
-            //    .ToListAsync(cancellationToken: cancellationToken);
-
-            var e_response =  _mapper.Map<List<Entities.CostCenter>, List<CostCenterResponse>>(o);
-            var recursiveData = FillRecursive(e_response, "");
-            return recursiveData;
-
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
         private static List<CostCenterResponse> FillRecursive(List<CostCenterResponse> employeeVms, string parentId)
         {
-            return employeeVms.Where(x => x.ParentCostCenterIdentifier == parentId).Select(item => new CostCenterResponse()
+            try
             {
-                CostCenterIdentifier = item.CostCenterIdentifier,
-                businessIdentifier = item.businessIdentifier,
-                CostCenterName = item.CostCenterName,
-                ParentCostCenterIdentifier = item.ParentCostCenterIdentifier,
-                children = FillRecursive(employeeVms, item.CostCenterIdentifier)
+                return employeeVms.Where(x => x.ParentCostCenterIdentifier == parentId).Select(item => new CostCenterResponse()
+                {
+                    CostCenterIdentifier = item.CostCenterIdentifier,
+                    businessIdentifier = item.businessIdentifier,
+                    CostCenterName = item.CostCenterName,
+                    ParentCostCenterIdentifier = item.ParentCostCenterIdentifier,
+                    children = FillRecursive(employeeVms, item.CostCenterIdentifier)
 
-            }).ToList();
+                }).ToList();
+            }
+            catch(Exception)
+            {
+                throw;
+            }
         }
 
     }

@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using Organization.API.Database.Context;
+using Organization.API.Database.Interfaces;
 using Organization.API.Dtos;
-using Organization.API.Interfaces;
+using PemmexCommonLibs.Application.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +14,14 @@ namespace Organization.API.Queries.GetTeamMembers
 {
     public class GetTeamMembersQuery : IRequest<List<EmployeeResponse>>
     {
-        public string costCenterIdentifier { get; set; }
+        public string employeeIdentifier { get; set; }
     }
     public class GetTeamMembersQueryHandler : IRequestHandler<GetTeamMembersQuery, List<EmployeeResponse>>
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IEmployeeRepository _context;
         private readonly IMapper _mapper;
 
-        public GetTeamMembersQueryHandler(IApplicationDbContext context, IMapper mapper)
+        public GetTeamMembersQueryHandler(IEmployeeRepository context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -28,13 +29,8 @@ namespace Organization.API.Queries.GetTeamMembers
 
         public async Task<List<EmployeeResponse>> Handle(GetTeamMembersQuery request, CancellationToken cancellationToken)
         {
-            var o = await _context.Employees
-                .Include(b => b.Businesses)
-                .Include(c => c.CostCenter)
-                .Where(o => o.IsActive == true && o.CostCenter.CostCenterIdentifier == request.costCenterIdentifier)
-                .ToListAsync(cancellationToken: cancellationToken);
-
-            return _mapper.Map<List<Entities.Employee>, List<EmployeeResponse>>(o);
+            var employees = await _context.GetTeamMembers(request.employeeIdentifier);
+            return _mapper.Map<List<EmployeeResponse>>(employees);
         }
     }
 }

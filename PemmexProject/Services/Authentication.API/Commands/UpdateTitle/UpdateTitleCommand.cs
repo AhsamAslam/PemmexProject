@@ -16,6 +16,7 @@ namespace Authentication.API.Commands.UpdateTitle
     {
         public string EmployeeIdentifier { get; set; }
         public string Title { get; set; }
+        public string Grade { get; set; }
     }
 
     public class UpdateOrganizationCommandHandeler : IRequestHandler<UpdateTitleCommand>
@@ -40,6 +41,7 @@ namespace Authentication.API.Commands.UpdateTitle
                     }
 
                     e.Title = request.Title;
+                    e.Grade = request.Grade;
                     _context.Users.Update(e);
                     var a = await _context.SaveChangesAsync(cancellationToken);
                     return Unit.Value;

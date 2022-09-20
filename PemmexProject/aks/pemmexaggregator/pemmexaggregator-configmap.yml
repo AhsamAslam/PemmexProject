@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pemmexaggregator-configmap
+data:
+  OrganizationUrl: http://organizationapi-service
+  HolidaysUrl: http://holidayapi-service
+  CompensationsUrl: http://compensationapi-service
+  NotificationUrl: http://notificationapi-service
+  EmployeeTargetsUrl: http://employeetargetsapi-service
+  TaskManagerUrl: http://taskmanagerapi-service
+  SurveyUrl: http://surveyapi-service
+  IdentityUrl: https://identity.pemmex.eu

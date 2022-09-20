@@ -1,15 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
+using PemmexCommonLibs.Application.Extensions;
 using PemmexCommonLibs.Application.Helpers;
 using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Domain.Enums;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TaskManager.API.Commands.TaskRequest;
 using TaskManager.API.Commands.UpdateTask;
 using TaskManager.API.Dtos;
+using TaskManager.API.Queries.GetBudgetPromotionPendingTasksByOrganization;
 using TaskManager.API.Queries.GetCurrentTasksByManagerId;
 using TaskManager.API.Queries.GetHistoryTasksByManagerId;
 using TaskManager.API.Queries.GetPendingTasksByManagerId;
@@ -26,6 +29,7 @@ namespace TaskManager.API.Controllers
         {
             _logService = logService;
         }
+        [Authorize("Manager")]
         [HttpPost]
         [Route("InitiateTask")]
         public async Task<ActionResult<ResponseMessage>> InitiateTask(TaskRequest task)
@@ -37,14 +41,18 @@ namespace TaskManager.API.Controllers
                 task.RequestedByIdentifier = CurrentUser.EmployeeIdentifier;
                 task.ManagerIdentifier = CurrentUser.ManagerIdentifier;
                 task.businessIdentifier = CurrentUser.BusinessIdentifier;
+                task.ManagerName = CurrentUser.ManagerName;
+                task.RequestedByName = CurrentUser.FirstName + " " + CurrentUser.LastName;
                 var data = await Mediator.Send(task);
                 return await Task.FromResult(new ResponseMessage(true, EResponse.OK, null, data));
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"TaskManager_{CurrentUser.EmployeeIdentifier}");
                 return await Task.FromResult(new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null));
             }
         }
+        [Authorize("Manager")]
         [HttpPost]
         [Route("UpdateTasks")]
         public async Task<ActionResult<ResponseMessage>> UpdateTasks(UpdateTask task)
@@ -57,6 +65,8 @@ namespace TaskManager.API.Controllers
                 task.requestIdentifier = CurrentUser.EmployeeIdentifier;
                 task.costcenterIdentifier = CurrentUser.CostCenterIdentifier;
                 task.businessIdentifier = CurrentUser.BusinessIdentifier;
+                task.ManagerName = CurrentUser.ManagerName;
+                task.EmployeeName = CurrentUser.FirstName + " " + CurrentUser.LastName;
                 var token = Request.Headers[HeaderNames.Authorization].ToString2().Split(new string[] { "Bearer" }, StringSplitOptions.None);
                 if (token.Length > 1)
                 {
@@ -87,6 +97,7 @@ namespace TaskManager.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"TaskManager_{CurrentUser.EmployeeIdentifier}");
                 return await Task.FromResult(new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null));
             }
         }
@@ -101,6 +112,7 @@ namespace TaskManager.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"TaskManager_{CurrentUser.EmployeeIdentifier}");
                 return await Task.FromResult(new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null));
             }
         }
@@ -115,8 +127,39 @@ namespace TaskManager.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"TaskManager_{CurrentUser.EmployeeIdentifier}");
                 return await Task.FromResult(new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null));
             }
         }
+        [Authorize("GroupHR")]
+        [HttpGet]
+        [Route("BudgetPromotionPendingTasks")]
+        public async Task<ActionResult<List<TaskDto>>> BudgetPromotionPendingTasks(string managerIdentifier)
+        {
+            try
+            {
+                return await Mediator.Send(new GetBudgetPromotionPendingTasksByOrganizationQuery { Id = managerIdentifier });
+                
+            }
+            catch (Exception e)
+            {
+                await _logService.WriteLogAsync(e, $"TaskManager_{CurrentUser.EmployeeIdentifier}");
+                throw;
+            }
+        }
+        //[HttpGet]
+        //[Route("AspTeamSummary")]
+        //public async Task<ActionResult<ResponseMessage>> AspTeamSummary(string organizationIdentifier)
+        //{
+        //    try
+        //    {
+        //        //var data = await Mediator.Send(new GetAspTeamSummaryQuery { Id = CurrentUser.EmployeeIdentifier });
+        //        return await Task.FromResult(new ResponseMessage(true, EResponse.OK, null, data));
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return await Task.FromResult(new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null));
+        //    }
+        //}
     }
 }

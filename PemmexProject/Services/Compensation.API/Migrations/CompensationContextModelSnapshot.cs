@@ -71,6 +71,9 @@ namespace Compensation.API.Migrations
                     b.Property<string>("businessIdentifier")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("currencyCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("organizationIdentifier")
                         .HasColumnType("nvarchar(max)");
 
@@ -134,6 +137,9 @@ namespace Compensation.API.Migrations
                     b.Property<string>("businessIdentifier")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("currencyCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("one_time_bonus")
                         .HasColumnType("float");
 
@@ -143,6 +149,111 @@ namespace Compensation.API.Migrations
                     b.HasKey("CompensationSalaryId");
 
                     b.ToTable("CompensationSalaries");
+                });
+
+            modelBuilder.Entity("Compensation.API.Database.Entities.FunctionalBudget", b =>
+                {
+                    b.Property<int>("FunctionalBudgetId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("AdditionalAgreedPart")
+                        .HasColumnType("float");
+
+                    b.Property<double>("BaseSalary")
+                        .HasColumnType("float");
+
+                    b.Property<string>("CostCenterIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CostCenterName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CurrentGrade")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CurrentTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EffectiveDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("Emp_Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("EmployeeIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("IncreaseInCurrency")
+                        .HasColumnType("float");
+
+                    b.Property<double>("IncreaseInPercentage")
+                        .HasColumnType("float");
+
+                    b.Property<string>("JobFunction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ManagerIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ManagerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("NewBaseSalary")
+                        .HasColumnType("float");
+
+                    b.Property<string>("NewGrade")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NewTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("NewTotalSalary")
+                        .HasColumnType("float");
+
+                    b.Property<string>("OrganizationCountry")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("TotalCurrentSalary")
+                        .HasColumnType("float");
+
+                    b.Property<string>("businessIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("currencyCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("mandatoryPercentage")
+                        .HasColumnType("float");
+
+                    b.Property<string>("organizationIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FunctionalBudgetId");
+
+                    b.ToTable("FunctionalBudgets");
                 });
 
             modelBuilder.Entity("Compensation.API.Database.Entities.JobCatalogue", b =>
@@ -169,6 +280,9 @@ namespace Compensation.API.Migrations
 
                     b.Property<double>("annual_bonus")
                         .HasColumnType("float");
+
+                    b.Property<string>("businessIdentifier")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("country")
                         .HasColumnType("nvarchar(max)");
@@ -218,14 +332,14 @@ namespace Compensation.API.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TotalbudgetPercentage")
-                        .HasColumnType("int");
+                    b.Property<double>("TotalbudgetPercentage")
+                        .HasColumnType("float");
 
                     b.Property<double>("TotalbudgetValue")
                         .HasColumnType("float");
 
-                    b.Property<int>("budgetPercentage")
-                        .HasColumnType("int");
+                    b.Property<double>("budgetPercentage")
+                        .HasColumnType("float");
 
                     b.Property<double>("budgetValue")
                         .HasColumnType("float");
@@ -233,8 +347,14 @@ namespace Compensation.API.Migrations
                     b.Property<string>("businessIdentifier")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("compulsoryPercentage")
+                        .HasColumnType("float");
+
                     b.Property<DateTime>("endDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<double>("euro_rate")
+                        .HasColumnType("float");
 
                     b.Property<int>("jobFunction")
                         .HasColumnType("int");

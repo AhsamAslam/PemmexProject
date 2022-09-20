@@ -26,9 +26,16 @@ namespace Holidays.API.Commands.SaveHolidaySettings
         }
         public async Task<int> Handle(UploadHolidaySettingsCommand request, CancellationToken cancellationToken)
         {
-            _context.HolidaySettings.Add(request.settings);
-            await _context.SaveChangesAsync(cancellationToken);
-            return request.settings.HolidaySettingsId;
+            try
+            {
+                _context.HolidaySettings.Add(request.settings);
+                await _context.SaveChangesAsync(cancellationToken);
+                return request.settings.HolidaySettingsId;
+            }
+            catch(Exception)
+            {
+                throw;
+            }
         }
     }
 }

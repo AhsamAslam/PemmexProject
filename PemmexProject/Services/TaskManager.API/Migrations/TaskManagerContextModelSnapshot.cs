@@ -44,7 +44,13 @@ namespace TaskManager.API.Migrations
                     b.Property<string>("ManagerIdentifier")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ManagerName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("RequestedByIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RequesterName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("TaskIdentifier")
@@ -53,11 +59,20 @@ namespace TaskManager.API.Migrations
                     b.Property<int>("appliedStatus")
                         .HasColumnType("int");
 
+                    b.Property<string>("businessIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("costcenterIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("currentTaskStatus")
                         .HasColumnType("int");
 
                     b.Property<bool>("isActive")
                         .HasColumnType("bit");
+
+                    b.Property<string>("organizationIdentifier")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("reasons")
                         .HasColumnType("int");
@@ -114,8 +129,20 @@ namespace TaskManager.API.Migrations
                     b.Property<string>("EmployeeIdentifier")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("EmployeeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("businessIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("costcenterIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("one_time_bonus")
                         .HasColumnType("float");
+
+                    b.Property<string>("organizationIdentifier")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("salary")
                         .HasColumnType("float");
@@ -123,6 +150,108 @@ namespace TaskManager.API.Migrations
                     b.HasKey("BonusTaskId");
 
                     b.ToTable("BonusTask");
+                });
+
+            modelBuilder.Entity("TaskManager.API.Database.Entities.ChangeBudgetPromotion", b =>
+                {
+                    b.Property<int>("BudgetTaskId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BudgetTaskId");
+
+                    b.ToTable("BudgetPromotions");
+                });
+
+            modelBuilder.Entity("TaskManager.API.Database.Entities.ChangeBudgetPromotionDetail", b =>
+                {
+                    b.Property<int>("ChangeBudgetPromotionDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<double>("AdditionalAgreedPart")
+                        .HasColumnType("float");
+
+                    b.Property<double>("BaseSalary")
+                        .HasColumnType("float");
+
+                    b.Property<int>("BudgetTaskId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CostCenterIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CostCenterName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CurrentGrade")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CurrentTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Emp_Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("EmployeeIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("IncreaseInCurrency")
+                        .HasColumnType("float");
+
+                    b.Property<double>("IncreaseInPercentage")
+                        .HasColumnType("float");
+
+                    b.Property<string>("JobFunction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ManagerIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ManagerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("NewBaseSalary")
+                        .HasColumnType("float");
+
+                    b.Property<string>("NewGrade")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NewTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("NewTotalSalary")
+                        .HasColumnType("float");
+
+                    b.Property<string>("OrganizationCountry")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("TotalCurrentSalary")
+                        .HasColumnType("float");
+
+                    b.Property<string>("businessIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("currencyCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("mandatoryPercentage")
+                        .HasColumnType("float");
+
+                    b.Property<string>("organizationIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ChangeBudgetPromotionDetailId");
+
+                    b.HasIndex("BudgetTaskId");
+
+                    b.ToTable("BudgetPromotionDetails");
                 });
 
             modelBuilder.Entity("TaskManager.API.Database.Entities.ChangeCompensation", b =>
@@ -148,6 +277,9 @@ namespace TaskManager.API.Migrations
                     b.Property<string>("EmployeeIdentifier")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("EmployeeName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("HomeInternetBenefit")
                         .HasColumnType("float");
 
@@ -166,9 +298,194 @@ namespace TaskManager.API.Migrations
                     b.Property<double>("TotalMonthlyPay")
                         .HasColumnType("float");
 
+                    b.Property<string>("businessIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("costcenterIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("currencyCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("organizationIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("CompensationTaskId");
 
                     b.ToTable("ChangeCompensations");
+                });
+
+            modelBuilder.Entity("TaskManager.API.Database.Entities.ChangeEmployeeHardTargets", b =>
+                {
+                    b.Property<int>("ChangeEmployeeHardTargetsTaskId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BusinessIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContractualOrganization")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CostCenterIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CostCenterName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Emp_Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EmployeeDob")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmployeeIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EvaluationDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Grade")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HardTargetsDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("HardTargetsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("HardTargetsName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("JobFunction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ManagerIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ManagerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MeasurementCriteria")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MiddleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrganizationCountry")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrganizationIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PerformanceCriteria")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Weightage")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ChangeEmployeeHardTargetsTaskId");
+
+                    b.ToTable("ChangeEmployeeHardTargets");
+                });
+
+            modelBuilder.Entity("TaskManager.API.Database.Entities.ChangeEmployeeSoftTargets", b =>
+                {
+                    b.Property<int>("ChangeEmployeeTargetsTaskId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BusinessIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BusinessName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContractualOrganization")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CostCenterIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CostCenterName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Emp_Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EmployeeDob")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmployeeIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EvaluationDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Grade")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("JobFunction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ManagerIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ManagerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrganizationCountry")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrganizationIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PerformanceCriteria")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SoftTargetsDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SoftTargetsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SoftTargetsMultiplier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SoftTargetsName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ChangeEmployeeTargetsTaskId");
+
+                    b.ToTable("ChangeEmployeeSoftTargets");
                 });
 
             modelBuilder.Entity("TaskManager.API.Database.Entities.ChangeGrade", b =>
@@ -179,10 +496,22 @@ namespace TaskManager.API.Migrations
                     b.Property<string>("EmployeeIdentifier")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("EmployeeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("businessIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("costcenterIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("newGrade")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("oldGrade")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("organizationIdentifier")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("GradeTaskId");
@@ -195,7 +524,13 @@ namespace TaskManager.API.Migrations
                     b.Property<int>("HolidayTaskId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("EmployeeIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmployeeName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FileName")
@@ -213,8 +548,20 @@ namespace TaskManager.API.Migrations
                     b.Property<string>("SubsituteIdentifier")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SubsituteName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("businessIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("costcenterIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("holidayType")
                         .HasColumnType("int");
+
+                    b.Property<string>("organizationIdentifier")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("HolidayTaskId");
 
@@ -229,16 +576,43 @@ namespace TaskManager.API.Migrations
                     b.Property<string>("EmployeeIdentifier")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("EmployeeName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("newCostCenterIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("newCostCenterName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("newManagerIdentifier")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("newManagerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("newbusinessIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("newbusinessName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("oldCostCenterIdentifier")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("oldCostCenterName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("oldManagerIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("oldManagerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("oldbusinessIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("organizationIdentifier")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ManagerTaskId");
@@ -254,10 +628,28 @@ namespace TaskManager.API.Migrations
                     b.Property<string>("managerIdentifier")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("managerName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("newCostCenterIdentifier")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("newCostCenterName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("newbusinessIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("oldCostCenterIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("oldCostCenterName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("oldbusinessIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("organizationIdentifier")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TeamTaskId");
@@ -273,10 +665,22 @@ namespace TaskManager.API.Migrations
                     b.Property<string>("EmployeeIdentifier")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("EmployeeName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("NewTitle")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("businessIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("costcenterIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("oldTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("organizationIdentifier")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TitleTaskId");
@@ -390,11 +794,55 @@ namespace TaskManager.API.Migrations
                     b.Navigation("BaseTask");
                 });
 
+            modelBuilder.Entity("TaskManager.API.Database.Entities.ChangeBudgetPromotion", b =>
+                {
+                    b.HasOne("TaskManager.API.Database.Entities.BaseTask", "BaseTask")
+                        .WithOne("ChangeBudgetPromotion")
+                        .HasForeignKey("TaskManager.API.Database.Entities.ChangeBudgetPromotion", "BudgetTaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BaseTask");
+                });
+
+            modelBuilder.Entity("TaskManager.API.Database.Entities.ChangeBudgetPromotionDetail", b =>
+                {
+                    b.HasOne("TaskManager.API.Database.Entities.ChangeBudgetPromotion", "ChangeBudgetPromotion")
+                        .WithMany("changeBudgetPromotionDetails")
+                        .HasForeignKey("BudgetTaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ChangeBudgetPromotion");
+                });
+
             modelBuilder.Entity("TaskManager.API.Database.Entities.ChangeCompensation", b =>
                 {
                     b.HasOne("TaskManager.API.Database.Entities.BaseTask", "BaseTask")
                         .WithOne("ChangeCompensation")
                         .HasForeignKey("TaskManager.API.Database.Entities.ChangeCompensation", "CompensationTaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BaseTask");
+                });
+
+            modelBuilder.Entity("TaskManager.API.Database.Entities.ChangeEmployeeHardTargets", b =>
+                {
+                    b.HasOne("TaskManager.API.Database.Entities.BaseTask", "BaseTask")
+                        .WithMany()
+                        .HasForeignKey("ChangeEmployeeHardTargetsTaskId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BaseTask");
+                });
+
+            modelBuilder.Entity("TaskManager.API.Database.Entities.ChangeEmployeeSoftTargets", b =>
+                {
+                    b.HasOne("TaskManager.API.Database.Entities.BaseTask", "BaseTask")
+                        .WithMany()
+                        .HasForeignKey("ChangeEmployeeTargetsTaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -469,6 +917,8 @@ namespace TaskManager.API.Migrations
                 {
                     b.Navigation("ChangeBonus");
 
+                    b.Navigation("ChangeBudgetPromotion");
+
                     b.Navigation("ChangeCompensation");
 
                     b.Navigation("ChangeGrade");
@@ -480,6 +930,11 @@ namespace TaskManager.API.Migrations
                     b.Navigation("ChangeTeam");
 
                     b.Navigation("ChangeTitle");
+                });
+
+            modelBuilder.Entity("TaskManager.API.Database.Entities.ChangeBudgetPromotion", b =>
+                {
+                    b.Navigation("changeBudgetPromotionDetails");
                 });
 
             modelBuilder.Entity("TaskManager.API.Database.Entities.OrganizationApprovalSettings", b =>

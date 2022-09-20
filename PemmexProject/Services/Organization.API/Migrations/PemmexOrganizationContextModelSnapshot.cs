@@ -19,103 +19,7 @@ namespace Organization.API.Migrations
                 .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Organization.API.Dtos.spGetEmployeeTreeForManagerDto", b =>
-                {
-                    b.Property<string>("BusinessIdentifier")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Country")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CountryCellNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("Emp_Guid")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("EmployeeDob")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("EmployeeIdentifier")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstLanguage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstLanguageSkills")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Grade")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HouseNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("JobFunction")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ManagerIdentifier")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MiddleName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Muncipality")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nationality")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OrganizationIdentifier")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PostalCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Province")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SecondLanguage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SecondLanguageSkills")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Shift")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StreetAddress")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ThirdLanguage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ThirdLanguageSkills")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-                });
-
-            modelBuilder.Entity("Organization.API.Entities.Business", b =>
+            modelBuilder.Entity("Organization.API.Database.Entities.Business", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -132,6 +36,12 @@ namespace Organization.API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CurrencyCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CurrencyName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FileName")
@@ -157,7 +67,7 @@ namespace Organization.API.Migrations
                     b.ToTable("Businesses");
                 });
 
-            modelBuilder.Entity("Organization.API.Entities.CostCenter", b =>
+            modelBuilder.Entity("Organization.API.Database.Entities.CostCenter", b =>
                 {
                     b.Property<int>("CostCenterId")
                         .ValueGeneratedOnAdd()
@@ -193,7 +103,7 @@ namespace Organization.API.Migrations
                     b.ToTable("CostCenters");
                 });
 
-            modelBuilder.Entity("Organization.API.Entities.Employee", b =>
+            modelBuilder.Entity("Organization.API.Database.Entities.Employee", b =>
                 {
                     b.Property<int>("EmployeeId")
                         .ValueGeneratedOnAdd()
@@ -317,7 +227,7 @@ namespace Organization.API.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("Organization.API.Entities.EmployeeBonuses", b =>
+            modelBuilder.Entity("Organization.API.Database.Entities.EmployeeBonuses", b =>
                 {
                     b.Property<int>("EmployeeBonusId")
                         .ValueGeneratedOnAdd()
@@ -340,7 +250,7 @@ namespace Organization.API.Migrations
                     b.ToTable("Bonuses");
                 });
 
-            modelBuilder.Entity("Organization.API.Entities.EmployeeContacts", b =>
+            modelBuilder.Entity("Organization.API.Database.Entities.EmployeeContacts", b =>
                 {
                     b.Property<int>("EmployeeContactId")
                         .ValueGeneratedOnAdd()
@@ -378,15 +288,147 @@ namespace Organization.API.Migrations
                     b.ToTable("EmployeeContacts");
                 });
 
-            modelBuilder.Entity("Organization.API.Entities.Employee", b =>
+            modelBuilder.Entity("Organization.API.Database.Entities.sp_GetBusinessUnitsDto", b =>
                 {
-                    b.HasOne("Organization.API.Entities.Business", "Businesses")
+                    b.Property<string>("BUnitIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CostCenterName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmployeeIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Grade")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("JobFunction")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ManagerIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("businessIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isBunit")
+                        .HasColumnType("bit");
+                });
+
+            modelBuilder.Entity("Organization.API.Dtos.spGetEmployeeTreeForManagerDto", b =>
+                {
+                    b.Property<string>("BusinessIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CountryCellNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Emp_Guid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EmployeeDob")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EmployeeIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstLanguage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstLanguageSkills")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Grade")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HouseNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("JobFunction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ManagerIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MiddleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Muncipality")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nationality")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrganizationIdentifier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Province")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SecondLanguage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SecondLanguageSkills")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Shift")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StreetAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ThirdLanguage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ThirdLanguageSkills")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+                });
+
+            modelBuilder.Entity("Organization.API.Database.Entities.Employee", b =>
+                {
+                    b.HasOne("Organization.API.Database.Entities.Business", "Businesses")
                         .WithMany("Employees")
                         .HasForeignKey("BusinessId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Organization.API.Entities.CostCenter", "CostCenter")
+                    b.HasOne("Organization.API.Database.Entities.CostCenter", "CostCenter")
                         .WithMany()
                         .HasForeignKey("CostCenterId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -397,9 +439,9 @@ namespace Organization.API.Migrations
                     b.Navigation("CostCenter");
                 });
 
-            modelBuilder.Entity("Organization.API.Entities.EmployeeBonuses", b =>
+            modelBuilder.Entity("Organization.API.Database.Entities.EmployeeBonuses", b =>
                 {
-                    b.HasOne("Organization.API.Entities.Employee", "Employee")
+                    b.HasOne("Organization.API.Database.Entities.Employee", "Employee")
                         .WithMany("Bonuses")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -408,9 +450,9 @@ namespace Organization.API.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("Organization.API.Entities.EmployeeContacts", b =>
+            modelBuilder.Entity("Organization.API.Database.Entities.EmployeeContacts", b =>
                 {
-                    b.HasOne("Organization.API.Entities.Employee", "Employee")
+                    b.HasOne("Organization.API.Database.Entities.Employee", "Employee")
                         .WithMany("employeeContacts")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -419,12 +461,12 @@ namespace Organization.API.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("Organization.API.Entities.Business", b =>
+            modelBuilder.Entity("Organization.API.Database.Entities.Business", b =>
                 {
                     b.Navigation("Employees");
                 });
 
-            modelBuilder.Entity("Organization.API.Entities.Employee", b =>
+            modelBuilder.Entity("Organization.API.Database.Entities.Employee", b =>
                 {
                     b.Navigation("Bonuses");
 

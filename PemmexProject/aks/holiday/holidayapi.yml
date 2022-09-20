@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: holidayapi-deployment
+  labels:
+    app: holidayapi
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: holidayapi
+  template:
+    metadata:
+      labels:
+        app: holidayapi
+    spec:
+      containers:
+        - name: holidayapi
+          image: pemmexmicroservicesacr.azurecr.io/holidaysapi:v1
+          imagePullPolicy: IfNotPresent          
+          ports:
+            - containerPort: 80
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Production
+            - name: ConnectionStrings__HolidaysConnection
+              valueFrom:
+                configMapKeyRef:
+                  name: holiday-connection-configmaps
+                  key: db-connection-string
+            - name: IdentityUrl
+              valueFrom:
+                configMapKeyRef:
+                  name: holiday-connection-configmaps
+                  key: IdentityUrl      
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "0.1"
+            limits:
+              memory: "128Mi"
+              cpu: "0.3"
+      imagePullSecrets:
+        - name: acr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: holidayapi-service
+spec:
+  type: LoadBalancer  
+  selector:
+    app: holidayapi
+  ports:
+    - targetPort: 80
+      port: 80

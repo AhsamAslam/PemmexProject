@@ -1,11 +1,8 @@
 ﻿using PemmexCommonLibs.Domain.Common;
 using PemmexCommonLibs.Domain.Enums;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Authentication.API.Database.Entities
 {
@@ -20,6 +17,7 @@ namespace Authentication.API.Database.Entities
         public string Email { get; set; }
         public string EmployeeIdentifier { get; set; }
         public string ManagerIdentifier { get; set; }
+        public string ManagerName { get; set; }
         public string CostCenterIdentifier { get; set; }
         public string BusinessIdentifier { get; set; }
         public string OrganizationIdentifier { get; set; }

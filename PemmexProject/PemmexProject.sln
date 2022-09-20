@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31205.134
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{7F3781D2-C01C-44E3-8E99-E8B95189FAA4}"
 EndProject
@@ -42,6 +42,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Compensation.API", "Services\Compensation.API\Compensation.API.csproj", "{9EA411E6-4E09-422F-ACFB-4D63FF115E47}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notifications.API", "Services\Notifications.API\Notifications.API.csproj", "{3E965E85-5008-4EB9-BE41-D6FE8B78DC73}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pemmex.Identity", "Services\Pemmex.Identity\Pemmex.Identity.csproj", "{F52B2217-C745-4491-872F-01A088FF74A7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PemmexUnitTest", "..\PemmexUnitTest\PemmexUnitTest.csproj", "{0FC8387C-575D-4796-8A65-334A70DFEDE2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeTargets.API", "Services\EmployeeTargets.API\EmployeeTargets.API.csproj", "{2CB39C6F-EB91-412B-8C85-873F6B571E62}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Survey.API", "Services\Survey.API\Survey.API.csproj", "{B93219E8-4EB4-4C68-8B11-1CC95E87CF1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,6 +117,22 @@ Global
 		{3E965E85-5008-4EB9-BE41-D6FE8B78DC73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E965E85-5008-4EB9-BE41-D6FE8B78DC73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E965E85-5008-4EB9-BE41-D6FE8B78DC73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F52B2217-C745-4491-872F-01A088FF74A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F52B2217-C745-4491-872F-01A088FF74A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F52B2217-C745-4491-872F-01A088FF74A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F52B2217-C745-4491-872F-01A088FF74A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FC8387C-575D-4796-8A65-334A70DFEDE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FC8387C-575D-4796-8A65-334A70DFEDE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FC8387C-575D-4796-8A65-334A70DFEDE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FC8387C-575D-4796-8A65-334A70DFEDE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CB39C6F-EB91-412B-8C85-873F6B571E62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CB39C6F-EB91-412B-8C85-873F6B571E62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CB39C6F-EB91-412B-8C85-873F6B571E62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CB39C6F-EB91-412B-8C85-873F6B571E62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B93219E8-4EB4-4C68-8B11-1CC95E87CF1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B93219E8-4EB4-4C68-8B11-1CC95E87CF1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B93219E8-4EB4-4C68-8B11-1CC95E87CF1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B93219E8-4EB4-4C68-8B11-1CC95E87CF1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -128,6 +152,10 @@ Global
 		{8304ADC9-8210-4FC4-9776-F39244631793} = {6081CD78-913C-4161-A3B2-0AB6731552A4}
 		{9EA411E6-4E09-422F-ACFB-4D63FF115E47} = {886BB298-8C9C-4296-9008-D244DC2FFF48}
 		{3E965E85-5008-4EB9-BE41-D6FE8B78DC73} = {886BB298-8C9C-4296-9008-D244DC2FFF48}
+		{F52B2217-C745-4491-872F-01A088FF74A7} = {886BB298-8C9C-4296-9008-D244DC2FFF48}
+		{0FC8387C-575D-4796-8A65-334A70DFEDE2} = {BCEE1C6D-9606-4DEF-BCD1-78AABBE89EB5}
+		{2CB39C6F-EB91-412B-8C85-873F6B571E62} = {886BB298-8C9C-4296-9008-D244DC2FFF48}
+		{B93219E8-4EB4-4C68-8B11-1CC95E87CF1C} = {886BB298-8C9C-4296-9008-D244DC2FFF48}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {717A72FD-41B6-4AD7-A9D6-8DFF393F4FC8}

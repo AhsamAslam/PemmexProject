@@ -13,6 +13,8 @@ namespace Organization.API.Dtos
         public string BusinessIdentifier { get; set; }
         public string ParentBusinessId { get; set; }
         public string OrganizationCountry { get; set; }
+        public string CurrencyCode { get; set; }
+        public string CurrencyName { get; set; }
 
     }
 }

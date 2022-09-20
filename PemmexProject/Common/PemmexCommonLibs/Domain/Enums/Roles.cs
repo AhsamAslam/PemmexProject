@@ -14,10 +14,10 @@ namespace PemmexCommonLibs.Domain.Enums
         [Description("Manager")]
         manager,
         [Description("Group HR")]
-        group_hr,
+        grouphr,
         [Description("Admin")]
         admin,
         [Description("BU HR")]
-        bu_hr
+        buhr
     }
 }

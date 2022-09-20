@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Holidays.API.Enumerations;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PemmexCommonLibs.Application.Interfaces;
@@ -20,6 +19,7 @@ namespace TaskManager.API.Commands.ApplyHoliday
     {
         public Guid? SubsituteId { get; set; }
         public string SubsituteIdentifier { get; set; }
+        public string SubsituteName { get; set; }
         public DateTime? HolidayStartDate { get; set; }
         public DateTime? HolidayEndDate { get; set; }
         public HolidayTypes holidayType { get; set; }
@@ -27,6 +27,10 @@ namespace TaskManager.API.Commands.ApplyHoliday
         public string EmployeeIdentifier { get; set; }
         [JsonIgnore]
         public string ManagerIdentifier { get; set; }
+        [JsonIgnore]
+        public string EmployeeName { get; set; }
+        [JsonIgnore]
+        public string ManagerName { get; set; }
         public string taskDescription { get; set; }
         [JsonIgnore]
         public Guid UserId { get; set; }
@@ -34,6 +38,10 @@ namespace TaskManager.API.Commands.ApplyHoliday
         public string FileName { get; set; }
         [JsonIgnore]
         public string organizationIdentifier { get; set; }
+        [JsonIgnore]
+        public string businessIdentifier { get; set; }
+        [JsonIgnore]
+        public string costcenterIdentifier { get; set; }
     }
 
     public class ApplyHolidayCommandHandeler : IRequestHandler<ApplyHolidayCommand>
@@ -77,6 +85,8 @@ namespace TaskManager.API.Commands.ApplyHoliday
                 baseTask.RequestedByIdentifier = request.EmployeeIdentifier;
                 baseTask.TaskIdentifier = Guid.NewGuid();
                 baseTask.ManagerIdentifier = request.ManagerIdentifier;
+                baseTask.ManagerName = request.ManagerName;
+                baseTask.RequesterName = request.EmployeeName;
                 _context.BaseTasks.Add(baseTask);
                 var managerTask = PopulateManagerTask(baseTask);
                 if (approvesetting.ManagerType == OrganizationApprovalStructure.Other)
@@ -110,6 +120,7 @@ namespace TaskManager.API.Commands.ApplyHoliday
             task.isActive = true;
             task.ManagerIdentifier = null;
             task.RequestedByIdentifier = dto.ManagerIdentifier;
+            task.RequesterName = dto.ManagerName;
             task.currentTaskStatus = TaskStatuses.Pending;
             task.appliedStatus = TaskStatuses.Pending;
             task.taskType = dto.taskType;

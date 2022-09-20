@@ -132,6 +132,9 @@ namespace Authentication.API.Migrations
                     b.Property<string>("ManagerIdentifier")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ManagerName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("OrganizationCountry")
                         .HasColumnType("nvarchar(max)");
 

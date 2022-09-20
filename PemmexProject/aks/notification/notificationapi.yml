@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notificationapi-deployment
+  labels:
+    app: notificationapi
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: notificationapi
+  template:
+    metadata:
+      labels:
+        app: notificationapi
+    spec:
+      containers:
+        - name: notificationapi
+          image: pemmexmicroservicesacr.azurecr.io/notificationsapi:v1
+          imagePullPolicy: IfNotPresent          
+          ports:
+            - containerPort: 80
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Production
+            - name: ConnectionStrings__NotificationConnection
+              valueFrom:
+                configMapKeyRef:
+                  name: notification-connection-configmaps
+                  key: db-connection-string
+            - name: IdentityUrl
+              valueFrom:
+                configMapKeyRef:
+                  name: notification-connection-configmaps
+                  key: IdentityUrl
+            - name: AllowedChatOrigins
+              valueFrom:
+                configMapKeyRef:
+                  name: notification-connection-configmaps
+                  key: AllowedChatOrigins             
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "0.1"
+            limits:
+              memory: "128Mi"
+              cpu: "0.3"
+      imagePullSecrets:
+        - name: acr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notificationapi-service
+spec:
+  type: LoadBalancer  
+  selector:
+    app: notificationapi
+  ports:
+    - targetPort: 80
+      port: 80

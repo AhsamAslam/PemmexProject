@@ -17,6 +17,9 @@ namespace TaskManager.API.Database.context
         DbSet<ChangeGrade> ChangeGrades { get; set; }
         DbSet<BaseTask> BaseTasks { get; set; }
         DbSet<BonusSettings> BonusSettings { get; set; }
+        DbSet<Entities.Notifications> Notifications { get; set; }
+        DbSet<ChangeBudgetPromotion> BudgetPromotions { get; set; }
+        DbSet<ChangeBudgetPromotionDetail> BudgetPromotionDetails { get; set; }
         DbSet<OrganizationApprovalSettings> organizationApprovalSettings { get; set; }
         DbSet<OrganizationApprovalSettingDetail> organizationApprovalSettingDetails { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));

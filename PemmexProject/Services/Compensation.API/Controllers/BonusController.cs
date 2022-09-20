@@ -1,9 +1,14 @@
-﻿using Compensation.API.Queries.GetOrgnaizationBonus;
+﻿using Compensation.API.Commands.UpdatePerformanceBonus;
+using Compensation.API.Dtos;
+using Compensation.API.Queries.GetEmployeePerformanceBonus;
+using Compensation.API.Queries.GetOrgnaizationBonus;
 using Compensation.API.Queries.GetTeamBonuses;
 using Compensation.API.Queries.GetUserBonuses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PemmexCommonLibs.Application.Helpers;
+using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -14,34 +19,39 @@ namespace Compensation.API.Controllers
 {
     [Microsoft.AspNetCore.Components.Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BonusController : ApiControllerBase
     {
-        [HttpGet]
-        [Route("user")]
-        public async Task<ActionResult<ResponseMessage>> Get(string EmployeeIdentifier)
+        private readonly ILogService _logService;
+        public BonusController(ILogService logService)
         {
-            try
-            {
-                var data = await Mediator.Send(new GetUserBonusesQuery { employeeIdentifier = EmployeeIdentifier });
-                return new ResponseMessage(true, EResponse.OK, null, data);
-            }
-            catch (Exception e)
-            {
-                return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
-            }
+            _logService = logService;
         }
+        //[HttpGet]
+        //[Route("user")]
+        //public async Task<ActionResult<ResponseMessage>> Get(string EmployeeIdentifier)
+        //{
+        //    try
+        //    {
+        //        var data = await Mediator.Send(new GetUserBonusesQuery { employeeIdentifier = EmployeeIdentifier });
+        //        return new ResponseMessage(true, EResponse.OK, null, data);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
+        //    }
+        //}
         [HttpGet]
-        [Route("team")]
-        public async Task<ActionResult<ResponseMessage>> TeamBonuses([System.Web.Http.FromUri] List<string> EmployeeIdentifiers)
+        public async Task<ActionResult<List<UserBonus>>> Get([FromQuery] string[] employeeIdentifiers)
         {
             try
             {
-                var data = await Mediator.Send(new GetTeamBonusesQuery { employeeIdentifiers = EmployeeIdentifiers });
-                return new ResponseMessage(true, EResponse.OK, null, data);
+                return await Mediator.Send(new GetTeamBonusesQuery { employeeIdentifiers = employeeIdentifiers });
             }
             catch (Exception e)
             {
-                return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
+                await _logService.WriteLogAsync(e, $"Bonus_{CurrentUser.EmployeeIdentifier}");
+                throw;
             }
         }
         [HttpGet]
@@ -55,7 +65,40 @@ namespace Compensation.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Bonus_{CurrentUser.EmployeeIdentifier}");
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
+            }
+        }
+
+        //[HttpGet]
+        //[Route("GetEmployeePerformanceBonus")]
+        //public async Task<double> GetEmployeePerformanceBonus()
+        //{
+        //    try
+        //    {
+        //        var data = await Mediator.Send(new GetEmployeePerformanceBonusQuery { businessIdentifier = CurrentUser.BusinessIdentifier, grade = CurrentUser.Grade, jobFunction = Enum.GetName(CurrentUser.JobFunction), employeeIdentifier = CurrentUser.EmployeeIdentifier});
+        //        return data;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        await _logService.WriteLogAsync(e, $"Bonus_{CurrentUser.EmployeeIdentifier}");
+        //        throw;
+        //    }
+        //}
+
+        [HttpPost]
+        [Route("UpdateBonusFromPerformanceBonus")]
+        public async Task<bool> UpdateBonusFromPerformanceBonus(List<UpdateBonusFromPerformanceBonusRequest> command)
+        {
+            try
+            {
+                var data = await Mediator.Send(new UpdatePerformanceBonusCommand { bonusFromPerformanceBonusRequests = command });
+                return true;
+            }
+            catch (Exception e)
+            {
+                await _logService.WriteLogAsync(e, $"Bonus_{CurrentUser.EmployeeIdentifier}");
+                throw;
             }
         }
     }

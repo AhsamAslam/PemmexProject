@@ -2,8 +2,8 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Organization.API.Entities;
-using Organization.API.Interfaces;
+using Organization.API.Database.Context;
+using Organization.API.Database.Entities;
 using PemmexCommonLibs.Application.Exceptions;
 using PemmexCommonLibs.Domain.Enums;
 using System;
@@ -28,6 +28,7 @@ namespace Organization.API.Commands.UpdateOrganization
         public double InsuranceBenefit { get; set; }
         public double PhoneBenefit { get; set; }
         public double EmissionBenefit { get; set; }
+        public double IncrementPercentage { get; set; }
         public double HomeInternetBenefit { get; set; }
         public double TotalMonthlyPay { get; set; }
         public TaskType TaskType { get; set; }

@@ -14,10 +14,12 @@ namespace Compensation.API.Database.Entities
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
         public string businessIdentifier { get; set; }
-        public int budgetPercentage { get; set; }
+        public double budgetPercentage { get; set; }
         public double budgetValue { get; set; }
-        public int TotalbudgetPercentage { get; set; }
+        public double compulsoryPercentage { get; set; }
+        public double TotalbudgetPercentage { get; set; }
         public double TotalbudgetValue { get; set; }
         public JobFunction jobFunction { get; set; }
+        public double euro_rate { get; set; }
     }
 }

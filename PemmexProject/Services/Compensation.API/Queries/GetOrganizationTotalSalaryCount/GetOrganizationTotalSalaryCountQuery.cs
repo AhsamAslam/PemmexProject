@@ -27,12 +27,18 @@ namespace Compensation.API.Queries.GetOrganizationTotalSalaryCount
         }
         public async Task<double> Handle(GetOrganizationTotalSalaryCountQuery request, CancellationToken cancellationToken)
         {
-            var salary = await _context.Compensation
-            .Where(c => c.organizationIdentifier == request.organizationIdentifier)
-            .Select(o => o.TotalMonthlyPay)
-            .ToListAsync();
-
-            return salary.Sum();
+            try
+            {
+                var salary = await _context.Compensation
+                .Where(c => c.organizationIdentifier == request.organizationIdentifier)
+                .Select(o => o.TotalMonthlyPay)
+                .ToListAsync();
+                return salary.Sum();
+            }
+            catch(Exception)
+            {
+                throw;
+            }
         }
     }
 }

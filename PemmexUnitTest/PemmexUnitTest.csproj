@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Pemmex.Identity\**" />
+    <EmbeddedResource Remove="Pemmex.Identity\**" />
+    <None Remove="Pemmex.Identity\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.3" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.3" />
+    <PackageReference Include="coverlet.collector" Version="3.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PemmexProject\Common\PemmexCommonLibs\PemmexCommonLibs.csproj" />
+    <ProjectReference Include="..\PemmexProject\Services\Compensation.API\Compensation.API.csproj" />
+    <ProjectReference Include="..\PemmexProject\Services\EmailService\EmailServices.csproj" />
+    <ProjectReference Include="..\PemmexProject\Services\Holidays.API\Holidays.API.csproj" />
+    <ProjectReference Include="..\PemmexProject\Services\Organization.API\Organization.API.csproj" />
+    <ProjectReference Include="..\PemmexProject\Services\TaskManager.API\TaskManager.API.csproj" />
+  </ItemGroup>
+
+</Project>

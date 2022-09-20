@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Organization.API.Interfaces;
+using Organization.API.Database.Context;
 using PemmexCommonLibs.Domain.Common.Dtos;
 using System;
 using System.Collections.Generic;

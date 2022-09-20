@@ -1,4 +1,5 @@
 ﻿using Holidays.API.Database.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Domain.Common;
@@ -18,11 +19,14 @@ namespace Holidays.API.Database.context
         public DbSet<HolidayCalendar> HolidayCalendars { get; set; }
         private readonly IDateTime _dateTime;
 
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         public HolidaysContext(
             DbContextOptions options,
-            IDateTime dateTime) : base(options)
+            IDateTime dateTime, IHttpContextAccessor httpContextAccessor) : base(options)
         {
             _dateTime = dateTime;
+            _httpContextAccessor = httpContextAccessor;
         }
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
@@ -35,12 +39,12 @@ namespace Holidays.API.Database.context
                         switch (entry.State)
                         {
                             case EntityState.Added:
-                                entry.Entity.CreatedBy = "test";
+                                entry.Entity.CreatedBy = _httpContextAccessor.HttpContext?.User?.Claims?.FirstOrDefault(claim => claim.Type == "sub")?.Value;
                                 entry.Entity.Created = _dateTime.Now;
                                 break;
 
                             case EntityState.Modified:
-                                entry.Entity.LastModifiedBy = "test";
+                                entry.Entity.LastModifiedBy = _httpContextAccessor.HttpContext.User.Claims.First(claim => claim.Type == "sub").Value;
                                 entry.Entity.LastModified = _dateTime.Now;
                                 break;
                         }

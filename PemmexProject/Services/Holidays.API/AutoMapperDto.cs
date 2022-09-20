@@ -16,8 +16,8 @@ namespace Holidays.API
             
             CreateMap<EmployeeHolidays,HolidayEmployeeCounter>().ReverseMap();
             CreateMap<HolidaySettings, HolidaySettingsDto>().ReverseMap();
-            CreateMap<EmployeeHolidays, SaveHolidayCommand>().ReverseMap();
-            CreateMap<EmployeeHolidays, TakenHolidayDto>().ReverseMap();
+            CreateMap<SaveHolidayCommand, EmployeeHolidays>();
+            CreateMap<EmployeeHolidays, EmployeeHolidayDto>().ReverseMap();
             CreateMap<HolidayCalendar, HolidayCalendarDto>().ReverseMap();
         }
 

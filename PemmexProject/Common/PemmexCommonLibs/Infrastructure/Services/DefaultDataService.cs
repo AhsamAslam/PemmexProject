@@ -1,4 +1,5 @@
-﻿using PemmexCommonLibs.Application.Helpers;
+﻿using PemmexCommonLibs.Application.Extensions;
+using PemmexCommonLibs.Application.Helpers;
 using PemmexCommonLibs.Domain.Common.Dtos;
 using PemmexCommonLibs.Domain.Enums;
 using System;
@@ -28,18 +29,18 @@ namespace PemmexCommonLibs.Infrastructure.Services
                 },
                 new RolesEntity()
                 {
-                    roleName = Roles.bu_hr.EnumDescription(),
-                    Id = Roles.bu_hr.EnumDescription(),
-                    label = Roles.bu_hr.EnumDescription(),
+                    roleName = Roles.buhr.EnumDescription(),
+                    Id = Roles.buhr.EnumDescription(),
+                    label = Roles.buhr.EnumDescription(),
                     color = "hsl(354, 70%, 50%)",
                     OrganizationIdentifier = organizationIdentifier,
                     screenEntities = Get_BU_HR_Screens()
                 },
                 new RolesEntity()
                 {
-                    roleName = Roles.group_hr.EnumDescription(),
-                    Id = Roles.group_hr.EnumDescription(),
-                    label = Roles.group_hr.EnumDescription(),
+                    roleName = Roles.grouphr.EnumDescription(),
+                    Id = Roles.grouphr.EnumDescription(),
+                    label = Roles.grouphr.EnumDescription(),
                     color = "hsl(136, 70%, 50%)",
                     OrganizationIdentifier = organizationIdentifier,
                     screenEntities = GetGroupHR_Screens()

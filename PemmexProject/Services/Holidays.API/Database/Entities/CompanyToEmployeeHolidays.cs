@@ -12,9 +12,9 @@ namespace Holidays.API.Database.Entities
     {
         [Key]
         public int CompanyToEmployeeHolidayId { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid EmployeeId { get; set; }
         public string EmployeeIdentifier { get; set; }
+        public string organizationIdentifier { get; set; }
+        public string businessIdentifier { get; set; }
         public string costcenterIdentifier { get; set; }
         public int AnnualHolidaysEntitled { get; set; }
         public int AccruedHolidaysPreviousYear { get; set; }

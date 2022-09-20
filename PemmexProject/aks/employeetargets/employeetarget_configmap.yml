@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: employeetarget-connection-configmaps
+data:
+  db-connection-string: "Data Source=mssql-deployment,1433;Initial Catalog=EmployeeTargetsDB;User ID=sa;Password=#p123987@!$%&^sq!#;MultipleActiveResultSets=False;Connection Timeout=30;"
+  IdentityUrl: https://identity.pemmex.eu

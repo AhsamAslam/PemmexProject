@@ -65,6 +65,9 @@ namespace Compensation.API.Commands.SaveSalary
                             s.PhoneBenefit = com1.PhoneBenefit;
                             s.TotalMonthlyPay = s.BaseSalary + s.AdditionalAgreedPart;
                             s.EmployeeIdentifier = com1.EmployeeIdentifier;
+                            s.organizationIdentifier = com1.organizationIdentifier;
+                            s.businessIdentifier = com1.businessIdentifier;
+                            s.currencyCode = com1.currencyCode;
                             _context.CompensationSalaries.Add(s);
                         }
                         else
@@ -78,6 +81,9 @@ namespace Compensation.API.Commands.SaveSalary
                             salary.EmissionBenefit = com1.EmissionBenefit;
                             salary.PhoneBenefit = com1.PhoneBenefit;
                             salary.TotalMonthlyPay = com1.BaseSalary + com1.AdditionalAgreedPart;
+                            salary.organizationIdentifier = com1.organizationIdentifier;
+                            salary.businessIdentifier = com1.businessIdentifier;
+                            salary.currencyCode = com1.currencyCode;
                             _context.CompensationSalaries.Update(salary);
                         }
                     }
@@ -100,6 +106,9 @@ namespace Compensation.API.Commands.SaveSalary
                             s.PhoneBenefit = com1.PhoneBenefit;
                             s.TotalMonthlyPay = com1.TotalMonthlyPay;
                             s.EmployeeIdentifier = com1.EmployeeIdentifier;
+                            s.organizationIdentifier = com1.organizationIdentifier;
+                            s.businessIdentifier = com1.businessIdentifier;
+                            s.currencyCode = com1.currencyCode;
                             _context.CompensationSalaries.Add(s);
                         }
                         else
@@ -113,6 +122,9 @@ namespace Compensation.API.Commands.SaveSalary
                             salary.EmissionBenefit = com1.EmissionBenefit;
                             salary.PhoneBenefit = com1.PhoneBenefit;
                             salary.TotalMonthlyPay = com1.TotalMonthlyPay;
+                            salary.organizationIdentifier = com1.organizationIdentifier;
+                            salary.businessIdentifier = com1.businessIdentifier;
+                            salary.currencyCode = com1.currencyCode;
                             _context.CompensationSalaries.Update(salary);
                         }
                     }
@@ -137,6 +149,9 @@ namespace Compensation.API.Commands.SaveSalary
                         s.PhoneBenefit = com.PhoneBenefit;
                         s.TotalMonthlyPay = com.TotalMonthlyPay;
                         s.EmployeeIdentifier = com.EmployeeIdentifier;
+                        s.organizationIdentifier = com.organizationIdentifier;
+                        s.businessIdentifier = com.businessIdentifier;
+                        s.currencyCode = com.currencyCode;
                         _context.CompensationSalaries.Add(s);
                     }
                     else
@@ -150,6 +165,9 @@ namespace Compensation.API.Commands.SaveSalary
                         salary.EmissionBenefit = com.EmissionBenefit;
                         salary.PhoneBenefit = com.PhoneBenefit;
                         salary.TotalMonthlyPay = com.TotalMonthlyPay;
+                        salary.organizationIdentifier = com.organizationIdentifier;
+                        salary.businessIdentifier = com.businessIdentifier;
+                        salary.currencyCode = com.currencyCode;
                         _context.CompensationSalaries.Update(salary);
                     }
                 }

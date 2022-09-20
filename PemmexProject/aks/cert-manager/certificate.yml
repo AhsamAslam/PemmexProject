@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: pemmexfrontend
+  namespace: default
+spec:
+  dnsNames:
+    - pemmex.eu
+    - identity.pemmex.eu
+    - api.pemmex.eu
+  secretName: pemmex-app-tls
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer

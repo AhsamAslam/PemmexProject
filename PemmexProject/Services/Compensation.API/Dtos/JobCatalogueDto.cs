@@ -17,6 +17,7 @@ namespace Compensation.API.Dtos
         public string currency { get; set; }
         public string jobFunction { get; set; }
         public double acv_bonus_percentage { get; set; }
+        public string businessIdentifier { get; set; }
         public string organizationIdentifier { get; set; }
     }
 }

@@ -13,6 +13,10 @@ namespace PemmexCommonLibs.Domain.Enums
         Title,
         Organization,
         Team,
-        Bonus
+        Bonus,
+        BudgetPromotion,
+        AnnualSalary,
+        SoftTargets,
+        HardTargets
     }
 }

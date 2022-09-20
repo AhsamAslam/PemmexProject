@@ -2,12 +2,14 @@
 using Holidays.API.Database.context;
 using Holidays.API.Database.Entities;
 using Holidays.API.Dtos;
-using Holidays.API.Enumerations;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using PemmexCommonLibs.Application.Extensions;
 using PemmexCommonLibs.Application.Helpers;
 using PemmexCommonLibs.Application.Interfaces;
+using PemmexCommonLibs.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,27 +18,29 @@ using System.Threading.Tasks;
 
 namespace Holidays.API.Queries.GetTakenHolidaysByTeamId
 {
-    public class GetTakenHolidaysByTeamIdQuery : IRequest<List<TakenHolidayDto>>
+    public class GetTakenHolidaysByTeamIdQuery : IRequest<List<EmployeeHolidayDto>>
     {
-        public string TeamId { get; set; }
+        public string[] employeeIdentifiers { get; set; }
         public string businessIdentifier { get; set; }
     }
-    public class GetTakenHolidaysByEmployeeIdQueryHandeler : IRequestHandler<GetTakenHolidaysByTeamIdQuery, List<TakenHolidayDto>>
+    public class GetTakenHolidaysByEmployeeIdQueryHandeler : IRequestHandler<GetTakenHolidaysByTeamIdQuery, List<EmployeeHolidayDto>>
     {
         private readonly IApplicationDbContext _context;
         private readonly IDateTime _dateTime;
         private readonly IMapper _mapper;
         private readonly DbContextOptionsBuilder<HolidaysContext> optionsBuilder = null;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public GetTakenHolidaysByEmployeeIdQueryHandeler(IApplicationDbContext context, IDateTime dateTime,IMapper mapper,IConfiguration configuration)
+        public GetTakenHolidaysByEmployeeIdQueryHandeler(IApplicationDbContext context, IDateTime dateTime,IMapper mapper,IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _dateTime = dateTime;
             _mapper = mapper;
+            _httpContextAccessor = httpContextAccessor;
             this.optionsBuilder = new DbContextOptionsBuilder<HolidaysContext>()
             .UseSqlServer(configuration.GetConnectionString("HolidaysConnection"));
         }
-        public async Task<List<TakenHolidayDto>> Handle(GetTakenHolidaysByTeamIdQuery request, CancellationToken cancellationToken)
+        public async Task<List<EmployeeHolidayDto>> Handle(GetTakenHolidaysByTeamIdQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -46,7 +50,7 @@ namespace Holidays.API.Queries.GetTakenHolidaysByTeamId
                     .OrderByDescending(d => d.HolidayCalendarYear).FirstOrDefaultAsync();
 
                 var holidays = await _context.CompanyToEmployeeHolidays
-                    .Where(e => e.costcenterIdentifier == request.TeamId && e.HolidaySettingsIdentitfier == setting.HolidaySettingsIdentitfier)
+                    .Where(e => request.employeeIdentifiers.Contains(e.EmployeeIdentifier) && e.HolidaySettingsIdentitfier == setting.HolidaySettingsIdentitfier)
                     .ToListAsync(cancellationToken);
 
 
@@ -54,10 +58,10 @@ namespace Holidays.API.Queries.GetTakenHolidaysByTeamId
                     throw new Exception("No Holidays Found");
 
 
-                List<TakenHolidayDto> takenHolidays = new List<TakenHolidayDto>();
+                List<EmployeeHolidayDto> takenHolidays = new List<EmployeeHolidayDto>();
                 var tasks = holidays.Select(async e =>
                 {
-                    var h= await GetUsedHolidaysEmployee(e.EmployementStartDate.ToDateTime3(), setting, e.EmployeeId);
+                    var h= await GetUsedHolidaysEmployee(e.EmployementStartDate.ToDateTime3(), setting, e.EmployeeIdentifier);
                     takenHolidays.AddRange(h);
                 });
                 await Task.WhenAll(tasks);
@@ -69,11 +73,11 @@ namespace Holidays.API.Queries.GetTakenHolidaysByTeamId
                 throw;
             }
         }
-        private async Task<List<TakenHolidayDto>> GetUsedHolidaysEmployee(DateTime startedDate, HolidaySettings setting, Guid EmployeeId)
+        private async Task<List<EmployeeHolidayDto>> GetUsedHolidaysEmployee(DateTime startedDate, HolidaySettings setting, string EmployeeId)
         {
             try
             {
-                using (var db = new HolidaysContext(this.optionsBuilder.Options, _dateTime))
+                using (var db = new HolidaysContext(this.optionsBuilder.Options, _dateTime, _httpContextAccessor))
                 {
                     DateTime start_calendar = startedDate > setting.HolidayCalendarYear ? startedDate : setting.HolidayCalendarYear;
                     DateTime end_calendar = setting.HolidayCalendarYear.AddYears(1);
@@ -83,9 +87,9 @@ namespace Holidays.API.Queries.GetTakenHolidaysByTeamId
                     .Where(h => (h.HolidayStatus == HolidayStatus.Planned 
                     || h.HolidayStatus == HolidayStatus.Approved 
                     || h.HolidayStatus == HolidayStatus.Availed))
-                    .Where(h => h.EmployeeId == EmployeeId)
+                    .Where(h => h.EmployeeIdentifier == EmployeeId)
                     .ToListAsync();
-                    var h = _mapper.Map<List<TakenHolidayDto>>(holidays);
+                    var h = _mapper.Map<List<EmployeeHolidayDto>>(holidays);
                     h.ForEach(p =>
                     {
                         var start = (p.HolidayStartDate < start_calendar) ? start_calendar : p.HolidayStartDate;

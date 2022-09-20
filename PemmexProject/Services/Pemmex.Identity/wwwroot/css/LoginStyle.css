@@ -1,0 +1,136 @@
+﻿* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+.mm-container {
+    display: flex;
+    height: 100vh;
+}
+
+.mm-form-container {
+    display: flex;
+    width: 65%;
+    align-items: center;
+    justify-content: center;
+}
+
+.mm-form-container-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 70%;
+}
+
+.authentication-form {
+    width: 100%;
+}
+
+.form-heading-div p {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.form-heading-label-div p {
+    margin-bottom: 10px;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.input-outer-div {
+    width: 100%;
+    margin: 20px 0;
+}
+
+    .input-outer-div label {
+        font-size: 22px;
+        font-weight: 500;
+    }
+
+.input-inner-div {
+    margin-top: 5px;
+    height: 64px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+}
+
+    .input-inner-div input {
+        width: 100%;
+        height: 100%;
+        border: none;
+        outline: none;
+        background: none;
+        padding-left: 15px;
+        color: #75737b;
+        font-size: 18px;
+    }
+
+        .input-inner-div input::placeholder {
+            color: #e3e2e8;
+            font-size: 18px;
+        }
+
+.frgt-pswd-div a {
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.button-div button {
+    margin: 20px 0;
+    height: 64px;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 24px;
+    background-color: #15025e;
+    color: white;
+}
+
+.mm-logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35%;
+    background-color: #15025e;
+}
+
+.mm-pemmex-img-div {
+    width: 65%;
+    height: auto
+}
+
+    .mm-pemmex-img-div img {
+        width: 100%;
+        height: 100%;
+    }
+
+@media (max-width:992px) {
+    .mm-form-container {
+        width: 100%;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .mm-logo-container {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 660px) {
+    .form-heading-div p {
+        font-size: 2.4rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+    }
+
+    .mm-form-container-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 85%;
+    }
+}

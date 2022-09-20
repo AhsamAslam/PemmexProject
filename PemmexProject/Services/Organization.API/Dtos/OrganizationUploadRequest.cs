@@ -30,6 +30,7 @@ namespace Organization.API.Dtos
 
         public string OrganizationCountry { get; set; }
         public string FileName { get; set; }
+        public string CurrencyCode { get; set; }
         public List<EmployeeUploadRequest> Employees { get; set; }
 
     }
@@ -178,6 +179,7 @@ namespace Organization.API.Dtos
         //[ExcelColumn("Total Monthly Pay")] //maps the "Total Monthly Pay" property to the "TotalMonthlyPay" column
         public double TotalMonthlyPay { get; set; }
         public DateTime EffectiveDate { get; set; }
+        public string currencyCode { get; set; }
 
     }
     public class HolidayUploadRequest

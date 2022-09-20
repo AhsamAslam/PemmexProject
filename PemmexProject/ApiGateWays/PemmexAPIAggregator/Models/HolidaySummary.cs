@@ -7,8 +7,8 @@ namespace PemmexAPIAggregator.Models
 {
     public class HolidaySummary
     {
-        public Guid Emp_Guid { get; set; }
         public string EmployeeIdentifier { get; set; }
+        public Guid Emp_Guid { get; set; }
         public string BusinessIdentifier { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

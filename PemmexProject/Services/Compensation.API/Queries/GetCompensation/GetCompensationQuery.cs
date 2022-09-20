@@ -11,12 +11,11 @@ using System.Threading.Tasks;
 
 namespace Compensation.API.Queries.GetCompensation
 {
-    public class GetCompensationQuery : IRequest<CompensationDto>
+    public class GetCompensationQuery : IRequest<List<CompensationDto>>
     {
-        public string employeeIdentifier { get; set; }
+        public string[] Identifiers { get; set; }
     }
-
-    public class GetCompensationQueryHandeler : IRequestHandler<GetCompensationQuery, CompensationDto>
+    public class GetCompensationQueryHandeler : IRequestHandler<GetCompensationQuery, List<CompensationDto>>
     {
         private readonly ICompensationSalaryRepository _context;
         private readonly IMapper _mapper;
@@ -26,10 +25,17 @@ namespace Compensation.API.Queries.GetCompensation
             _context = context;
             _mapper = mapper;
         }
-        public async Task<CompensationDto> Handle(GetCompensationQuery request, CancellationToken cancellationToken)
+        public async Task<List<CompensationDto>> Handle(GetCompensationQuery request, CancellationToken cancellationToken)
         {
-            var employee = await _context.GetCurrentCompensation(request.employeeIdentifier);
-            return _mapper.Map<Database.Entities.Compensation, CompensationDto>(employee);
+            try
+            {
+                var employees = await _context.GetCurrentCompensation(request.Identifiers);
+                return _mapper.Map<List<Database.Entities.Compensation>, List<CompensationDto>>(employees.ToList());
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

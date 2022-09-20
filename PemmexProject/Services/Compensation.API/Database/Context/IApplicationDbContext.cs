@@ -10,6 +10,8 @@ namespace Compensation.API.Database.context
         DbSet<Entities.CompensationSalaries> CompensationSalaries { get; set; }
         DbSet<Entities.JobCatalogue> JobCatalogues { get; set; }
         DbSet<Entities.OrganizationBudget> OrganizationBudgets { get; set; }
+        DbSet<Entities.FunctionalBudget> FunctionalBudgets { get; set; }
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

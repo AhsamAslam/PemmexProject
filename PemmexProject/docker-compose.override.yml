@@ -1,30 +1,145 @@
 version: '3.4'
 
 services:
-  organizationdb:
-    container_name: organizationdb
+
+  pemmexsql:
+    container_name: pemmexsql
     environment:
       ACCEPT_EULA: "Y"
-      SA_PASSWORD: "Int123456789"
+      SA_PASSWORD: "#p123987@!$$%&^sq!#"
     restart: always
     ports:
       - "1433:1433"
+  
   organization.api:
     container_name: organization.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "ConnectionStrings:OrganizationConnection=Server=organizationdb;Initial Catalog=OrganizationDB;User ID=sa;Password=Int123456789;"
+      - "ConnectionStrings:OrganizationConnection=Data Source=pemmexsql;Initial Catalog=OrganizationDB;User ID=sa;Password=#p123987@!$$%&^sq!#;"
     depends_on: 
-      - organizationdb
+      - pemmexsql
+      - pemmex.identity
     ports:
       - "8001:80"
+
+  compensation.api:
+    container_name: compensation.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:CompensationConnection=Data Source=pemmexsql;Initial Catalog=CompensationDB;User ID=sa;Password=#p123987@!$$%&^sq!#;"
+    depends_on: 
+      - pemmexsql
+      - pemmex.identity
+    ports:
+      - "8002:80"
+
+  holidays.api:
+    container_name: holidays.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:HolidaysConnection=Data Source=pemmexsql;Initial Catalog=HolidaysDB;User ID=sa;Password=#p123987@!$$%&^sq!#;"
+    depends_on: 
+      - pemmexsql
+      - pemmex.identity
+    ports:
+      - "8003:80"
+
+  taskmanager.api:
+    container_name: taskmanager.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:TaskManagerConnection=Data Source=pemmexsql;Initial Catalog=TaskManagerDB;User ID=sa;Password=#p123987@!$$%&^sq!#;"
+    depends_on: 
+      - pemmexsql
+      - pemmex.identity
+    ports:
+      - "8004:80"
+
+  employeetargets.api:
+    container_name: employeetargets.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:EmployeeTargetsConnection=Data Source=pemmexsql;Initial Catalog=EmployeeTargetsDB;User ID=sa;Password=#p123987@!$$%&^sq!#;"
+    depends_on: 
+      - pemmexsql
+      - pemmex.identity
+    ports:
+      - "8005:80"
+
+  survey.api:
+    container_name: survey.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:SurveyConnection=Data Source=pemmexsql;Initial Catalog=SurveyDB;User ID=sa;Password=#p123987@!$$%&^sq!#;"
+    depends_on: 
+      - pemmexsql
+      - pemmex.identity
+    ports:
+      - "8006:80"
+
+  emailservices:
+    container_name: emailservices
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on: 
+      - pemmexsql
+      - pemmex.identity
+    ports:
+      - "8007:80"
+       
+  notifications.api:
+    container_name: notifications.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings:NotificationConnection=Data Source=pemmexsql;Initial Catalog=NotificationDB;User ID=sa;Password=#p123987@!$$%&^sq!#;"
+    depends_on: 
+      - pemmexsql
+      - pemmex.identity
+    ports:
+      - "8008:80"
+
+  pemmex.identity:
+    container_name: pemmex.identity
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__IdentityConnection: "Data Source=pemmexsql;Initial Catalog=IdentityDB;User ID=sa;Password=#p123987@!$$%&^sq!#;TrustServerCertificate=False;Connection Timeout=30;"
+    ports:
+      - "8000:80"
+    depends_on: 
+      - pemmexsql
 
   ocelotapigateway:
     container_name: ocelotapigateway
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - AllowedChatOrigins="http://localhost:3000"
     depends_on: 
+      - pemmex.identity
       - organization.api
+      - compensation.api
+      - holidays.api
+      - taskmanager.api
+      - employeetargets.api
+      - survey.api
+      - emailservices
+      - notifications.api
     ports:
-      - "8010:80"
+      - "8080:80"
 
+
+  pemmexapiaggregator:
+    container_name: pemmexapiaggregator
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on: 
+      - pemmex.identity
+      - organization.api
+      - compensation.api
+      - holidays.api
+      - taskmanager.api
+      - employeetargets.api
+      - survey.api
+      - emailservices
+      - notifications.api
+    ports:
+      - "8081:80"

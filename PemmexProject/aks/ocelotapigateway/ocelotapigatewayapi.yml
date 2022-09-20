@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocelotapigatewayapi-deployment
+  labels:
+    app: ocelotapigatewayapi
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: ocelotapigatewayapi
+  template:
+    metadata:
+      labels:
+        app: ocelotapigatewayapi
+    spec:
+      containers:
+        - name: ocelotapigatewayapi
+          image: pemmexmicroservicesacr.azurecr.io/ocelotapigateway:v1
+          imagePullPolicy: Always          
+          ports:
+            - containerPort: 80
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: Production
+            - name: AllowedChatOrigins
+              valueFrom:
+                configMapKeyRef:
+                  name: ocelot-connection-configmaps
+                  key: AllowedChatOrigins
+            - name: IdentityUrl
+              valueFrom:
+                configMapKeyRef:
+                  name: ocelot-connection-configmaps
+                  key: IdentityUrl            
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "0.1"
+            limits:
+              memory: "128Mi"
+              cpu: "0.3"
+      imagePullSecrets:
+        - name: acr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ocelotapigatewayapi-service
+spec:
+  type: LoadBalancer  
+  selector:
+    app: ocelotapigatewayapi
+  ports:
+    - targetPort: 80
+      port: 80

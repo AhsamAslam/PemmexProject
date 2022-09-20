@@ -5,8 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Organization.API.Entities;
-using Organization.API.Interfaces;
+using Organization.API.Database.Context;
+using Organization.API.Database.Entities;
 using PemmexCommonLibs.Application.Exceptions;
 
 namespace Organization.API.Commands.DeleteEmployee

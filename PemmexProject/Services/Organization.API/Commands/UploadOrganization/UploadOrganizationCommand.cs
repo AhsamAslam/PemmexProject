@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EventBus.Messages.Services;
 using MediatR;
+using Organization.API.Database.Context;
+using Organization.API.Database.Entities;
 using Organization.API.Dtos;
-using Organization.API.Entities;
-using Organization.API.Interfaces;
 using PemmexCommonLibs.Application.Helpers;
 using PemmexCommonLibs.Domain.Common.Dtos;
 using PemmexCommonLibs.Domain.Enums;
@@ -43,7 +43,7 @@ namespace Organization.API.Commands.UploadOrganization
 
                 var users = new List<UserEntity>();
                 var holidaysettingEntities = new List<HolidaySettingsEntity>();
-                var holidays = new List<HolidayEntity>();
+                var holidays = new List<CompanyToEmployeeHolidayEntity>();
                 var Businesses = _mapper.Map<List<BusinessRequestDto>, List<Business>>(request.businesses);
                 var compensations = _mapper.Map<List<CompensationUploadRequest>, List<CompensationEntity>>(request.compensationUploadRequests);
                 var costcenters = _mapper.Map<List<CostCenterUploadRequest>, List<CostCenter>>(request.costCenterUploads);
@@ -52,15 +52,16 @@ namespace Organization.API.Commands.UploadOrganization
                 foreach (var org in Businesses)
                 {
                     org.IsActive = true;
-                    var holidaySettingEntity = new HolidaySettingsEntity()
+                    var holidaySettingEntity = new HolidaySettingsEntity();
+                    if (org.BusinessIdentifier != org.ParentBusinessId)
                     {
-                        BusinessIdentifier = org.BusinessIdentifier,
-                        HolidayCalendarYear = new DateTime(DateTime.Now.Year, 4, 1),
-                        MaximumLimitHolidayToNextYear = 15,
-                        OrganizationIdentifier = org.ParentBusinessId,
-                        HolidaySettingsIdentitfier = Guid.NewGuid()
-                    };
-                    holidaysettingEntities.Add(holidaySettingEntity);
+                        holidaySettingEntity.BusinessIdentifier = org.BusinessIdentifier;
+                        holidaySettingEntity.HolidayCalendarYear = DateTime.Now.Month < 4 ? new DateTime(DateTime.Now.Year - 1, 4, 1) : new DateTime(DateTime.Now.Year, 4, 1);
+                        holidaySettingEntity.MaximumLimitHolidayToNextYear = 15;
+                        holidaySettingEntity.OrganizationIdentifier = org.ParentBusinessId;
+                        holidaySettingEntity.HolidaySettingsIdentitfier = Guid.NewGuid();
+                        holidaysettingEntities.Add(holidaySettingEntity);
+                    }
                     if (request.employeeUploadRequests.Count > 0)
                     {
                         var employees = request.employeeUploadRequests.Where(x => x.OrganizationIdentifier == org.BusinessIdentifier).ToList();
@@ -68,35 +69,33 @@ namespace Organization.API.Commands.UploadOrganization
                         {
                             e.CostCenterId = costcenters.FirstOrDefault(c => c.CostCenterIdentifier == e.CostCenterIdentifier).CostCenterId;
                             e.IsActive = true;
-                            e.Emp_Guid = Guid.NewGuid();
+                            //e.Role = string.IsNullOrEmpty(e.Role) ? Enum.GetName(Roles.User) : e.Role;
                             var u = _mapper.Map<EmployeeUploadRequest, UserEntity>(e);
-                            u.Id = e.Emp_Guid;
+                            List<string> r = new List<string>();
+                            r.Add((!Enum.IsDefined(typeof(Roles), e.Role.ToLower()) || string.IsNullOrEmpty(e.Role)) ? Enum.GetName(Roles.user) : e.Role.ToLower());
+                            u.Role = r.ToArray();
                             u.OrganizationIdentifier = org.ParentBusinessId;
                             u.BusinessIdentifier = org.BusinessIdentifier;
+                            u.OrganizationCountry = org.OrganizationCountry;
                             u.IsPasswordReset = false;
-
-
-
                             var compensation = compensations.FirstOrDefault(c => c.EmployeeIdentifier == e.EmployeeIdentifier);
                             if(compensation != null)
                             {
                                 compensation.organizationIdentifier = org.ParentBusinessId;
                                 compensation.businessIdentifier = org.BusinessIdentifier;
+                                compensation.currencyCode = org.CurrencyCode;
                             }
-
-
-                            //u.Role = (!Enum.IsDefined(typeof(Roles), e.Role.ToLower()) || string.IsNullOrEmpty(e.Role.ToLower())) ? (int)Roles.user : (int)e.Role.ToLower().ToEnum<Roles>();
                             users.Add(u);
-                            var holiday = _mapper.Map<HolidayUploadRequest, HolidayEntity>(e.holidayUploadRequest);
-                            holiday.EmployeeId = e.Emp_Guid;
+                            var holiday = _mapper.Map<HolidayUploadRequest, CompanyToEmployeeHolidayEntity>(e.holidayUploadRequest);
                             holiday.costcenterIdentifier = e.CostCenterIdentifier;
+                            holiday.businessIdentifier = org.BusinessIdentifier;
+                            holiday.organizationIdentifier = org.BusinessIdentifier;
                             holiday.HolidaySettingsIdentitfier = holidaySettingEntity.HolidaySettingsIdentitfier;
                             holidays.Add(holiday);
                             count++;
 
                         }
                         org.Employees = _mapper.Map<List<EmployeeUploadRequest>, List<Employee>>(employees);
-
                     }
                     //var o = _mapper.Map<BusinessDetailRequest, Business>(bD);
                     //parentBusiness.Businesses.Add(o);
@@ -109,7 +108,7 @@ namespace Organization.API.Commands.UploadOrganization
                 });
                 Parallel.ForEach(holidays, async holiday =>
                 {
-                    await _messagePublisher.Publish<HolidayEntity>(holiday);
+                    await _messagePublisher.Publish<CompanyToEmployeeHolidayEntity>(holiday);
 
                 });
                 Parallel.ForEach(holidaysettingEntities, async holiday =>

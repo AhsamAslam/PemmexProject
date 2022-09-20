@@ -17,18 +17,20 @@ namespace Compensation.API.Commands.CreateBudgetCommand
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
         public List<BudgetDetail> budgetDetails { get; set; }
-        public int TotalbudgetPercentage { get; set; }
+        public double TotalbudgetPercentage { get; set; }
         public double TotalbudgetValue { get; set; }
     }
     public class BudgetDetail
     {
         public string businessIdentifier { get; set; }
         public List<BudgetFunctions> budgetFunctions { get; set; }
-        
+        public double euro_rate { get; set; }
+
     }
     public class BudgetFunctions
     {
-        public int budgetPercentage { get; set; }
+        public double budgetPercentage { get; set; }
+        public double compulsoryPercentage { get; set; }
         public double budgetValue { get; set; }
         public JobFunction jobFunction { get; set; }
     }
@@ -70,7 +72,9 @@ namespace Compensation.API.Commands.CreateBudgetCommand
                             jobFunction = d.jobFunction,
                             TotalbudgetPercentage = request.TotalbudgetPercentage,
                             TotalbudgetValue = request.TotalbudgetValue,
-                            organizationIdentifier = request.organizationIdentifier
+                            organizationIdentifier = request.organizationIdentifier,
+                            compulsoryPercentage = d.compulsoryPercentage,
+                            euro_rate = b.euro_rate <= 0 ? 1 : b.euro_rate,
                         };
                         _context.OrganizationBudgets.Add(org_buget);
                     }

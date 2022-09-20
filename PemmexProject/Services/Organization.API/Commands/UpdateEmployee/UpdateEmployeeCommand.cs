@@ -7,9 +7,9 @@ using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Organization.API.Commands.CreateEmployee;
+using Organization.API.Database.Context;
+using Organization.API.Database.Entities;
 using Organization.API.Dtos;
-using Organization.API.Entities;
-using Organization.API.Interfaces;
 using PemmexCommonLibs.Application.Exceptions;
 using PemmexCommonLibs.Application.Helpers;
 

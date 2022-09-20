@@ -1,0 +1,2115 @@
+{
+  "Routes": [
+    //Authentication_Microservice
+    {
+      "DownstreamPathTemplate": "/api/Login",
+      "DownstreamScheme": "http",
+      "ServiceName": "identityapi-service",
+      "UpstreamPathTemplate": "/Login",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/User/AddUserToBusinessUnit",
+      "DownstreamScheme": "http",
+      "ServiceName": "identityapi-service",
+      "UpstreamPathTemplate": "/User/AddUserToBusinessUnit",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/User/roles",
+      "DownstreamScheme": "http",
+      "ServiceName": "identityapi-service",
+      "UpstreamPathTemplate": "/User/roles",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/User/allusers",
+      "DownstreamScheme": "http",
+      "ServiceName": "identityapi-service",
+      "UpstreamPathTemplate": "/User/allusers",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/User/role",
+      "DownstreamScheme": "http",
+      "ServiceName": "identityapi-service",
+      "UpstreamPathTemplate": "/User/role",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/User/updaterole",
+      "DownstreamScheme": "http",
+      "ServiceName": "identityapi-service",
+      "UpstreamPathTemplate": "/User/updaterole",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/User/deactivate/{id}",
+      "DownstreamScheme": "http",
+      "ServiceName": "identityapi-service",
+      "UpstreamPathTemplate": "/User/deactivate/{id}",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Login/forceresetpassword",
+      "DownstreamScheme": "http",
+      "ServiceName": "identityapi-service",
+      "UpstreamPathTemplate": "/Login/forceresetpassword",
+      "UpstreamHttpMethod": [ "POST" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Login/sendpasswordemail",
+      "DownstreamScheme": "http",
+      "ServiceName": "identityapi-service",
+      "UpstreamPathTemplate": "/Login/sendpasswordemail",
+      "UpstreamHttpMethod": [ "POST" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Login/resetpassword",
+      "DownstreamScheme": "http",
+      "ServiceName": "identityapi-service",
+      "UpstreamPathTemplate": "/Login/resetpassword",
+      "UpstreamHttpMethod": [ "POST" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Login/activedirectorylogin",
+      "DownstreamScheme": "http",
+      "ServiceName": "identityapi-service",
+      "UpstreamPathTemplate": "/Login/activedirectorylogin",
+      "UpstreamHttpMethod": [ "POST" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Login/loginwithtwostep",
+      "DownstreamScheme": "http",
+      "ServiceName": "identityapi-service",
+      "UpstreamPathTemplate": "/Login/loginwithtwostep",
+      "UpstreamHttpMethod": [ "POST" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    //Organization Microservice
+    {
+      "DownstreamPathTemplate": "/api/organization",
+      "DownstreamScheme": "http",
+      "ServiceName": "organizationapi-service",
+      "UpstreamPathTemplate": "/organization",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/organization/fullOrganization",
+      "DownstreamScheme": "http",
+      "ServiceName": "organizationapi-service",
+      "UpstreamPathTemplate": "/organization/fullOrganization",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/organization/managers",
+      "DownstreamScheme": "http",
+      "ServiceName": "organizationapi-service",
+      "UpstreamPathTemplate": "/organization/managers",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/organization/Businesses",
+      "DownstreamScheme": "http",
+      "ServiceName": "organizationapi-service",
+      "UpstreamPathTemplate": "/organization/Businesses",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/employees",
+      "DownstreamScheme": "http",
+      "ServiceName": "organizationapi-service",
+      "UpstreamPathTemplate": "/employees",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/employees/{id}",
+      "DownstreamScheme": "http",
+      "ServiceName": "organizationapi-service",
+      "UpstreamPathTemplate": "/employees/{id}",
+      "UpstreamHttpMethod": [ "Put", "Get", "Delete" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/employees/TeamMembers/{id}",
+      "DownstreamScheme": "http",
+      "ServiceName": "organizationapi-service",
+      "UpstreamPathTemplate": "/employees/TeamMembers/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/employees/Siblings/{employeeIdentifier}",
+      "DownstreamScheme": "http",
+      "ServiceName": "organizationapi-service",
+      "UpstreamPathTemplate": "/employees/Siblings/{employeeIdentifier}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/CostCenters/{costCenterIdentifier}",
+      "DownstreamScheme": "http",
+      "ServiceName": "organizationapi-service",
+      "UpstreamPathTemplate": "/CostCenters/{costCenterIdentifier}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/CostCenters",
+      "DownstreamScheme": "http",
+      "ServiceName": "organizationapi-service",
+      "UpstreamPathTemplate": "/CostCenters",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/costcenters",
+      "DownstreamScheme": "http",
+      "ServiceName": "organizationapi-service",
+      "UpstreamPathTemplate": "/costcenters",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/CostCenter/Tree/{costIdentifier}",
+      "DownstreamScheme": "http",
+      "ServiceName": "organizationapi-service",
+      "UpstreamPathTemplate": "/CostCenter/Tree/{costIdentifier}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Currency",
+      "DownstreamScheme": "http",
+      "ServiceName": "organizationapi-service",
+      "UpstreamPathTemplate": "/Currency",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Currency/CurrencyConvert",
+      "DownstreamScheme": "http",
+      "ServiceName": "organizationapi-service",
+      "UpstreamPathTemplate": "/Currency/CurrencyConvert",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/organization/BusinessUnitHeads",
+      "DownstreamScheme": "http",
+      "ServiceName": "organizationapi-service",
+      "UpstreamPathTemplate": "/organization/BusinessUnitHeads",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+    //Holidays Microservice
+    {
+      "DownstreamPathTemplate": "/api/holiday/Types",
+      "DownstreamScheme": "http",
+      "ServiceName": "holidayapi-service",
+      "UpstreamPathTemplate": "/holiday/Types",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/holiday/HolidaySettings",
+      "DownstreamScheme": "http",
+      "ServiceName": "holidayapi-service",
+      "UpstreamPathTemplate": "/holiday/HolidaySettings",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/holiday/HolidaySettings",
+      "DownstreamScheme": "http",
+      "ServiceName": "holidayapi-service",
+      "UpstreamPathTemplate": "/holiday/HolidaySettings",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/holiday/HolidaySetting",
+      "DownstreamScheme": "http",
+      "ServiceName": "holidayapi-service",
+      "UpstreamPathTemplate": "/holiday/HolidaySetting",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/holiday/SaveHolidays",
+      "DownstreamScheme": "http",
+      "ServiceName": "holidayapi-service",
+      "UpstreamPathTemplate": "/holiday/SaveHolidays",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/holiday/HolidayCounter",
+      "DownstreamScheme": "http",
+      "ServiceName": "holidayapi-service",
+      "UpstreamPathTemplate": "/holiday/HolidayCounter",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/holiday/Calendar/{countryCode}",
+      "DownstreamScheme": "http",
+      "ServiceName": "holidayapi-service",
+      "UpstreamPathTemplate": "/holiday/Calendar/{countryCode}",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/holiday/Calendar/{countryCode}",
+      "DownstreamScheme": "http",
+      "ServiceName": "holidayapi-service",
+      "UpstreamPathTemplate": "/holiday/Calendar/{countryCode}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+
+    //Compensation Microservice
+    {
+      "DownstreamPathTemplate": "/api/JobCatalogue",
+      "DownstreamScheme": "http",
+      "ServiceName": "compensationapi-service",
+      "UpstreamPathTemplate": "/JobCatalogue",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/JobCatalogue",
+      "DownstreamScheme": "http",
+      "ServiceName": "compensationapi-service",
+      "UpstreamPathTemplate": "/JobCatalogue",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Compensation",
+      "DownstreamScheme": "http",
+      "ServiceName": "compensationapi-service",
+      "UpstreamPathTemplate": "/Compensation",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Salary",
+      "DownstreamScheme": "http",
+      "ServiceName": "compensationapi-service",
+      "UpstreamPathTemplate": "/Salary",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Salary",
+      "DownstreamScheme": "http",
+      "ServiceName": "compensationapi-service",
+      "UpstreamPathTemplate": "/Salary",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Salary/OrganizationTotalSalaryCount",
+      "DownstreamScheme": "http",
+      "ServiceName": "compensationapi-service",
+      "UpstreamPathTemplate": "/Salary/OrganizationTotalSalaryCount",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Bonus/Organization",
+      "DownstreamScheme": "http",
+      "ServiceName": "compensationapi-service",
+      "UpstreamPathTemplate": "/Bonus/Organization",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Salary/OrganizationTotalSalaryCountByDate",
+      "DownstreamScheme": "http",
+      "ServiceName": "compensationapi-service",
+      "UpstreamPathTemplate": "/Salary/OrganizationTotalSalaryCountByDate",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Salary/FunctionalSalaryCount",
+      "DownstreamScheme": "http",
+      "ServiceName": "compensationapi-service",
+      "UpstreamPathTemplate": "/Salary/FunctionalSalaryCount",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Budget",
+      "DownstreamScheme": "http",
+      "ServiceName": "compensationapi-service",
+      "UpstreamPathTemplate": "/Budget",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Budget/SaveFunctionalBudget",
+      "DownstreamScheme": "http",
+      "ServiceName": "compensationapi-service",
+      "UpstreamPathTemplate": "/Budget/SaveFunctionalBudget",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/PerformanceEvaluationSummary/UpdatePerformanceMultiplier",
+      "DownstreamScheme": "http",
+      "ServiceName": "compensationapi-service",
+      "UpstreamPathTemplate": "/PerformanceEvaluationSummary/UpdatePerformanceMultiplier",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/PerformanceEvaluationSummary/UpdateCompanyProfitabilityMultiplier",
+      "DownstreamScheme": "http",
+      "ServiceName": "compensationapi-service",
+      "UpstreamPathTemplate": "/PerformanceEvaluationSummary/UpdateCompanyProfitabilityMultiplier",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+    //TaskManager Microservice
+    {
+      "DownstreamPathTemplate": "/api/HolidayManager/ApplyHoliday",
+      "DownstreamScheme": "http",
+      "ServiceName": "taskmanagerapi-service",
+      "UpstreamPathTemplate": "/HolidayManager/ApplyHoliday",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/taskManager/UpdateTasks",
+      "DownstreamScheme": "http",
+      "ServiceName": "taskmanagerapi-service",
+      "UpstreamPathTemplate": "/taskManager/UpdateTasks",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/taskManager/PendingTasks",
+      "DownstreamScheme": "http",
+      "ServiceName": "taskmanagerapi-service",
+      "UpstreamPathTemplate": "/taskManager/PendingTasks",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/taskManager/NotApprovedTasks",
+      "DownstreamScheme": "http",
+      "ServiceName": "taskmanagerapi-service",
+      "UpstreamPathTemplate": "/taskManager/NotApprovedTasks",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/taskManager/ApprovedTasks",
+      "DownstreamScheme": "http",
+      "ServiceName": "taskmanagerapi-service",
+      "UpstreamPathTemplate": "/taskManager/ApprovedTasks",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/ApprovalSettings",
+      "DownstreamScheme": "http",
+      "ServiceName": "taskmanagerapi-service",
+      "UpstreamPathTemplate": "/ApprovalSettings",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/ApprovalSettings",
+      "DownstreamScheme": "http",
+      "ServiceName": "taskmanagerapi-service",
+      "UpstreamPathTemplate": "/ApprovalSettings",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/TaskManager/InitiateTask",
+      "DownstreamScheme": "http",
+      "ServiceName": "taskmanagerapi-service",
+      "UpstreamPathTemplate": "/TaskManager/InitiateTask",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/BonusSettings",
+      "DownstreamScheme": "http",
+      "ServiceName": "taskmanagerapi-service",
+      "UpstreamPathTemplate": "/BonusSettings",
+      "UpstreamHttpMethod": [ "Post", "Get", "Delete" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/TaskNotification/UnReadNotificationsCount",
+      "DownstreamScheme": "http",
+      "ServiceName": "taskmanagerapi-service",
+      "UpstreamPathTemplate": "/TaskNotification/UnReadNotificationsCount",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/TaskNotification/Notifications",
+      "DownstreamScheme": "http",
+      "ServiceName": "taskmanagerapi-service",
+      "UpstreamPathTemplate": "/TaskNotification/Notifications",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        ".PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/TaskNotification/MarkAsRead",
+      "DownstreamScheme": "http",
+      "ServiceName": "taskmanagerapi-service",
+      "UpstreamPathTemplate": "/TaskNotification/MarkAsRead",
+      "UpstreamHttpMethod": [ "Put" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        ".PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/TaskManager/BudgetPromotionPendingTasks",
+      "DownstreamScheme": "http",
+      "ServiceName": "taskmanagerapi-service",
+      "UpstreamPathTemplate": "/TaskManager/BudgetPromotionPendingTasks",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        ".PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/TaskManager/BudgetPromotionPendingTasks",
+      "DownstreamScheme": "http",
+      "ServiceName": "taskmanagerapi-service",
+      "UpstreamPathTemplate": "/TaskManager/BudgetPromotionPendingTasks",
+      "UpstreamHttpMethod": [ "Put" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        ".PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    //Email Microservice
+    {
+      "DownstreamPathTemplate": "/api/Email/Send",
+      "DownstreamScheme": "http",
+      "ServiceName": "emailapi-service",
+      "UpstreamPathTemplate": "/Email/Send",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+    //Aggregator
+    {
+      "DownstreamPathTemplate": "/api/Holiday/GetSubordinatesHolidaySummary/{Id}",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Holiday/GetSubordinatesHolidaySummary/{Id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Holiday/GetCounter",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Holiday/GetCounter",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Holiday/GetSiblingsHolidaySummary",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Holiday/GetSiblingsHolidaySummary",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Holiday/GetBusinessHolidaySummary/{Id}",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Holiday/GetBusinessHolidaySummary/{Id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Holiday/GetOrganizationHolidaySummary/{Id}",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Holiday/GetOrganizationHolidaySummary/{Id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/holiday/SiblingsHolidays",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/holiday/SiblingsHolidays",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/holiday/TeamHolidays/{Id}",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/holiday/TeamHolidays/{Id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/holiday/EmployeesWithSickLeaves",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/holiday/EmployeesWithSickLeaves",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/holiday/EmployeesWithMaternityLeaves",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/holiday/EmployeesWithMaternityLeaves",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AnnualSalaryPlanning/OrganizationJobTypeBasedSalarySummary",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/AnnualSalaryPlanning/OrganizationJobTypeBasedSalarySummary",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AnnualSalaryPlanning/OrganizationBUnitBasedSalarySummaryByQuery",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/AnnualSalaryPlanning/OrganizationBUnitBasedSalarySummaryByQuery",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AnnualSalaryPlanning/OrganizationBUnitBasedSalarySummary",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/AnnualSalaryPlanning/OrganizationBUnitBasedSalarySummary",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AnnualSalaryPlanning/FunctionalSalaryCount",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/AnnualSalaryPlanning/FunctionalSalaryCount",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AnnualSalaryPlanning/FunctionalBudgetCount",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/AnnualSalaryPlanning/FunctionalBudgetCount",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AnnualSalaryPlanning/TeamSalaryDetails",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/AnnualSalaryPlanning/TeamSalaryDetails",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AnnualSalaryPlanning/BUnitFunctionalBudgetDetails",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/AnnualSalaryPlanning/BUnitFunctionalBudgetDetails",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Compensation/EmployeeBonus",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Compensation/EmployeeBonus",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Compensation/TeamBonuses",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Compensation/TeamBonuses",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AnnualSalaryPlanning/UpdateFunctionalBudget",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/AnnualSalaryPlanning/UpdateFunctionalBudget",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AnnualSalaryPlanning/TeamBudgetSummary",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/AnnualSalaryPlanning/TeamBudgetSummary",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+    //Notifications Microservice
+    {
+      "DownstreamPathTemplate": "/api/Notifications/UnReadNotificationsCount",
+      "DownstreamScheme": "http",
+      "ServiceName": "notificationapi-service",
+      "UpstreamPathTemplate": "/Notifications/UnReadNotificationsCount",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Notifications/GetAllNotifications",
+      "DownstreamScheme": "http",
+      "ServiceName": "notificationapi-service",
+      "UpstreamPathTemplate": "/Notifications/GetAllNotifications",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        ".PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Notifications/MarkAsRead",
+      "DownstreamScheme": "http",
+      "ServiceName": "notificationapi-service",
+      "UpstreamPathTemplate": "/Notifications/MarkAsRead",
+      "UpstreamHttpMethod": [ "Put" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        ".PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Notifications",
+      "DownstreamScheme": "http",
+      "ServiceName": "notificationapi-service",
+      "UpstreamPathTemplate": "/Notifications",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        ".PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+    // Survey Microservice
+    {
+      "DownstreamPathTemplate": "/api/Survey/GetEmployeeSurvey",
+      "DownstreamScheme": "http",
+      "ServiceName": "surveyapi-service",
+      "UpstreamPathTemplate": "/Survey/GetEmployeeSurvey",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Survey/UpdateEmployeeSurvey",
+      "DownstreamScheme": "http",
+      "ServiceName": "surveyapi-service",
+      "UpstreamPathTemplate": "/Survey/UpdateEmployeeSurvey",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Survey/GetQuestionnaire",
+      "DownstreamScheme": "http",
+      "ServiceName": "surveyapi-service",
+      "UpstreamPathTemplate": "/Survey/GetQuestionnaire",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Survey/CreateOrganizationSurvey",
+      "DownstreamScheme": "http",
+      "ServiceName": "surveyapi-service",
+      "UpstreamPathTemplate": "/Survey/CreateOrganizationSurvey",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Survey/GetSurveyAverage",
+      "DownstreamScheme": "http",
+      "ServiceName": "surveyapi-service",
+      "UpstreamPathTemplate": "/Survey/GetSurveyAverage",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+    //Performance Bonus Microservice
+    {
+      "DownstreamPathTemplate": "/api/Performance/JobTypeBasedPerformanceBonusSummary",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Performance/JobTypeBasedPerformanceBonusSummary",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/OrganizationBUnitBasedBonusSummary",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Performance/OrganizationBUnitBasedBonusSummary",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/TotalPerformanceBonusCount",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Performance/TotalPerformanceBonusCount",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/UserSoftTargets",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Performance/UserSoftTargets",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/TeamSoftTargets",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Performance/TeamSoftTargets",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/GroupSoftTargets",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Performance/GroupSoftTargets",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/GroupHardTargets",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Performance/GroupHardTargets",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/TeamHardTargets",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Performance/TeamHardTargets",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/EmployeeHardTargets",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Performance/EmployeeHardTargets",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/GeneratePerformanceSummary",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Performance/GeneratePerformanceSummary",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/PerformancePlanningResultBusinessUnit",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Performance/PerformancePlanningResultBusinessUnit",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/PerformanceBudgetResultDetail",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Performance/PerformanceBudgetResultDetail",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/PerformanceWholeTeamSummary",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Performance/PerformanceWholeTeamSummary",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Performance/UpdateBonusFromPerformanceBonus",
+      "DownstreamScheme": "http",
+      "ServiceName": "pemmexaggregatorapi-service",
+      "UpstreamPathTemplate": "/Performance/UpdateBonusFromPerformanceBonus",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+    //Target Microservice
+    {
+      "DownstreamPathTemplate": "/api/HardTargets/ShowHardTargets",
+      "DownstreamScheme": "http",
+      "ServiceName": "employeetargetsapi-service",
+      "UpstreamPathTemplate": "/HardTargets/ShowHardTargets",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/HardTargets/ShowHardTargetsByUserId",
+      "DownstreamScheme": "http",
+      "ServiceName": "employeetargetsapi-service",
+      "UpstreamPathTemplate": "/HardTargets/ShowHardTargetsByUserId",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/SoftTargets/ShowSoftTargets",
+      "DownstreamScheme": "http",
+      "ServiceName": "employeetargetsapi-service",
+      "UpstreamPathTemplate": "/SoftTargets/ShowSoftTargets",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/SoftTargets/ShowSoftTargetsByUserId",
+      "DownstreamScheme": "http",
+      "ServiceName": "employeetargetsapi-service",
+      "UpstreamPathTemplate": "/SoftTargets/ShowSoftTargetsByUserId",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/PerformanceBudget/CreatePerformanceEvaluationSummary",
+      "DownstreamScheme": "http",
+      "ServiceName": "employeetargetsapi-service",
+      "UpstreamPathTemplate": "/PerformanceBudget/CreatePerformanceEvaluationSummary",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/PerformanceBudget",
+      "DownstreamScheme": "http",
+      "ServiceName": "employeetargetsapi-service",
+      "UpstreamPathTemplate": "/PerformanceBudget",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/PerformanceBudget/CreatePerformanceEvaluationSetting",
+      "DownstreamScheme": "http",
+      "ServiceName": "employeetargetsapi-service",
+      "UpstreamPathTemplate": "/PerformanceBudget/CreatePerformanceEvaluationSetting",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/PerformanceBudget/DeletePerformanceEvaluationSetting/{Id}",
+      "DownstreamScheme": "http",
+      "ServiceName": "employeetargetsapi-service",
+      "UpstreamPathTemplate": "/PerformanceBudget/DeletePerformanceEvaluationSetting/{Id}",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/PerformanceBudget/GetPerformanceEvaluationSettings",
+      "DownstreamScheme": "http",
+      "ServiceName": "employeetargetsapi-service",
+      "UpstreamPathTemplate": "/PerformanceBudget/GetPerformanceEvaluationSettings",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/HardTargets/UpdateHardTargetsMeasurementCriteriaResult",
+      "DownstreamScheme": "http",
+      "ServiceName": "employeetargetsapi-service",
+      "UpstreamPathTemplate": "/HardTargets/UpdateHardTargetsMeasurementCriteriaResult",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/HardTargets/UpdateHardTargetsWeightage",
+      "DownstreamScheme": "http",
+      "ServiceName": "employeetargetsapi-service",
+      "UpstreamPathTemplate": "/HardTargets/UpdateHardTargetsWeightage",
+      "UpstreamHttpMethod": [ "Post" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/PerformanceBudget/GetEmployeePerformanceBonus",
+      "DownstreamScheme": "http",
+      "ServiceName": "employeetargetsapi-service",
+      "UpstreamPathTemplate": "/PerformanceBudget/GetEmployeePerformanceBonus",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    }
+  ],
+  "GlobalConfiguration": {
+    "ServiceDiscoveryProvider": {
+      "Host": "https://api.pemmex.eu",
+      "Port": 80,
+      "Namespace": "default",
+      "Type": "KubernetesServiceDiscoveryProvider"
+    },
+    "BaseUrl": "https://api.pemmex.eu"
+  }
+}

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PemmexCommonLibs.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace PemmexCommonLibs.Domain.Common.Dtos
 {
-    public class HolidayEntity
+    public class CompanyToEmployeeHolidayEntity
     {
         public int EmployeeHolidayId { get; set; }
-        public Guid EmployeeId { get; set; }
         public string EmployeeIdentifier { get; set; }
         public string costcenterIdentifier { get; set; }
         public int AnnualHolidaysEntitled { get; set; }
@@ -24,9 +24,8 @@ namespace PemmexCommonLibs.Domain.Common.Dtos
         public int TimeOffWithoutSalary { get; set; }
         public DateTime? EmployementStartDate { get; set; }
         public Guid HolidaySettingsIdentitfier { get; set; }
-
-
-
+        public string organizationIdentifier { get; set; }
+        public string businessIdentifier { get; set; }
     }
     public class HolidaySettingsEntity
     {
@@ -37,5 +36,19 @@ namespace PemmexCommonLibs.Domain.Common.Dtos
         public int MaximumLimitHolidayToNextYear { get; set; }
         public Guid HolidaySettingsIdentitfier { get; set; }
 
+    }
+    public class EmployeeHolidayEntity
+    {
+        public int EmployeeHolidayId { get; set; }
+        public string EmployeeIdentifier { get; set; }
+        public string organizationIdentifier { get; set; }
+        public string businessIdentifier { get; set; }
+        public string costcenterIdentifier { get; set; }
+        public string SubsituteIdentifier { get; set; }
+        public DateTime? HolidayStartDate { get; set; }
+        public DateTime? HolidayEndDate { get; set; }
+        public HolidayStatus HolidayStatus { get; set; }
+        public HolidayTypes holidayType { get; set; }
+        public string Description { get; set; }
     }
 }

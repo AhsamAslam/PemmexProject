@@ -28,18 +28,25 @@ namespace Compensation.API.Queries.GetOrgnaizationBonus
         }
         public async Task<List<UserBonus>> Handle(GetOrgnaizationBonusQuery request, CancellationToken cancellationToken)
         {
-            List<UserBonus> userBonuses = new List<UserBonus>();
-            var salary = await _context.CompensationSalaries
-                .Where(e => e.organizationIdentifier == request.organizationIdentifiers)
-                .GroupBy(c => c.EmployeeIdentifier)
-                .Select(cl => new UserBonus
-                {
-                    EmployeeIdentifier = cl.First().EmployeeIdentifier,
-                    bonusAmount = cl.Sum(c => c.one_time_bonus),
-                })
-                .ToListAsync(cancellationToken);
+            try
+            {
+                List<UserBonus> userBonuses = new List<UserBonus>();
+                var salary = await _context.CompensationSalaries
+                    .Where(e => e.organizationIdentifier == request.organizationIdentifiers)
+                    .GroupBy(c => c.EmployeeIdentifier)
+                    .Select(cl => new UserBonus
+                    {
+                        EmployeeIdentifier = cl.First().EmployeeIdentifier,
+                        bonusAmount = cl.Sum(c => c.one_time_bonus),
+                    })
+                    .ToListAsync(cancellationToken);
 
-            return userBonuses;
+                return userBonuses;
+            }
+            catch(Exception)
+            {
+                throw;
+            }
         }
     }
 }

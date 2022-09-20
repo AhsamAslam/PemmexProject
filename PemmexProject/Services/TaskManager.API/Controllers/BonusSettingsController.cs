@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PemmexCommonLibs.Application.Helpers;
+using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -14,8 +16,14 @@ namespace TaskManager.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize("BuHR")]
     public class BonusSettingsController : ApiControllerBase
     {
+        private readonly ILogService _logService;
+        public BonusSettingsController(ILogService logService)
+        {
+            _logService = logService;
+        }
         [HttpGet]
         public async Task<ActionResult<ResponseMessage>> Get(string businessIdentifer)
         {
@@ -26,6 +34,7 @@ namespace TaskManager.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"BonusSettings_{CurrentUser.EmployeeIdentifier}");
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
@@ -39,6 +48,7 @@ namespace TaskManager.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"BonusSettings_{CurrentUser.EmployeeIdentifier}");
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
