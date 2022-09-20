@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Notifications.API.Commands.MarkNotification;
 using Notifications.API.Commands.SaveNotification;
-using Notifications.API.NotificationHub;
+using Notifications.API.Database.Repositories.Interface;
+using Notifications.API.Database.Repositories.Repository;
 using Notifications.API.Queries.GetAllNotifications;
 using Notifications.API.Queries.GetUnReadNotificationsCount;
 using PemmexCommonLibs.Application.Helpers;
+using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Domain.Enums;
 using System;
 using System.Threading.Tasks;
@@ -18,17 +20,18 @@ namespace Notifications.API.Controllers
     [Microsoft.AspNetCore.Authorization.Authorize]
     public class Notifications : ApiControllerBase
     {
-        private readonly IHubContext<NotificationUserHub> _notificationUserHubContext;
+        private readonly IHubContext<NotificationUserHubRepository> _notificationUserHubContext;
         private readonly IUserConnectionManager _userConnectionManager;
-        private readonly INotificationRepository _notificationRepository;
-
-        public Notifications(IHubContext<NotificationUserHub> notificationUserHubContext,
+        private readonly INotification _notificationRepository;
+        private readonly ILogService _logService;
+        public Notifications(IHubContext<NotificationUserHubRepository> notificationUserHubContext,
             IUserConnectionManager userConnectionManager,
-            INotificationRepository notificationRepository)
+            INotification notificationRepository, ILogService logService)
         {
             _notificationUserHubContext = notificationUserHubContext;
             _userConnectionManager = userConnectionManager;
             _notificationRepository = notificationRepository;
+            _logService = logService;
         }
         [HttpPost]
         public async Task<ActionResult<ResponseMessage>> PostAsync(SaveNotificationCommand command)
@@ -40,6 +43,7 @@ namespace Notifications.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Notifications_{CurrentUser.EmployeeIdentifier}");
                 return await Task.FromResult(new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null));
             }
         }
@@ -54,6 +58,8 @@ namespace Notifications.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Notifications_{CurrentUser.EmployeeIdentifier}");
+
                 return await Task.FromResult(new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null));
             }
         }
@@ -68,6 +74,8 @@ namespace Notifications.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Notifications_{CurrentUser.EmployeeIdentifier}");
+
                 return await Task.FromResult(new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null));
             }
         }
@@ -82,6 +90,8 @@ namespace Notifications.API.Controllers
             }
             catch (Exception e)
             {
+                await _logService.WriteLogAsync(e, $"Notifications_{CurrentUser.EmployeeIdentifier}");
+
                 return await Task.FromResult(new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null));
             }
         }

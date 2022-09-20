@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Compensation.API.Database.context;
+using Compensation.API.Database.Repositories.Interface;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PemmexCommonLibs.Domain.Enums;
@@ -37,25 +38,28 @@ namespace Compensation.API.Commands.CreateBudgetCommand
 
     public class CreateBudgetCommandHandeler : IRequestHandler<CreateBudgetCommand>
     {
-        private readonly IApplicationDbContext _context;
+        
+        private readonly IBudget _budget;
         private readonly IMapper _mapper;
-        public CreateBudgetCommandHandeler(IApplicationDbContext context, IMapper mapper)
+        public CreateBudgetCommandHandeler(IBudget budget, IMapper mapper)
         {
-            _context = context;
+            _budget = budget;
             _mapper = mapper;
         }
         public async Task<Unit> Handle(CreateBudgetCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                var budget = await _context.OrganizationBudgets
-                            .Where(o => o.organizationIdentifier == request.organizationIdentifier
-                            && o.startDate.Date == request.startDate.Date)
-                            .ToListAsync(cancellationToken);
-                if(budget.Count > 0)
+                //var budget = await _context.OrganizationBudgets
+                //            .Where(o => o.organizationIdentifier == request.organizationIdentifier
+                //            && o.startDate.Date == request.startDate.Date)
+                //            .ToListAsync(cancellationToken);
+                var budget = await _budget.GetOrganizationBudgetByOrganizationIdentifier(request.organizationIdentifier);
+                if(budget.ToList().Count > 0)
                 {
-                    _context.OrganizationBudgets.RemoveRange(budget);
-                    await _context.SaveChangesAsync(cancellationToken);
+                    //_context.OrganizationBudgets.RemoveRange(budget);
+                    //await _context.SaveChangesAsync(cancellationToken);
+                    await _budget.DeleteOrganizationBudget(budget.ToList());
                 }
 
                 foreach(var b in request.budgetDetails)
@@ -76,15 +80,16 @@ namespace Compensation.API.Commands.CreateBudgetCommand
                             compulsoryPercentage = d.compulsoryPercentage,
                             euro_rate = b.euro_rate <= 0 ? 1 : b.euro_rate,
                         };
-                        _context.OrganizationBudgets.Add(org_buget);
+                        //_context.OrganizationBudgets.Add(org_buget);
+                        await _budget.AddOrganizationBudget(org_buget);
                     }
                 }
-                await _context.SaveChangesAsync(cancellationToken);
+                //await _context.SaveChangesAsync(cancellationToken);
                 return Unit.Value;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw new Exception(e.ToString());
+                throw;
             }
         }
     }

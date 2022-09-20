@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
-using Notifications.API.NotificationHub;
+using Notifications.API.Database.Repositories.Interface;
+using Notifications.API.Database.Repositories.Repository;
 using PemmexCommonLibs.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -22,13 +23,13 @@ namespace Notifications.API.Commands.SaveNotification
 
     public class SaveNotificationCommandHandeler : IRequestHandler<SaveNotificationCommand>
     {
-        private readonly IHubContext<NotificationUserHub> _notificationUserHubContext;
+        private readonly IHubContext<NotificationUserHubRepository> _notificationUserHubContext;
         private readonly IUserConnectionManager _userConnectionManager;
-        private readonly INotificationRepository _notificationRepository;
+        private readonly Database.Repositories.Interface.INotification _notificationRepository;
         private readonly IMapper _mapper;
-        public SaveNotificationCommandHandeler(IHubContext<NotificationUserHub> notificationUserHubContext,
+        public SaveNotificationCommandHandeler(IHubContext<NotificationUserHubRepository> notificationUserHubContext,
             IUserConnectionManager userConnectionManager,
-            INotificationRepository notificationRepository,IMapper mapper)
+            Database.Repositories.Interface.INotification notificationRepository,IMapper mapper)
         {
             _notificationUserHubContext = notificationUserHubContext;
             _userConnectionManager = userConnectionManager;

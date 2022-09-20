@@ -1,4 +1,5 @@
 ﻿using Authentication.API.Database.Entities;
+using Authentication.API.Database.Repositories.Interface;
 using AutoMapper;
 using IdentityModel;
 using IdentityServer4.Extensions;

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Holidays.API.Common;
 using Holidays.API.Database.Entities;
 using Holidays.API.Dtos;
+using Holidays.API.Repositories.Interface;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -17,20 +17,20 @@ namespace Holidays.API.Queries.GetHolidayCalendar
     }
     public class GetHolidayCalendarQueryHandeler : IRequestHandler<GetHolidayCalendarQuery, List<HolidayCalendarDto>>
     {
-        private readonly ICommonHolidayDAL _context;
+        private readonly IHolidayCalendar _holidayCalendar;
         private readonly IMapper _mapper;
 
-        public GetHolidayCalendarQueryHandeler(ICommonHolidayDAL context, IMapper mapper)
+        public GetHolidayCalendarQueryHandeler(IHolidayCalendar holidayCalendar, IMapper mapper)
         {
-            _context = context;
+            _holidayCalendar = holidayCalendar;
             _mapper = mapper;
         }
         public async Task<List<HolidayCalendarDto>> Handle(GetHolidayCalendarQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                var calendar = await _context.GetHolidayCalendar(request.countryName, DateTime.Now.Year);
-                return _mapper.Map<List<HolidayCalendar>, List<HolidayCalendarDto>>(calendar);
+                var calendar = await _holidayCalendar.GetHolidayCalendar(request.countryName, DateTime.Now.Year);
+                return _mapper.Map<List<HolidayCalendar>, List<HolidayCalendarDto>>(calendar.ToList());
             }
             catch(Exception)
             {

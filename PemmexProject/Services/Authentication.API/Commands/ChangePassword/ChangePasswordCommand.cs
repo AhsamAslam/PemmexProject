@@ -1,5 +1,6 @@
 ﻿using Authentication.API.Configuration;
 using Authentication.API.Database.context;
+using Authentication.API.Database.Repositories.Interface;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -24,14 +25,14 @@ namespace Authentication.API.Commands.ChangePassword
 
     public class ChangePasswordCommandHandeler : IRequestHandler<ChangePasswordCommand, ResponseMessage>
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IUser _user;
         private readonly IMapper _mapper;
         private readonly IDateTime _dateTime;
         private readonly IUserManager _userManager;
-        public ChangePasswordCommandHandeler(IApplicationDbContext context, IMapper mapper, 
+        public ChangePasswordCommandHandeler(IUser user, IMapper mapper, 
             IDateTime dateTime, IUserManager userManager)
         {
-            _context = context;
+            _user = user;
             _mapper = mapper;
             _dateTime = dateTime;
             _userManager = userManager;
@@ -53,8 +54,9 @@ namespace Authentication.API.Commands.ChangePassword
                 }
                 user.Password = EncryptionHelper.Encrypt(request.password);
                 user.PasswordResetCode = "";
-                _context.Users.Update(user);
-                await _context.SaveChangesAsync(cancellationToken);
+                //_context.Users.Update(user);
+                //await _context.SaveChangesAsync(cancellationToken);
+                var UpadteUser = _user.UpdateUser(user);
                 return new ResponseMessage(false, EResponse.OK, "Password Changed Successfully", request);
             }
 

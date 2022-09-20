@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Organization.API.Dtos;
 using Organization.API.Entities;
 using Organization.API.Interfaces;
+using Organization.API.Repositories.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,23 +20,36 @@ namespace Organization.API.Queries.GetEmployeeByIdentifiers
 
     public class GetEmployeeByIdentifiersQueryHandeler : IRequestHandler<GetEmployeeByIdentifiersQuery, List<EmployeeResponse>>
     {
-        private readonly IApplicationDbContext _context;
+        
+        private readonly IEmployee _employee;
         private readonly IMapper _mapper;
 
-        public GetEmployeeByIdentifiersQueryHandeler(IApplicationDbContext context, IMapper mapper)
+        public GetEmployeeByIdentifiersQueryHandeler(IEmployee employee, IMapper mapper)
         {
-            _context = context;
+           
+            _employee = employee;
             _mapper = mapper;
         }
         public async Task<List<EmployeeResponse>> Handle(GetEmployeeByIdentifiersQuery request, CancellationToken cancellationToken)
         {
-            var employee = await _context.Employees
-                .Where(e => request.Identifiers.Contains(e.EmployeeIdentifier) && e.IsActive == true)
-                .Include(x => x.CostCenter)
-                .Include(x => x.employeeContacts)
-                .ToListAsync(cancellationToken);
+            //var employee = await _context.Employees
+            //    .Where(e => request.Identifiers.Contains(e.EmployeeIdentifier) && e.IsActive == true)
+            //    .Include(x => x.CostCenter)
+            //    .Include(x => x.employeeContacts)
+            //    .ToListAsync(cancellationToken);
+            try
+            {
+                var employee = await _employee.GetEmployeeByEmployeeIdentifier(request.Identifiers);
 
-            return _mapper.Map<List<Employee>, List<EmployeeResponse>>(employee);
+
+                return _mapper.Map<List<Employee>, List<EmployeeResponse>>(employee.ToList());
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
     }
 }

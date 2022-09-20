@@ -3,6 +3,7 @@
 
 
 using Authentication.API.Configuration;
+using Authentication.API.Database.Repositories.Interface;
 using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Events;

@@ -1,5 +1,6 @@
 ﻿using Authentication.API.Configuration;
 using Authentication.API.Database.context;
+using Authentication.API.Database.Repositories.Interface;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -27,15 +28,15 @@ namespace Authentication.API.Commands.SendPasswordEmail
 
     public class SendPasswordEmailCommandHandeler : IRequestHandler<SendPasswordEmailCommand, ResponseMessage>
     {
-        private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly IDateTime _dateTime;
         private readonly IUserManager _userManager;
-        public SendPasswordEmailCommandHandeler(IApplicationDbContext context, IMapper mapper, 
+        private readonly IUser _user;
+        public SendPasswordEmailCommandHandeler(IUser user, IMapper mapper, 
             IConfiguration configuration,IDateTime dateTime,IUserManager userManager)
         {
-            _context = context;
+            _user = user;
             _mapper = mapper;
             _configuration = configuration;
             _dateTime = dateTime;
@@ -63,8 +64,9 @@ namespace Authentication.API.Commands.SendPasswordEmail
                     var result = await httpClient.SendAsync(requestMessage);
                     user.PasswordResetCode = code;
                     user.PasswordResetCodeTime = _dateTime.Now;
-                    _context.Users.Update(user);
-                    await _context.SaveChangesAsync(cancellationToken);
+                    //_context.Users.Update(user);
+                    //await _context.SaveChangesAsync(cancellationToken);
+                    var UpdateUser = _user.UpdateUser(user);
                     return new ResponseMessage(true, EResponse.OK, "Email Sent Successfully", request.email);
                 }
 
