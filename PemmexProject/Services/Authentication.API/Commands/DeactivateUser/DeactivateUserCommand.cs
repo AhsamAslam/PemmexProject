@@ -1,5 +1,4 @@
 ﻿using Authentication.API.Database.context;
-using Authentication.API.Database.Repositories.Interface;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -18,35 +17,24 @@ namespace Authentication.API.Commands.DeactivateUser
 
     public class DeactivateUserCommandHandeler : IRequestHandler<DeactivateUserCommand>
     {
-        private readonly IUser _user;
+        private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
-        public DeactivateUserCommandHandeler(IUser user, IMapper mapper)
+        public DeactivateUserCommandHandeler(IApplicationDbContext context, IMapper mapper)
         {
-            _user = user;
+            _context = context;
             _mapper = mapper;
         }
         public async Task<Unit> Handle(DeactivateUserCommand request, CancellationToken cancellationToken)
         {
 
-            try
+            var user = await _context.Users.Where(x => x.Id == request.Id && x.isActive == true).FirstOrDefaultAsync(cancellationToken);
+            if (user != null)
             {
-                //var user = await _context.Users.Where(x => x.Id == request.Id && x.isActive == true).FirstOrDefaultAsync(cancellationToken);
-                var user = await _user.GetUserById(request.Id);
-                if (user != null)
-                {
-                    user.isActive = false;
-                    //_context.Users.Update(user);
-                    //await _context.SaveChangesAsync(cancellationToken);
-                    var UpdateUser = await _user.UpdateUser(user);
-                }
-                return Unit.Value;
+                user.isActive = false;
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync(cancellationToken);
             }
-            catch (Exception)
-            {
-
-                throw;
-            }
-           
+            return Unit.Value;
         }
     }
 }

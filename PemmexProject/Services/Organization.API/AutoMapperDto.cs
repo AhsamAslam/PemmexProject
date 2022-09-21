@@ -62,16 +62,7 @@ namespace Organization.API
                .ForMember(d => d.JobFunction,
                     opt => opt.MapFrom(s => Enum.GetName(typeof(JobFunction), s.JobFunction)));
             CreateMap<CompensationUploadRequest, CompensationEntity>();
-            CreateMap<CostCenter,CostCenterResponse>()
-                .ForMember(d => d.CostCenterId, opt => opt.MapFrom(s => s.CostCenterId))
-                .ForMember(d => d.CostCenterIdentifier, opt => opt.MapFrom(s => s.CostCenterIdentifier))
-                .ForMember(d => d.CostCenterName, opt => opt.MapFrom(s => s.CostCenterName))
-                .ForMember(d => d.ParentCostCenterIdentifier, opt => opt.MapFrom(s => s.ParentCostCenterIdentifier))
-                .ForMember(d => d.businessIdentifier, opt => opt.MapFrom(s => s.businessIdentifier));
-            CreateMap<CostCenter, CostCenterRequest>()
-                .ForMember(d => d.CostCenterIdentifier, opt => opt.MapFrom(s => s.CostCenterIdentifier))
-                .ForMember(d => d.CostCenterName, opt => opt.MapFrom(s => s.CostCenterName))
-                .ForMember(d => d.ParentCostCenterIdentifier, opt => opt.MapFrom(s => s.ParentCostCenterIdentifier));
+            CreateMap<CostCenter,CostCenterResponse>();
             CreateMap<CostCenterUploadRequest, CostCenter>();
  
             CreateMap<EmployeeContactUpload, EmployeeContacts>();

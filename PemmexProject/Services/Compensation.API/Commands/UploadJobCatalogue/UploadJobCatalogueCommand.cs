@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Compensation.API.Database.context;
 using Compensation.API.Database.Entities;
-using Compensation.API.Database.Repositories.Interface;
 using Compensation.API.Dtos;
 using MediatR;
 using System;
@@ -20,12 +19,10 @@ namespace Compensation.API.Commands.UploadJobCatalogue
     public class UploadJobCatalogueCommandHandeler : IRequestHandler<UploadJobCatalogueCommand>
     {
         private readonly IApplicationDbContext _context;
-        private readonly IJobCatalogue _jobCatalogue;
         private readonly IMapper _mapper;
-        public UploadJobCatalogueCommandHandeler(IApplicationDbContext context, IJobCatalogue jobCatalogue, IMapper mapper)
+        public UploadJobCatalogueCommandHandeler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
-            _jobCatalogue = jobCatalogue;
             _mapper = mapper;
         }
         public async Task<Unit> Handle(UploadJobCatalogueCommand request, CancellationToken cancellationToken)
@@ -33,12 +30,8 @@ namespace Compensation.API.Commands.UploadJobCatalogue
             try
             {
                 var job_catalogues = _mapper.Map<List<JobCatalogue>>(request.JobCatalogueDtos);
-                //_context.JobCatalogues.AddRange(job_catalogues);
-                //await _context.SaveChangesAsync(cancellationToken);
-                foreach (var item in job_catalogues)
-                {
-                    await _jobCatalogue.AddJobCatalogue(item);
-                }
+                _context.JobCatalogues.AddRange(job_catalogues);
+                await _context.SaveChangesAsync(cancellationToken);
                 return Unit.Value;
             }
             catch (Exception e)

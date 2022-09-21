@@ -1,6 +1,4 @@
 ﻿using Authentication.API.Configuration;
-using Authentication.API.Database.Repositories.Interface;
-using Authentication.API.Database.Repositories.Repository;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -13,7 +11,7 @@ namespace Authentication.API.Extensions
     {
         public static IIdentityServerBuilder AddCustomUserStore(this IIdentityServerBuilder builder)
         {
-            builder.Services.AddSingleton<IUserManager, UserManagerRepository>();
+            builder.Services.AddSingleton<IUserManager, UserManager>();
             builder.AddProfileService<ProfileService>();
             builder.AddResourceOwnerValidator<ResourceOwnerPasswordValidator>();
 

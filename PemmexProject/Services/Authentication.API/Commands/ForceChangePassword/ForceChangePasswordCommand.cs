@@ -1,5 +1,4 @@
 ﻿using Authentication.API.Database.context;
-using Authentication.API.Database.Repositories.Interface;
 using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -20,25 +19,23 @@ namespace Authentication.API.Commands.ForceChangePassword
 
     public class ForceChangePasswordCommandHandeler : IRequestHandler<ForceChangePasswordCommand>
     {
+        private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
-        private readonly IUser _user;
-        public ForceChangePasswordCommandHandeler(IUser user, IMapper mapper)
+        public ForceChangePasswordCommandHandeler(IApplicationDbContext context, IMapper mapper)
         {
-            _user = user;
+            _context = context;
             _mapper = mapper;
         }
         public async Task<Unit> Handle(ForceChangePasswordCommand request, CancellationToken cancellationToken)
         {
 
-            //var user = await _context.Users.Where(x => x.Id == request.UserId && x.isActive == true).FirstOrDefaultAsync(cancellationToken);
-            var user = await _user.GetUserById(request.UserId);
+            var user = await _context.Users.Where(x => x.Id == request.UserId && x.isActive == true).FirstOrDefaultAsync(cancellationToken);
             if (user != null)
             {
                 user.Password = EncryptionHelper.Encrypt(request.password);
                 user.IsPasswordReset = true;
-                var UpdateUser = await _user.UpdateUser(user);
-                //_context.Users.Update(user);
-                //await _context.SaveChangesAsync(cancellationToken);
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync(cancellationToken);
             }
             return Unit.Value;
         }

@@ -45,9 +45,5 @@
     <ProjectReference Include="..\..\Common\EventBus.Messages\EventBus.Messages.csproj" />
     <ProjectReference Include="..\..\Common\PemmexCommonLibs\PemmexCommonLibs.csproj" />
   </ItemGroup>
- 
-  <ItemGroup>
-    <Folder Include="Database\Interfaces\" />
-  </ItemGroup>
 
 </Project>

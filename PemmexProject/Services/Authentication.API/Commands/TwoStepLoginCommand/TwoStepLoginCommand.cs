@@ -1,6 +1,5 @@
 ﻿using Authentication.API.Configuration;
 using Authentication.API.Database.context;
-using Authentication.API.Database.Repositories.Interface;
 using AutoMapper;
 using IdentityModel.Client;
 using MediatR;

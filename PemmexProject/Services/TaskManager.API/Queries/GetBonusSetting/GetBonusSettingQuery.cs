@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TaskManager.API.Database.context;
-using TaskManager.API.Database.Repositories.Interface;
 using TaskManager.API.Dtos;
 
 namespace TaskManager.API.Queries.GetBonusSetting
@@ -19,32 +18,21 @@ namespace TaskManager.API.Queries.GetBonusSetting
 
     public class GetBonusSettingQueryHandeler : IRequestHandler<GetBonusSettingQuery, BonusSettingsDto>
     {
-        private readonly IBonusSettings _bonusSettings;
+        private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
 
-        public GetBonusSettingQueryHandeler(IBonusSettings bonusSettings, IMapper mapper)
+        public GetBonusSettingQueryHandeler(IApplicationDbContext context, IMapper mapper)
         {
-    
-            _bonusSettings = bonusSettings;
+            _context = context;
             _mapper = mapper;
         }
         public async Task<BonusSettingsDto> Handle(GetBonusSettingQuery request, CancellationToken cancellationToken)
         {
-            //var salary = await _context.BonusSettings
-            //    .Where(e => e.businessIdentifier == request.businessIdentifier)
-            //    .FirstOrDefaultAsync(cancellationToken);
-            try
-            {
-                var salary = await _bonusSettings.GetBonusSettingsByBusinessIdentifier(request.businessIdentifier);
+            var salary = await _context.BonusSettings
+                .Where(e => e.businessIdentifier == request.businessIdentifier)
+                .FirstOrDefaultAsync(cancellationToken);
 
-                return _mapper.Map<Database.Entities.BonusSettings, BonusSettingsDto>(salary);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            
+            return _mapper.Map<Database.Entities.BonusSettings, BonusSettingsDto>(salary);
         }
     }
 }

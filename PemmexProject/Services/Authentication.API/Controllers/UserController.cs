@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PemmexCommonLibs.Application.Helpers;
-using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Domain.Enums;
 using PemmexCommonLibs.Infrastructure.Services;
 using System;
@@ -20,15 +19,9 @@ namespace Authentication.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class UserController : ApiControllerBase
     {
-        private readonly ILogService _logService;
-
-        public UserController(ILogService logService)
-        {
-            _logService = logService;
-        }
         [HttpGet]
         [Route("roles")]
         public ActionResult<ResponseMessage> GetAsync()
@@ -40,7 +33,6 @@ namespace Authentication.API.Controllers
             }
             catch (Exception e)
             {
-                _logService.WriteLogAsync(e, $"User_{CurrentUser.EmployeeIdentifier}");
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
@@ -50,12 +42,11 @@ namespace Authentication.API.Controllers
         {
             try
             {
-                var data = await Mediator.Send(new GetAllUsersQuery { Identifier = CurrentUser.EmployeeIdentifier });
+                var data = await Mediator.Send(new GetAllUsersQuery { Identifier = CurrentUser.OrganizationIdentifier });
                 return new ResponseMessage(true, EResponse.OK, null, data);
             }
             catch (Exception e)
             {
-                await _logService.WriteLogAsync(e, $"User_{CurrentUser.EmployeeIdentifier}");
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
@@ -70,8 +61,6 @@ namespace Authentication.API.Controllers
             }
             catch (Exception e)
             {
-                await _logService.WriteLogAsync(e, $"User_{CurrentUser.EmployeeIdentifier}");
-
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }
@@ -86,8 +75,6 @@ namespace Authentication.API.Controllers
             }
             catch (Exception e)
             {
-                await _logService.WriteLogAsync(e, $"User_{CurrentUser.EmployeeIdentifier}");
-
                 return new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null);
             }
         }

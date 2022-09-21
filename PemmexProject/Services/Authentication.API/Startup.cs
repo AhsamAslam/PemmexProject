@@ -1,7 +1,5 @@
 using Authentication.API.Configuration;
 using Authentication.API.Database.context;
-using Authentication.API.Database.Repositories.Interface;
-using Authentication.API.Database.Repositories.Repository;
 using Authentication.API.Extensions;
 using Authentication.API.Services;
 using MediatR;
@@ -18,7 +16,6 @@ using Microsoft.OpenApi.Models;
 using PemmexCommonLibs.Application.Helpers;
 using PemmexCommonLibs.Application.Interfaces;
 using PemmexCommonLibs.Infrastructure.Services;
-using PemmexCommonLibs.Infrastructure.Services.LogService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,13 +40,8 @@ namespace Authentication.API
                        options.UseSqlServer(Configuration.GetConnectionString("AuthenticationConnection")));
             services.AddTransient<IDateTime, DateTimeService>();
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<AuthenticationContext>());
-            services.AddScoped<IUser, UserRepository>();
-            services.AddScoped<IRole, RoleRepository>();
-            services.AddScoped<ILogService>(x => new LogService(new AzureContainerSettings
-            {
-                connectionString = Configuration.GetValue<string>("AzureStorage:ConnectionString"),
-                containerName = Configuration.GetValue<string>("AzureStorage:LogContainerName")
-            }));
+
+
             services.AddControllersWithViews();
             services.AddIdentityServer()
                  .AddDeveloperSigningCredential()        //This is for dev only scenarios when you don’t have a certificate to use.

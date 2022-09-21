@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using TaskManager.API.Database.context;
 using TaskManager.API.Database.Entities;
-using TaskManager.API.Database.Repositories.Interface;
 using TaskManager.API.Dtos;
 
 namespace TaskManager.API.Queries.GetApprovalSettings
@@ -20,28 +19,20 @@ namespace TaskManager.API.Queries.GetApprovalSettings
     public class GetApprovalSettingsQueryHandeler : IRequestHandler<GetApprovalSettings, List<ApprovalSettingDto>>
     {
         private readonly IApplicationDbContext _context;
-        private readonly IApprovalSettings _approvalSettings;
         private readonly IMapper _mapper;
 
-        public GetApprovalSettingsQueryHandeler(IApplicationDbContext context, IApprovalSettings approvalSettings, IMapper mapper)
+        public GetApprovalSettingsQueryHandeler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
-            _approvalSettings = approvalSettings;
             _mapper = mapper;
         }
         public async Task<List<ApprovalSettingDto>> Handle(GetApprovalSettings request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var settings = await _approvalSettings.GetOrganizationApprovalSettingsByOrganizationIdentifier(request.Id);
-                return _mapper.Map<List<OrganizationApprovalSettings>, List<ApprovalSettingDto>>(settings.ToList());
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            
+            var settings = await _context.organizationApprovalSettings
+                .Where(e => e.OrganizationIdentifier == request.Id)
+                .Include(d => d.organizationApprovalSettingDetails)
+                .ToListAsync(cancellationToken);
+            return _mapper.Map<List<OrganizationApprovalSettings>, List<ApprovalSettingDto>>(settings);
         }
     }
 }

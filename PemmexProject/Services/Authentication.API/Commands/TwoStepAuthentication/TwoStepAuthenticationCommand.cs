@@ -1,7 +1,5 @@
-﻿
-using Authentication.API.Configuration;
+﻿using Authentication.API.Configuration;
 using Authentication.API.Database.context;
-using Authentication.API.Database.Repositories.Interface;
 using AutoMapper;
 using IdentityModel.Client;
 using MediatR;
@@ -29,19 +27,19 @@ namespace Authentication.API.Commands.TwoStepAuthentication
     }
     public class TwoStepAuthenticationCommandHandeler : IRequestHandler<TwoStepAuthenticationCommand, ResponseMessage>
     {
+        private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly IDateTime _dateTime;
         private readonly IUserManager _userManager;
-        private readonly IUser _user;
-        public TwoStepAuthenticationCommandHandeler(IUser user, IMapper mapper,
+        public TwoStepAuthenticationCommandHandeler(IApplicationDbContext context, IMapper mapper,
             IConfiguration configuration,IDateTime dateTime,IUserManager userManager)
         {
+            _context = context;
             _mapper = mapper;
             _configuration = configuration;
             _dateTime = dateTime;
             _userManager = userManager;
-            _user = user;
 
         }
         public async Task<ResponseMessage> Handle(TwoStepAuthenticationCommand request, CancellationToken cancellationToken)
@@ -70,9 +68,8 @@ namespace Authentication.API.Commands.TwoStepAuthentication
                             var result = await httpClient.SendAsync(requestMessage);
                             user.PasswordResetCode = code;
                             user.PasswordResetCodeTime = _dateTime.Now;
-                            //_context.Users.Update(user);
-                            //await _context.SaveChangesAsync(cancellationToken);
-                            var saveUser = await _user.UpdateUser(user);
+                            _context.Users.Update(user);
+                            await _context.SaveChangesAsync(cancellationToken);
                             return new ResponseMessage(true, EResponse.OK, "Email Sent Successfully", user.Email);
                         }
                     }

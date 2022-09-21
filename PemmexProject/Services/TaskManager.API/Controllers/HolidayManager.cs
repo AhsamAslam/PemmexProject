@@ -58,7 +58,7 @@ namespace TaskManager.API.Controllers
             }
             catch (Exception e)
             {
-                await _logService.WriteLogAsync(e, $"HolidayManager_{CurrentUser.EmployeeIdentifier}");
+                await _logService.WriteLogAsync(e, $"ApplyHoliday_{CurrentUser.EmployeeIdentifier}");
                 return await Task.FromResult(new ResponseMessage(false, EResponse.UnexpectedError, e.Message, null));
             }
         }

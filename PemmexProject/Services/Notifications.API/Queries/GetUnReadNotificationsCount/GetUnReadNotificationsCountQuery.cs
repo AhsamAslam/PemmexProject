@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Notifications.API.Database.Repositories.Interface;
+using Notifications.API.NotificationHub;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,24 +11,15 @@ namespace Notifications.API.Queries.GetUnReadNotificationsCount
     }
     public class GetUnReadNotificationsCountQueryHandeler : IRequestHandler<GetUnReadNotificationsCountQuery, int>
     {
-        private readonly Database.Repositories.Interface.INotification _context;
+        private readonly INotificationRepository _context;
 
-        public GetUnReadNotificationsCountQueryHandeler(Database.Repositories.Interface.INotification context)
+        public GetUnReadNotificationsCountQueryHandeler(INotificationRepository context)
         {
             _context = context;
         }
         public async Task<int> Handle(GetUnReadNotificationsCountQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                return await _context.CountUnReadNotifications(request.Id);
-            }
-            catch (System.Exception)
-            {
-
-                throw;
-            }
-            
+            return await _context.CountUnReadNotifications(request.Id);
         }
     }
 }

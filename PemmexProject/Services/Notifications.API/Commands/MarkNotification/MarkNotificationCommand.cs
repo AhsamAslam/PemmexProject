@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Notifications.API.Database.Repositories.Interface;
+using Notifications.API.NotificationHub;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,8 +13,8 @@ namespace Notifications.API.Commands.MarkNotification
 
     public class MarkNotificationCommandHandeler : IRequestHandler<MarkNotificationCommand>
     {
-        private readonly Database.Repositories.Interface.INotification _context;
-        public MarkNotificationCommandHandeler(Database.Repositories.Interface.INotification context)
+        private readonly INotificationRepository _context;
+        public MarkNotificationCommandHandeler(INotificationRepository context)
         {
             _context = context;
         }

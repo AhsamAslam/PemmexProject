@@ -1,5 +1,4 @@
-﻿using Authentication.API.Database.Repositories.Interface;
-using IdentityModel;
+﻿using IdentityModel;
 using IdentityServer4.Models;
 using IdentityServer4.Validation;
 using System;
